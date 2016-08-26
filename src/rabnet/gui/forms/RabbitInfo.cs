@@ -557,7 +557,7 @@ namespace rabnet.forms
         private void button13_Click(object sender, EventArgs e)
         {
             if (_rab.ID == 0) return;
-            if ((new BonForm(_rab.ID)).ShowDialog() != DialogResult.Abort) {
+            if ((new BonForm(_rab.ID)).ShowDialog() != DialogResult.Abort) {//todo == DialogResult.OK
                 btCancel.Enabled = false;
             }
             updateData();
@@ -565,7 +565,7 @@ namespace rabnet.forms
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if ((new Proholost(_rab.ID)).ShowDialog() != DialogResult.Abort) {
+            if ((new Proholost(_rab.ID)).ShowDialog() != DialogResult.Abort) {//todo == DialogResult.OK
                 btCancel.Enabled = false;
             }
             updateData();
@@ -574,7 +574,7 @@ namespace rabnet.forms
         private void button9_Click(object sender, EventArgs e)
         {
             OkrolForm dlg = new OkrolForm(_rab.ID);
-            if (dlg.ShowDialog() != DialogResult.Abort) {
+            if (dlg.ShowDialog() != DialogResult.Abort) {//todo == DialogResult.OK
                 btCancel.Enabled = false;
             }
             updateData();

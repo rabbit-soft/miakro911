@@ -40,7 +40,7 @@ namespace db.mysql
         protected override string getQuery()
         {
             return String.Format(@"SELECT {0:s}
-FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.safeBool("dbl"), options.safeBool("shr")));
+FROM rabbits WHERE r_parent IS NOT NULL ORDER BY name;", getFieldSet_Youngers(options.safeBool("dbl"), options.safeBool("shr")));
         }
 
         /// <summary>
@@ -51,19 +51,19 @@ FROM rabbits WHERE r_parent!=0 ORDER BY name;", getFieldSet_Youngers(options.saf
         /// </summary>
         /// <returns>sql-запрос</returns>
         protected override string countQuery()
-        {
-            //return "SELECT COUNT(*),SUM(r_group) FROM rabbits WHERE r_parent!=0;";
+        {            
             return @"SELECT 
     COUNT(1),
     SUM(r_group), 
-    (SELECT COUNT(a) FROM (SELECT DISTINCT r_parent a FROM rabbits WHERE r_parent<>0) t)mc                            
-FROM rabbits WHERE r_parent != 0;";
+    (SELECT COUNT(a) FROM (SELECT DISTINCT r_parent a FROM rabbits WHERE r_parent IS NOT NULL) t)mc                            
+FROM rabbits 
+WHERE r_parent IS NOT NULL;";
         }
 
         public static YoungRabbitList GetYoungers(MySqlConnection sql, int id)//TODO проверить
         {
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT {0:s}
-FROM rabbits WHERE r_parent={1:d} ORDER BY name;",getFieldSet_Youngers(true,false),id), sql);
+FROM rabbits WHERE r_parent = {1:d} ORDER BY name;",getFieldSet_Youngers(true,false),id), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             YoungRabbitList y = new YoungRabbitList();
             while (rd.Read()) {

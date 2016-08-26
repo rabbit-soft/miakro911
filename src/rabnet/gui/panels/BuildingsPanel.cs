@@ -115,10 +115,10 @@ namespace rabnet.panels
                         treeView1.SelectedNode.Expand();
                     }
 
-                    if (!this.farmAddresses.ContainsKey(childTreeData.FarmId)) {                
-                        this.farmAddresses.Add(childTreeData.FarmId, child.FullPath);                    
+                    if (!this.farmAddresses.ContainsKey(childTreeData.FarmId)) {
+                        this.farmAddresses.Add(childTreeData.FarmId, child.FullPath);
                     }
-                    treeData.ChildNodes.RemoveAt(0);                    
+                    treeData.ChildNodes.RemoveAt(0);
                 }
             }
             n.Tag = treeData;

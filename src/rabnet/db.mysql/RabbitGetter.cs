@@ -542,7 +542,7 @@ WHERE r_id={0:d};", rabFromID, DBHelper.Nullable(mom), count), sql);
                 cmd.ExecuteNonQuery();
             } else {
                 // если не подсосный, то ищем подсосных
-                cmd = new MySqlCommand(String.Format("SELECT r_id FROM rabbits WHERE r_parent={0:d};", rid), sql);
+                cmd = new MySqlCommand(String.Format("SELECT r_id FROM rabbits WHERE r_parent = {0:d};", rid), sql);
                 MySqlDataReader rd = cmd.ExecuteReader();
                 if (rd.Read()) {
                     int c1 = rd.GetInt32("r_id");
@@ -584,21 +584,21 @@ f_dead=f_dead+{0:d},f_killed=f_killed+{1:d},f_added=f_added+{2:d} WHERE f_rabid=
                      dead,killed,added,rid);
             cmd.ExecuteNonQuery();*/
             MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE rabbits SET r_group=r_group+{0:d} 
-WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
+WHERE r_parent = {1:d} AND r_id = {2:d};", added, rid, yid), sql);
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = String.Format("UPDATE rabbits SET r_rate={0:d} WHERE r_id={1:d};", dead + killed, rid);
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = String.Format(@"UPDATE fucks SET 
-                f_dead=f_dead+{0:d}, f_killed=f_killed+{1:d}, f_added=f_added+{2:d} 
-                WHERE f_rabid={3:d} AND f_end_date=(SELECT r_born FROM rabbits WHERE r_id={4:d});", dead, killed, added, rid, yid);
+                f_dead = f_dead+{0:d}, f_killed = f_killed+{1:d}, f_added = f_added+{2:d} 
+                WHERE f_rabid = {3:d} AND f_end_date = (SELECT r_born FROM rabbits WHERE r_id = {4:d});", dead, killed, added, rid, yid);
             cmd.ExecuteNonQuery();
         }
 
         public static void placeSucker(MySqlConnection sql, int sucker, int mother)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_parent FROM rabbits WHERE r_id={0:d};", sucker), sql);
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT r_parent FROM rabbits WHERE r_id = {0:d};", sucker), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             int oldMom = 0;
             if (rd.Read()) {
@@ -610,7 +610,7 @@ WHERE r_parent={1:d} AND r_id={2:d};", added, rid, yid), sql);
                 freeTier(sql, sucker);
                 placeRabbit(sql, sucker, 0, 0, 0);
             }
-            cmd.CommandText = String.Format("UPDATE rabbits SET r_parent={0:d} WHERE r_id={1:d};", mother, sucker);
+            cmd.CommandText = String.Format("UPDATE rabbits SET r_parent = {0:d} WHERE r_id = {1:d};", mother, sucker);
             cmd.ExecuteNonQuery();
         }
 

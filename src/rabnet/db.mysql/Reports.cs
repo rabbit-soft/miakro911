@@ -230,15 +230,15 @@ namespace db.mysql
             return doc;
         }
 
-        public static XmlDocument makeReport(MySqlConnection sql, myReportType type, Filters f)
-        {
-            return new Reports(sql).makeReport(type, f);
-        }
+        //public static XmlDocument makeReport(MySqlConnection sql, myReportType type, Filters f)
+        //{
+        //    return new Reports(sql).makeReport(type, f);
+        //}
 
-        public static XmlDocument makeReport(MySqlConnection sql, string query)
-        {
-            return new Reports(sql).makeReport(query);
-        }
+        //public static XmlDocument makeReport(MySqlConnection sql, string query)
+        //{
+        //    return new Reports(sql).makeReport(query);
+        //}
 
         private string testQuery(Filters f)
         {
@@ -341,14 +341,15 @@ FROM dead {0} GROUP BY d_reason);", period);
             return String.Format(@"SELECT 
     rabname(r_id,2) name,
     TO_DAYS(NOW())-TO_DAYS(r_born) age,
-    (SELECT b_name FROM breeds WHERE b_id=r_breed) breed, 
+    (SELECT b_name FROM breeds WHERE b_id = r_breed) breed, 
     rabplace(r_id) adr_adress,
     IF(r_sex='male','м',IF(r_sex='female','ж','?')) sex,
     '' comment,
     Concat(r_group,IF(yng_sum>0,Concat(' (+',yng_sum,')'),'')) r_group 
 FROM rabbits r
-LEFT JOIN (SELECT r_parent,Coalesce(sum(r_group),0) yng_sum FROM rabbits WHERE r_parent!=0 GROUP BY r_parent) yng ON yng.r_parent=r.r_id
-WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;", where);
+LEFT JOIN (SELECT r_parent,Coalesce(sum(r_group),0) yng_sum FROM rabbits WHERE r_parent IS NOT NULL GROUP BY r_parent) yng ON yng.r_parent=r.r_id
+WHERE {0:s} 
+ORDER BY r_farm, r_tier_id, r_area;", where);
         }
 
         /// <summary>
@@ -373,14 +374,16 @@ WHERE {0:s} ORDER BY r_farm,r_tier_id,r_area;", where);
                 format = "%m";
             }
 
-            if (worker != "")
+            if (worker != "") {
                 period = " AND " + period;
+            }
             string result = String.Format(@"SELECT 
     CONCAT(' ',anyname(f_partner,0)) name,
     DATE_FORMAT(f_end_date,'{2}') dt,
-    IF (f_state='okrol', f_children, IF(f_state='proholost','п','-')) state 
+    IF (f_state = 'okrol', f_children, IF(f_state='proholost','п','-')) state 
 FROM fucks 
-WHERE {0:s} {1:s} ORDER BY name,dt;", worker, period, format);
+WHERE {0:s} {1:s} 
+ORDER BY name,dt;", worker, period, format);
 
             return result;
         }
@@ -390,8 +393,9 @@ WHERE {0:s} {1:s} ORDER BY name,dt;", worker, period, format);
             MySqlCommand cmd = new MySqlCommand(query, sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             String res = "";
-            if (rd.Read())
+            if (rd.Read()) {
                 res = rd.GetString(0);
+            }
             rd.Close();
             return res;
         }
@@ -451,40 +455,48 @@ WHERE {0:s} {1:s} ORDER BY name,dt;", worker, period, format);
             int bar = getBuildCount(BuildingType.Barin, bid);
             int cab = getBuildCount(BuildingType.Cabin, bid);
             int ideal = round(PER_VERTEP * (ver + bar + 4 * qua + 2 * com + cab / 2) + PER_FEMALE * (2 * (dfe + jur) + fem + com + cab));
-            int real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits WHERE (r_parent=0 AND inBuilding({0:d},r_farm))OR
-(r_parent!=0 AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent)));", bid));
+            int real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) 
+FROM rabbits 
+WHERE (r_parent IS NULL AND inBuilding({0:d},r_farm)) 
+    OR (r_parent IS NOT NULL AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent)));", bid));
             addShedRows(doc, "  все", ideal, real);
 
             ideal = fem + 2 * (dfe + jur) + com;
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
-WHERE r_sex='female' AND (r_status>0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);", bid));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) 
+FROM rabbits 
+WHERE r_sex = 'female' AND (r_status > 0 OR r_event_date IS NOT NULL) AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, "  крольчихи", ideal, real);
 
             ideal = round(ideal * PREGN_PER_TIER);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
-WHERE r_sex='female' AND r_event_date IS NOT NULL AND inBuilding({0:d},r_farm);", bid));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) 
+FROM rabbits 
+WHERE r_sex = 'female' AND r_event_date IS NOT NULL AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, "  сукрольные", ideal, real);
 
             ideal = round(alltiers * FEED_GIRLS_PER_TIER);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers 
-WHERE r_tier=t_id AND (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) 
-    AND r_parent=0 AND r_sex='female' AND r_status=0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);", bid));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) 
+FROM rabbits,tiers 
+WHERE r_tier = t_id AND (t_type = 'quarta' OR (r_area = 1 AND (t_type = 'complex' OR t_type = 'cabin'))) 
+    AND r_parent IS NULL AND r_sex = 'female' AND r_status = 0 AND r_event_date IS NULL AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, " Д.откорм", ideal, real);
 
             ideal = round(alltiers * FEED_BOYS_PER_TIER);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits,tiers 
-WHERE r_tier=t_id AND (t_type='quarta' OR (r_area=1 AND (t_type='complex' OR t_type='cabin'))) 
-    AND r_parent=0 AND r_sex='male' AND r_status=0 AND inBuilding({0:d},r_farm);", bid));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) 
+FROM rabbits,tiers 
+WHERE r_tier=t_id AND (t_type = 'quarta' OR (r_area=1 AND (t_type = 'complex' OR t_type = 'cabin'))) 
+    AND r_parent IS NULL AND r_sex = 'male' AND r_status = 0 AND inBuilding({0:d},r_farm);", bid));
             addShedRows(doc, " М.откорм", ideal, real);
 
             ideal = round(UNKN_SUCKS_PER_TIER * alltiers);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
-WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) 
+FROM rabbits 
+WHERE r_parent IS NOT NULL AND TO_DAYS(NOW())-TO_DAYS(r_born)>={1:d} AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
             addShedRows(doc, " подсосные", ideal, real);
 
             ideal = round(UNKN_NEST_PER_TIER * alltiers);
-            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) FROM rabbits 
-WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
+            real = getInt32(String.Format(@"SELECT COALESCE(SUM(r_group),0) 
+FROM rabbits 
+WHERE r_parent IS NOT NULL AND TO_DAYS(NOW())-TO_DAYS(r_born) < {1:d} AND inBuilding({0:d},(SELECT r2.r_farm FROM rabbits r2 WHERE r2.r_id=rabbits.r_parent));", bid, nest_out));
             addShedRows(doc, "гнездовые", ideal, real);
 
             return doc;
@@ -497,7 +509,7 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
             doc.AppendChild(doc.CreateElement("Rows"));
             MySqlCommand cmd = new MySqlCommand(String.Format(@"SELECT m_id, t_type, t_busy1, t_busy2, t_busy3, t_busy4, t_delims
                 FROM tiers,minifarms 
-                WHERE (t_busy1=0 OR t_busy2=0 OR t_busy3=0 OR t_busy4=0) AND (t_id=m_upper OR t_id=m_lower) AND inBuilding({0:d},m_id)
+                WHERE (t_busy1 = 0 OR t_busy2 = 0 OR t_busy3 = 0 OR t_busy4 = 0) AND (t_id = m_upper OR t_id = m_lower) AND inBuilding({0:d},m_id)
                 ORDER BY m_id;", bld), sql);
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) {
@@ -516,13 +528,15 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
         private string rabByMonth()
         {
             string s = @"SELECT
-                DATE_FORMAT(r_born,'%m.%Y') date,
-                Coalesce(
-                    (select sum(f_children+f_added) from fucks where date_format(f_end_date,'%m.%Y')=date),
-                    (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0) #если есть данные из старой программы
-                ) count,
-                COALESCE(SUM(r_group),0) alife
-                FROM rabbits GROUP BY date ORDER BY year(r_born) desc,month(r_born) desc;";
+    DATE_FORMAT(r_born,'%m.%Y') date,
+    Coalesce(
+        (select sum(f_children+f_added) from fucks where date_format(f_end_date,'%m.%Y')=date),
+        (SELECT COALESCE(SUM(r_group),0) FROM dead d WHERE MONTH(d.r_born)=MONTH(rabbits.r_born) AND YEAR(d.r_born)=YEAR(rabbits.r_born))+COALESCE(SUM(r_group),0) #если есть данные из старой программы
+    ) count,
+    COALESCE(SUM(r_group),0) alife
+FROM rabbits 
+GROUP BY date 
+ORDER BY year(r_born) desc,month(r_born) desc;";
             return s;
         }
 
@@ -531,15 +545,15 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
             string period = " AND " + DBHelper.MakeDatePeriod(f, "f_date");
 
             return String.Format(@"SELECT 
-        DATE_FORMAT(f_date,'%d.%m.%Y') date,
-        anyname(f_rabid,2) name,
-        n_name as partner,
-        u_name as worker 
-    FROM fucks 
-        LEFT JOIN names ON n_use = f_partner
-        LEFT JOIN users ON u_id = f_worker
-    WHERE f_date is not null {0} 
-    ORDER BY f_date DESC, partner;", period);
+    DATE_FORMAT(f_date,'%d.%m.%Y') date,
+    anyname(f_rabid,2) name,
+    n_name as partner,
+    u_name as worker 
+FROM fucks 
+    LEFT JOIN names ON n_use = f_partner
+    LEFT JOIN users ON u_id = f_worker
+WHERE f_date is not null {0} 
+ORDER BY f_date DESC, partner;", period);
         }
 
         private string butcherQuery(Filters f)
@@ -553,7 +567,7 @@ WHERE r_parent<>0 AND TO_DAYS(NOW())-TO_DAYS(r_born)<{1:d} AND inBuilding({0:d},
     (SELECT p_name FROM products WHERE p_id=b_prodtype) prod,
     b_amount,
     (SELECT p_unit FROM products WHERE p_id = b_prodtype) unt,
-    (SELECT u_name FROM users WHERE b_user=u_id) user
+    (SELECT u_name FROM users WHERE b_user = u_id) user
 FROM butcher 
 {0} ORDER BY b_date DESC;", period);
         }

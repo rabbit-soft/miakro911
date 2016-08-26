@@ -764,12 +764,18 @@ namespace db.mysql
 
         public XmlDocument makeReport(myReportType type, Filters f)
         {
-            return Reports.makeReport(sql, type, f);
+            if (!this.services.ContainsKey("Reports")) {
+                this.services.Add("Reports", new Reports(sql));
+            }
+            return (this.services["Reports"] as Reports).makeReport(type, f);            
         }
 
         public XmlDocument makeReport(string query)
         {
-            return Reports.makeReport(sql, query);
+            if (!this.services.ContainsKey("Reports")) {
+                this.services.Add("Reports", new Reports(sql));
+            }
+            return (this.services["Reports"] as Reports).makeReport(query);             
         }
 
         public string WebReportGlobal(DateTime dt)

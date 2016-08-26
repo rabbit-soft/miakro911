@@ -352,7 +352,7 @@ HAVING srok >= {0:d};",
     t_busy2,
     t_delims,
     t_type,
-    COALESCE( (SELECT SUM(r3.r_group) FROM rabbits r3 WHERE r3.r_parent=rabbits.r_id) ,0) suckers
+    COALESCE( (SELECT SUM(r3.r_group) FROM rabbits r3 WHERE r3.r_parent = rabbits.r_id) ,0) suckers
 FROM rabbits
     INNER JOIN tiers ON t_id = r_tier AND ((t_busy1 = r_id AND t_nest like '1%') OR (t_busy2 = r_id AND t_nest like '%1' AND t_type='dfemale'))
 WHERE r_sex = 'female'         
@@ -507,26 +507,6 @@ ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
                     rabplace()
                 );
 
-
-
-            //            return String.Format(@"SELECT DISTINCT
-            //    IF(r_parent != 0, r_parent, r_id) r_id,
-            //    DATEDIFF('{4}', r_born) age,
-            //    DATEDIFF('{4}', r_born) - {1:d} srok,     
-            //    rabname(IF(r_parent != 0, r_parent, r_id), {3:s}) name, 
-            //    rabplace(IF(r_parent != 0, r_parent, r_id)) place,     
-            //    {2:s} 
-            //FROM rabbits 
-            //WHERE {0:s} 
-            //
-            //HAVING age >= {1:d} 
-            //ORDER BY age DESC, 0+LEFT(place,LOCATE(',',place)) ASC;",
-            //                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? "(r_sex = 'female' AND r_parent IS NOT NULL)" : "(r_sex = 'void' OR (r_sex = 'male' AND r_parent IS NOT NULL))"),
-            //                (_flt.safeInt("sex") == (int)Rabbit.SexType.FEMALE ? _flt.safeInt(Filters.GIRLS_OUT) : _flt.safeInt(Filters.BOYS_OUT)),
-            //                brd(),
-            //                getnm(),
-            //                _flt[Filters.DATE]
-            //            );
         }
 
         private string qFuck()
@@ -659,7 +639,7 @@ DROP TEMPORARY TABLE IF EXISTS aaa; {5:s};",
                 getnm(),
                 brd(),
                 show,
-                _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent !=0;" : "",
+                _flt.safeBool(Filters.VACC_MOTH, true) ? "CREATE TEMPORARY TABLE bbb SELECT DISTINCT r_parent FROM aaa WHERE r_parent IS NOT NULL;" : "",
                 _flt.safeBool(Filters.VACC_MOTH, true) ? "AND r_id NOT IN (SELECT r_parent FROM bbb)" : "",
                 _flt.safeBool(Filters.VACC_MOTH, true) ? "DROP TEMPORARY TABLE IF EXISTS bbb;" : "",
                 _flt[Filters.DATE]
