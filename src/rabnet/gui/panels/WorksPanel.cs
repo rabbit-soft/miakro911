@@ -453,7 +453,7 @@ namespace rabnet.panels
                 this.setMenu(zJob.Type, zJob);
             } else {                
                 JobType jtAssumed = JobType.None;
-                foreach (ListViewItem lvi in lvZooTech.Items) {
+                foreach (ListViewItem lvi in lvZooTech.SelectedItems) {
                     zJob = lvi.Tag as ZootehJob;
                     // проверяем чтобы все выбранные записи имели один тип 
                     if (jtAssumed != JobType.None && jtAssumed != zJob.Type) {
