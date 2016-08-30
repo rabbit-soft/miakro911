@@ -246,6 +246,8 @@
 			<arg value="describe"/>
 			<arg value="--tags"/>
 			<arg value="--always"/>
+			<arg value="--match"/>
+			<arg value="v*"/>
 			<arg value="HEAD"/>
 		</exec>
 		<loadfile file="${tmpdir}/rev.txt" property="gt_revision" />
@@ -257,9 +259,9 @@
 		<loadfile file="${tmpdir}/rev_dt.txt" property="gt_date" />
 
 		<echo message="Using GIT revision number: ${gt_revision}" />
-		<property name="fullver" value="${string::trim(gt_revision)}" />
-		<property name="shortver" value="${string::trim(gt_revision)}" />
-		<regex pattern="^(?'shortver'.*)-\w*" input="${fullver}" options="Singleline" failonerror="false" />
+		<property name="fullver" value="${string::replace(string::trim(gt_revision),'v','')}" />
+		<property name="shortver" value="${string::replace(string::trim(gt_revision),'v','')}" />
+		<regex pattern="^(?'shortver'.*)-\w*" input="${shortver}" options="Singleline" failonerror="false" />
 		<echo message="Build version: ${fullver}" />
 		<echo message="Build short version: ${shortver}" />
 
