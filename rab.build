@@ -267,12 +267,12 @@
 			<arg value="${tmpdir}/rev.tmp" />
 			<arg value="${tmpdir}/rev.txt" />
 		</exec-->
-<exec program="git" output="${tmpdir}/rev.txt" failonerror="true">
-        <arg value="describe"/>
-        <arg value="--tags"/>
-        <arg value="--always"/>
-        <arg value="HEAD"/>
-    </exec>
+		<exec program="git" output="${tmpdir}/rev.txt" failonerror="true">
+			<arg value="describe"/>
+			<arg value="--tags"/>
+			<arg value="--always"/>
+			<arg value="HEAD"/>
+		</exec>
 		<loadfile file="${tmpdir}/rev.txt" property="revision" />
 		<echo message="Using Subversion revision number: ${revision}" />
 		<property name="minver" value="${minver_p}.${revision}" />
@@ -291,6 +291,11 @@ namespace rabnet.forms
 	}
 }
 		</echo>
+		<exec program="git" output="${tmpdir}/rev_dt.txt" failonerror="true">
+			<arg value="log"/>
+			<arg value="-1"/>
+			<arg value="--format=%ci"/>
+		</exec>
 		<!--exec program="subWCrev">
 			<arg value="${build.root}" />
 			<arg value="${tmpdir}/MainForm.BuildDate.cs.tmp" />
