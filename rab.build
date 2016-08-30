@@ -21,6 +21,7 @@
 	<if test="${not property::exists('build.root')}">
 		<property name="build.root" value="../.." if="${file::exists('../../host_spec.include')}" />
 		<property name="build.root" value=".." if="${file::exists('../host_spec.include')}" />
+		<property name="build.root" value="." if="${file::exists('./host_spec.include')}" />
 	</if>
 	<include buildfile="${build.root}/host_spec.include" />
 	<include buildfile="${trunkdir}/nant_include/guardant.inc.build" />
@@ -246,7 +247,7 @@
 		</if>
 	</target>
 	<target name="svn_rev" description="set revision number in assembly info">
-		<asminfo output="${tmpdir}/VersionInfo.cs.tmp" language="CSharp">
+		<!--asminfo output="${tmpdir}/VersionInfo.cs.tmp" language="CSharp">
 			<imports>
 				<import namespace="System.Reflection" />
 			</imports>
@@ -254,8 +255,8 @@
 				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
 				<attribute type="AssemblyVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
 			</attributes>
-		</asminfo>
-		<exec program="SubWCrev">
+		</asminfo-->
+		<!--exec program="SubWCrev">
 			<arg value="${build.root}" />
 			<arg value="${tmpdir}/VersionInfo.cs.tmp" />
 			<arg value="${tmpdir}/VersionInfo.cs" />
@@ -265,7 +266,13 @@
 			<arg value="${build.root}" />
 			<arg value="${tmpdir}/rev.tmp" />
 			<arg value="${tmpdir}/rev.txt" />
-		</exec>
+		</exec-->
+<exec program="git" output="${tmpdir}/rev.txt" failonerror="true">
+        <arg value="describe"/>
+        <arg value="--tags"/>
+        <arg value="--always"/>
+        <arg value="HEAD"/>
+    </exec>
 		<loadfile file="${tmpdir}/rev.txt" property="revision" />
 		<echo message="Using Subversion revision number: ${revision}" />
 		<property name="minver" value="${minver_p}.${revision}" />
