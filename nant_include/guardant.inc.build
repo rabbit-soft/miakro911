@@ -4,7 +4,7 @@
 	<!--property name="obfuscated" value="" /-->
 	<property name="obfuscator_eaz" value="Eazfuscator.NET.exe" />
 	
-	<property name="grd_path.conf" value="${trunkdir}\distrib\guardant_config" />
+	<property name="grd_path.conf" value=".\distrib\guardant_config" />
 	<property name="grd_path.bin" value="${grd_path}\Bin" />
 	<property name="grd_path.lib" value="${grd_path}\Lib\windows\x86" />
 	<property name="grd_path.lib64" value="${grd_path}\Lib\windows\x64" />	

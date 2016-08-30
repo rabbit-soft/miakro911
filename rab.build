@@ -2,35 +2,30 @@
 <project name="rabnet" default="full_build" basedir=".">
 	<description>rabnet project makefile</description>
 	<!-- properties defines ! -->
-	<property name="version" value="1.3" />
-	<property name="minver_p" value="2" />
-	<property name="minver" value="${minver_p}.0" />
-	<property name="fullver" value="${version}.${minver}" />
 	<property name="appname" value="Миакро-9.11" />
 	<property name="companyname" value="9-Бит" />
 	<property name="appname_en" value="Miakro-9.11" />
 	<property name="companyname_en" value="9-Bits" />
 	<property name="revision" value="none" />
-	<property name="trunkdir" value="." />
-	<property name="bindir" value="${trunkdir}/_bin" />
-	<property name="allineed.path" value="${trunkdir}/allineed" />
-	<property name="party3d.path" value="${trunkdir}/party3d" />
-	<property name="srcdir" value="${trunkdir}/src" overwrite="false" />
-	<property name="helpdir" value="${trunkdir}/help" />
+	<property name="bindir" value="./_bin" />
+	<property name="allineed.path" value="./allineed" />
+	<property name="party3d.path" value="./party3d" />
+	<property name="srcdir" value="./src" overwrite="false" />
+	<property name="helpdir" value="./help" />
 	<property name="bindir.plugins" value="${bindir}/PlugIns" />
-	<if test="${not property::exists('build.root')}">
-		<property name="build.root" value="../.." if="${file::exists('../../host_spec.include')}" />
-		<property name="build.root" value=".." if="${file::exists('../host_spec.include')}" />
-		<property name="build.root" value="." if="${file::exists('./host_spec.include')}" />
+	<if test="${not property::exists('host_spec_path')}">
+		<property name="host_spec_path" value="../.." if="${file::exists('../../host_spec.include')}" />
+		<property name="host_spec_path" value=".." if="${file::exists('../host_spec.include')}" />
+		<property name="host_spec_path" value="." if="${file::exists('./host_spec.include')}" />
 	</if>
-	<include buildfile="${build.root}/host_spec.include" />
-	<include buildfile="${trunkdir}/nant_include/guardant.inc.build" />
-	<include buildfile="${trunkdir}/nant_include/compilation.inc.build" />
-	<include buildfile="${trunkdir}/nant_include/firmuper.inc.build" />
-	<if test="${path::get-file-name(project::get-base-directory())!='trunk'}">
+	<include buildfile="${host_spec_path}/host_spec.include" />
+	<include buildfile="./nant_include/guardant.inc.build" />
+	<include buildfile="./nant_include/compilation.inc.build" />
+	<include buildfile="./nant_include/firmuper.inc.build" />
+	<!--if test="${path::get-file-name(project::get-base-directory())!='trunk'}">
 		<property name="build.version" value="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))}" unless="${property::exists('build.version')}" />
 		<echo message="Build version base from directory name: ${build.version}" />
-	</if>
+	</if-->
 	<property name="log4net.lib" value="log4net.dll" />
 	<property name="log4net.ass" value="${party3d.path}/${log4net.lib}" />
 	<property name="sb.lib" value="SplitButton.dll" />
@@ -62,11 +57,11 @@
 	<property name="help_gtru" value="Руководство по обновлению Ключей Защиты.docx" />
 	<!-- TARGETS ! -->
 	<target name="build" depends="clear,buildall" description="Full build" />
-	<target name="buildall" depends="make_tmp_dir,svn_rev,bld_date,protected,demo" description="Build all projects">
+	<target name="buildall" depends="make_tmp_dir,git_info,protected,demo" description="Build all projects">
 		<!--delete dir="${tmpdir}"/-->
 	</target>
 	<target name="make_tmp_dir">
-		<property name="tmpdir" value="${trunkdir}/_tmp" />
+		<property name="tmpdir" value="./_tmp" />
 		<delete dir="${tmpdir}" />
 		<mkdir dir="${tmpdir}" />
 	</target>
@@ -182,9 +177,9 @@
 		<property name="setup_suff" value="_demo" />
 		<call target="nsis_bld" />
 		<!-- удаляем временные файлы -->
-		<delete file="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi" />
-		<delete file="${trunkdir}/distrib/distrib_nsis/setup.exe" />
-		<delete file="${trunkdir}/distrib/distrib_nsis/include/LangStrings.nsh" />
+		<delete file="./distrib/distrib_nsis/setup_bld.nsi" />
+		<delete file="./distrib/distrib_nsis/setup.exe" />
+		<delete file="./distrib/distrib_nsis/include/LangStrings.nsh" />
 	</target>
 	<target name="nsis_bld">
 		<mkdir dir="${bindir}" />
@@ -199,9 +194,9 @@
 		<copy file="${dotnetInstallerSource}" tofile="${bindir}/miakro_911_${bin_type}/dotnetfx20/${dotnetInstallerDest}" />
 		<copy file="${mysqlInstallerSource}" tofile="${bindir}/miakro_911_${bin_type}/mysql/${mysqlInstallerDest}" />
 		<copy file="${helpdir}/${help_setup}" tofile="${bindir}/miakro_911_${bin_type}/${help_setup}" />
-		<delete file="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi" />
-		<delete file="${trunkdir}/distrib/distrib_nsis/setup.exe" />
-		<copy file="${trunkdir}/distrib/distrib_nsis/setup_${bin_type}_tmpl.nsi" tofile="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi" overwrite="true">
+		<delete file="./distrib/distrib_nsis/setup_bld.nsi" />
+		<delete file="./distrib/distrib_nsis/setup.exe" />
+		<copy file="./distrib/distrib_nsis/setup_${bin_type}_tmpl.nsi" tofile="./distrib/distrib_nsis/setup_bld.nsi" overwrite="true">
 			<filterchain>
 				<replacetokens>
 					<token key="bin_type" value="${bin_type}" />
@@ -209,7 +204,7 @@
 				<!--tabstospaces /-->
 			</filterchain>
 		</copy>
-		<copy file="${trunkdir}/distrib/distrib_nsis/include/LangStrings.nsh.tmp" tofile="${trunkdir}/distrib/distrib_nsis/include/LangStrings.nsh" overwrite="true">
+		<copy file="./distrib/distrib_nsis/include/LangStrings.nsh.tmp" tofile="./distrib/distrib_nsis/include/LangStrings.nsh" overwrite="true">
 			<filterchain>
 				<replacetokens>
 					<token key="AppVer" value="${fullver}" />
@@ -227,12 +222,12 @@
 		</copy>
 		<exec program="${NSIS}">
 			<arg value="/V3" />
-			<arg value="${trunkdir}/distrib/distrib_nsis/setup_bld.nsi" />
+			<arg value="./distrib/distrib_nsis/setup_bld.nsi" />
 		</exec>
-		<copy file="${trunkdir}/distrib/distrib_nsis/setup.exe" tofile="${bindir}/miakro_911_${bin_type}/setup${setup_suff}.exe" />
+		<copy file="./distrib/distrib_nsis/setup.exe" tofile="${bindir}/miakro_911_${bin_type}/setup${setup_suff}.exe" />
 		<if test="${not property::exists('build_no_up')}">
-			<copy file="${trunkdir}/distrib/distrib_nsis/setup${setup_suff}.exe" tofile="${bindir}/miakro_911_${bin_type}_up/setup.${fullver}.exe" />
-			<copy file="${trunkdir}/distrib/distrib_nsis/updates.xml" tofile="${bindir}/miakro_911_${bin_type}_up/updates.xml" />
+			<copy file="./distrib/distrib_nsis/setup${setup_suff}.exe" tofile="${bindir}/miakro_911_${bin_type}_up/setup.${fullver}.exe" />
+			<copy file="./distrib/distrib_nsis/updates.xml" tofile="${bindir}/miakro_911_${bin_type}_up/updates.xml" />
 			<loadtasks assembly="${nant_contrib}" />
 			<checksum algorithm="MD5">
 				<fileset>
@@ -246,61 +241,49 @@
 			<xmlpoke file="${bindir}/miakro_911_${bin_type}_up/updates.xml" xpath="/update/bundle/version/@number" value="${fullver}" />
 		</if>
 	</target>
-	<target name="svn_rev" description="set revision number in assembly info">
-		<asminfo output="${tmpdir}/VersionInfo.cs.tmp" language="CSharp">
-			<imports>
-				<import namespace="System.Reflection" />
-			</imports>
-			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
-				<attribute type="AssemblyVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
-			</attributes>
-		</asminfo>
-		<!--exec program="SubWCrev">
-			<arg value="${build.root}" />
-			<arg value="${tmpdir}/VersionInfo.cs.tmp" />
-			<arg value="${tmpdir}/VersionInfo.cs" />
-		</exec>
-		<echo file="${tmpdir}/rev.tmp">$WCREV$</echo>
-		<exec program="subWCrev">
-			<arg value="${build.root}" />
-			<arg value="${tmpdir}/rev.tmp" />
-			<arg value="${tmpdir}/rev.txt" />
-		</exec-->
+	<target name="git_info" description="get git commit info">
 		<exec program="git" output="${tmpdir}/rev.txt" failonerror="true">
 			<arg value="describe"/>
 			<arg value="--tags"/>
 			<arg value="--always"/>
 			<arg value="HEAD"/>
 		</exec>
-		<loadfile file="${tmpdir}/rev.txt" property="revision" />
-		<echo message="Using Subversion revision number: ${revision}" />
-		<property name="minver" value="${minver_p}.${revision}" />
-		<property name="fullver" value="${version}.${minver}" />
-		<property name="fullver" value="${build.version}.${revision}" if="${property::exists('build.version')}" />
-		<echo message="Build version: ${fullver}" />
-	</target>
-	<target name="bld_date" description="write build date into program for unsupport old keys">
-		<echo file="${tmpdir}/MainForm.BuildDate.cs.tmp">
-using System;			
-namespace rabnet.forms
-{
-	public partial class MainForm
-	{
-		public readonly static DateTime BuildDate = DateTime.Parse("$WCNOW$");
-	}
-}
-		</echo>
+		<loadfile file="${tmpdir}/rev.txt" property="gt_revision" />
 		<exec program="git" output="${tmpdir}/rev_dt.txt" failonerror="true">
 			<arg value="log"/>
 			<arg value="-1"/>
 			<arg value="--format=%ci"/>
 		</exec>
-		<!--exec program="subWCrev">
-			<arg value="${build.root}" />
-			<arg value="${tmpdir}/MainForm.BuildDate.cs.tmp" />
-			<arg value="${tmpdir}/MainForm.BuildDate.cs" />
-		</exec-->
+		<loadfile file="${tmpdir}/rev_dt.txt" property="gt_date" />
+
+		<echo message="Using GIT revision number: ${gt_revision}" />
+		<property name="fullver" value="${string::trim(gt_revision)}" />
+		<echo message="Build version: ${fullver}" />
+
+		<property name="build_dt" value="${string::trim(gt_date)}" />
+		<echo message="Build date: ${build_dt}" />
+
+		<asminfo output="${tmpdir}/VersionInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
+				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
+			</attributes>
+		</asminfo>
+
+		<echo file="${tmpdir}/MainForm.BuildDate.cs">
+using System;			
+namespace rabnet.forms
+{
+	public partial class MainForm
+	{
+		public readonly static DateTime BuildDate = DateTime.Parse("${build_dt}");
+	}
+}
+		</echo>
+
 	</target>
 	<target name="full_build" depends="clean_mark distrib_nsis">
 		<if test="${property::exists('build.automated')}">
