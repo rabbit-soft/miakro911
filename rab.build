@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project name="rabnet" default="full_build" basedir=".">
 	<description>rabnet project makefile</description>
 	<!-- properties defines ! -->
@@ -258,7 +258,10 @@
 
 		<echo message="Using GIT revision number: ${gt_revision}" />
 		<property name="fullver" value="${string::trim(gt_revision)}" />
+		<property name="shortver" value="${string::trim(gt_revision)}" />
+		<regex pattern="^(?'shortver'.*)-\w*" input="${fullver}" options="Singleline" failonerror="false" />
 		<echo message="Build version: ${fullver}" />
+		<echo message="Build short version: ${shortver}" />
 
 		<property name="build_dt" value="${string::trim(gt_date)}" />
 		<echo message="Build date: ${build_dt}" />
@@ -268,8 +271,8 @@
 				<import namespace="System.Reflection" />
 			</imports>
 			<attributes>
-				<attribute type="AssemblyFileVersionAttribute" value="${fullver}" />
-				<attribute type="AssemblyVersionAttribute" value="${fullver}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${string::replace(shortver,'-','.')}" />
+				<attribute type="AssemblyVersionAttribute" value="${string::replace(shortver,'-','.')}" />
 			</attributes>
 		</asminfo>
 
