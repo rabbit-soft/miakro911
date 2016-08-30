@@ -247,7 +247,7 @@
 		</if>
 	</target>
 	<target name="svn_rev" description="set revision number in assembly info">
-		<!--asminfo output="${tmpdir}/VersionInfo.cs.tmp" language="CSharp">
+		<asminfo output="${tmpdir}/VersionInfo.cs.tmp" language="CSharp">
 			<imports>
 				<import namespace="System.Reflection" />
 			</imports>
@@ -255,7 +255,7 @@
 				<attribute type="AssemblyFileVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
 				<attribute type="AssemblyVersionAttribute" value="${version}.${minver_p}.$WCREV$" />
 			</attributes>
-		</asminfo-->
+		</asminfo>
 		<!--exec program="SubWCrev">
 			<arg value="${build.root}" />
 			<arg value="${tmpdir}/VersionInfo.cs.tmp" />
@@ -291,11 +291,11 @@ namespace rabnet.forms
 	}
 }
 		</echo>
-		<exec program="subWCrev">
+		<!--exec program="subWCrev">
 			<arg value="${build.root}" />
 			<arg value="${tmpdir}/MainForm.BuildDate.cs.tmp" />
 			<arg value="${tmpdir}/MainForm.BuildDate.cs" />
-		</exec>
+		</exec-->
 	</target>
 	<target name="full_build" depends="clean_mark distrib_nsis">
 		<if test="${property::exists('build.automated')}">
