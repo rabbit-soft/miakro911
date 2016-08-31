@@ -215,7 +215,7 @@
 					<token key="CompanyName_en" value="${companyname_en}" />
 					<token key="Copys" value="(C) ${companyname} 2010" />
 					<token key="Copys_en" value="(C) ${companyname_en} 2010" />
-					<token key="FileDescr" value="Программа установки ${appname} ${version}" />
+					<token key="FileDescr" value="Программа установки ${appname} ${fullver}" />
 					<token key="FileDescr_en" value="${appname_en} ${fullver} Installer" />
 				</replacetokens>
 				<!--tabstospaces /-->
