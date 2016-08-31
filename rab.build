@@ -13,12 +13,13 @@
 	<property name="srcdir" value="./src" overwrite="false" />
 	<property name="helpdir" value="./help" />
 	<property name="bindir.plugins" value="${bindir}/PlugIns" />
-	<if test="${not property::exists('host_spec_path')}">
+	<!--if test="${not property::exists('host_spec_path')}">
 		<property name="host_spec_path" value="../.." if="${file::exists('../../host_spec.include')}" />
 		<property name="host_spec_path" value=".." if="${file::exists('../host_spec.include')}" />
 		<property name="host_spec_path" value="." if="${file::exists('./host_spec.include')}" />
 	</if>
-	<include buildfile="${host_spec_path}/host_spec.include" />
+	<include buildfile="${host_spec_path}/host_spec.include" /-->
+	<include buildfile="./host_spec.include" />
 	<include buildfile="./nant_include/guardant.inc.build" />
 	<include buildfile="./nant_include/compilation.inc.build" />
 	<include buildfile="./nant_include/firmuper.inc.build" />
