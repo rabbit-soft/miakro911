@@ -208,7 +208,7 @@
 		<copy file="./distrib/distrib_nsis/include/LangStrings.nsh.tmp" tofile="./distrib/distrib_nsis/include/LangStrings.nsh" overwrite="true">
 			<filterchain>
 				<replacetokens>
-					<token key="AppVer" value="${fullver}" />
+					<token key="AppVer" value="${string::replace(shortver,'-','.')}" />
 					<token key="AppName" value="${appname}" />
 					<token key="AppName_en" value="${appname_en}" />
 					<token key="CompanyName" value="${companyname}" />
