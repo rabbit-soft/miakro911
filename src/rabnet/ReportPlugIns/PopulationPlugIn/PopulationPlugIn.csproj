@@ -21,21 +21,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)\reports\</OutputPath>
+    <OutputPath>$(SolutionDir)\..\_bin\$(Configuration)\reports\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\bin\x86\Debug\reports\</OutputPath>
+    <OutputPath>$(SolutionDir)\..\_bin\$(Configuration)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Protected|AnyCPU' ">
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)\reports\</OutputPath>
+    <OutputPath>$(SolutionDir)\..\_bin\$(Configuration)\reports\</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -43,7 +43,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Protected|x86' ">
-    <OutputPath>bin\x86\Protected\</OutputPath>
+    <OutputPath>$(SolutionDir)\..\_bin\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -51,11 +51,11 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Demo|AnyCPU'">
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)\reports\</OutputPath>
+    <OutputPath>$(SolutionDir)\..\_bin\$(Configuration)\reports\</OutputPath>
     <DefineConstants>DEMO</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Demo|x86'">
-    <OutputPath>bin\x86\Demo\</OutputPath>
+    <OutputPath>$(SolutionDir)\..\_bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

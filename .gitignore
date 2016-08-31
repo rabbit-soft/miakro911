@@ -2,3 +2,4 @@ _bin
 _tmp
 *.cmd
 host_spec.*
+/src/_bin
