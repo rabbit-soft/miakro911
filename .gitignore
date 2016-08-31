@@ -3,3 +3,4 @@ _tmp
 *.cmd
 host_spec.*
 /src/_bin
+/version.txt
