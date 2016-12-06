@@ -261,7 +261,7 @@ CREATE TABLE `names` (
   n_sex enum('male','female') NOT NULL,
   n_name varchar(50) NOT NULL,
   n_surname varchar(50) NOT NULL,
-  n_use int(10) UNSIGNED NULL DEFAULT NULL
+  n_use int(10) UNSIGNED NULL DEFAULT NULL,
   n_block_date datetime DEFAULT NULL,
   PRIMARY KEY (n_id),
   UNIQUE KEY n_name (n_name,n_sex),
