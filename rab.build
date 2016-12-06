@@ -13,12 +13,13 @@
 	<property name="srcdir" value="./src" overwrite="false" />
 	<property name="helpdir" value="./help" />
 	<property name="bindir.plugins" value="${bindir}/PlugIns" />
-	<if test="${not property::exists('host_spec_path')}">
+	<!--if test="${not property::exists('host_spec_path')}">
 		<property name="host_spec_path" value="../.." if="${file::exists('../../host_spec.include')}" />
 		<property name="host_spec_path" value=".." if="${file::exists('../host_spec.include')}" />
 		<property name="host_spec_path" value="." if="${file::exists('./host_spec.include')}" />
 	</if>
-	<include buildfile="${host_spec_path}/host_spec.include" />
+	<include buildfile="${host_spec_path}/host_spec.include" /-->
+	<include buildfile="./host_spec.include" />
 	<include buildfile="./nant_include/guardant.inc.build" />
 	<include buildfile="./nant_include/compilation.inc.build" />
 	<include buildfile="./nant_include/firmuper.inc.build" />
@@ -207,15 +208,15 @@
 		<copy file="./distrib/distrib_nsis/include/LangStrings.nsh.tmp" tofile="./distrib/distrib_nsis/include/LangStrings.nsh" overwrite="true">
 			<filterchain>
 				<replacetokens>
-					<token key="AppVer" value="${fullver}" />
+					<token key="AppVer" value="${string::replace(shortver,'-','.')}" />
 					<token key="AppName" value="${appname}" />
 					<token key="AppName_en" value="${appname_en}" />
 					<token key="CompanyName" value="${companyname}" />
 					<token key="CompanyName_en" value="${companyname_en}" />
 					<token key="Copys" value="(C) ${companyname} 2010" />
 					<token key="Copys_en" value="(C) ${companyname_en} 2010" />
-					<token key="FileDescr" value="Программа установки ${appname} ${version}" />
-					<token key="FileDescr_en" value="${appname_en} ${version} Installer" />
+					<token key="FileDescr" value="Программа установки ${appname} ${fullver}" />
+					<token key="FileDescr_en" value="${appname_en} ${fullver} Installer" />
 				</replacetokens>
 				<!--tabstospaces /-->
 			</filterchain>
@@ -288,6 +289,7 @@ namespace rabnet.forms
 	}
 }
 		</echo>
+		<echo file="version.txt" message="${fullver}"/>
 
 	</target>
 	<target name="full_build" depends="clean_mark distrib_nsis">
