@@ -114,6 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_update_white.ico" />
+    <EmbeddedResource Include="sql\19.sql" />
+    <Content Include="sql\TextFile1.txt" />
     <EmbeddedResource Include="sql\18.sql" />
     <EmbeddedResource Include="sql\17.sql" />
     <EmbeddedResource Include="sql\16.sql" />

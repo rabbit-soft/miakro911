@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if DEBUG
+#define NOCATCH
+#endif
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -7,7 +10,7 @@ using MySql.Data.MySqlClient;
 namespace updater
 {
     public delegate void EndUpdateEventHandler();
-    public delegate void ProgressEventHandler(string Name, int PreVer,int ver);
+    public delegate void ProgressEventHandler(string Name, int PreVer, int ver);
     public delegate void ErrorEventHandler(string Name, Exception exc);
 
     class UpdateThread
@@ -35,18 +38,16 @@ namespace updater
 
         private void update()
         {
-            foreach (UpRow ur in _uprows)
-            {
+            foreach (UpRow ur in _uprows) {
                 MySqlConnection _sql = _sql = new MySqlConnection(ur.ConnString + ";Allow User Variables=True");
                 _sql.Open();
-                try
-                {
-                    while (ur.PreVer < _curver)
-                    {
+#if !NOCATCH
+                try {
+#endif
+                    while (ur.PreVer < _curver) {
                         ur.PreVer++;
                         foreach (int k in _scripts.Keys)
-                            if (k == ur.PreVer)
-                            {
+                            if (k == ur.PreVer) {
                                 if (Progress != null)
                                     Progress(ur.Name, ur.PreVer - 1, ur.PreVer);
 
@@ -55,24 +56,21 @@ namespace updater
                                 String[] cmds = _scripts[k].Split(new string[] { "#DELIMITER |" }, StringSplitOptions.RemoveEmptyEntries);
                                 c.CommandText = cmds[0];
                                 c.ExecuteNonQuery();
-                                if (cmds.Length > 1)
-                                {
+                                if (cmds.Length > 1) {
                                     MySqlScript sc = new MySqlScript(_sql, cmds[1]);
                                     sc.Delimiter = "|";
                                     sc.Execute();
                                 }
                             }
                     }
-                }
-                catch (Exception ex)
-                {
+#if !NOCATCH
+                } catch (Exception ex) {
                     if (Error != null)
-                        Error(ur.Name,ex);
-                }
-                finally
-                {
+                        Error(ur.Name, ex);
+                } finally {
                     _sql.Close();
                 }
+#endif
             }
             if (EndUpdate != null)
                 EndUpdate();

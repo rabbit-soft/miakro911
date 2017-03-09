@@ -37,31 +37,26 @@ namespace updater
         {
             int i = 2;
             string prefix = "";
-            try
-            {
+
+            try {
                 new StreamReader(GetType().Assembly.GetManifestResourceStream("2.sql"));
-            }
-            catch(Exception)
-            {
+            } catch (Exception) {
                 prefix = "updater.sql.";
             }
-            try
-            {
-                while (true)
-                {
+            try {
+                while (true) {
                     StreamReader stm = new StreamReader(GetType().Assembly.GetManifestResourceStream(prefix + i.ToString() + ".sql"), Encoding.UTF8);
                     String cmd = stm.ReadToEnd();
                     stm.Close();
                     _scripts[i] = cmd;
                     i++;
-                }
-            }
-            catch (Exception exc)
-            {
+                }            
+            } catch (Exception exc) {
                 _logger.Warn(exc);
                 i--;
             }
-            _logger.InfoFormat("get {0:d} scripts",i);
+
+            _logger.InfoFormat("get {0:d} scripts", i);
             return i;
         }
 
@@ -79,10 +74,12 @@ namespace updater
             btClose.Update();
             _curver = GetScripts();
             UpdateList();
-            if (_batch)
+            if (_batch) {
                 btUpdate.PerformClick();
-            if (_batch)
+            }
+            if (_batch) {
                 btClose.PerformClick();
+            }
         }
 
         /// <summary>
@@ -97,17 +94,15 @@ namespace updater
             int needcount = 0;
             Program.RNC.LoadDataSources();
             lv.Update();
-            foreach (DataSource rds in Program.RNC.DataSources)      
-            {
+            foreach (DataSource rds in Program.RNC.DataSources) {
                 ListViewItem li = lv.Items.Add(rds.Name);
                 li.SubItems.Add(rds.Params.ToString());
                 li.Tag = 0;
                 _sql = new MySqlConnection(rds.Params.ToString());
                 int hasver = 0;
-                try
-                {
+                try {
                     _sql.Open();
-                    _logger.DebugFormat("connecting success: {0}|params:{1}",rds.Name,rds.Params.ToString());
+                    _logger.DebugFormat("connecting success: {0}|params:{1}", rds.Name, rds.Params.ToString());
                     MySqlCommand cmd = new MySqlCommand("SELECT o_value FROM options WHERE o_name='db' AND o_subname='version';", _sql);
                     MySqlDataReader rd = cmd.ExecuteReader();
                     if (rd.Read())
@@ -115,20 +110,14 @@ namespace updater
                     rd.Close();
                     _sql.Close();
                     li.SubItems.Add(hasver.ToString());
-                    if (hasver == _curver)
-                    {
+                    if (hasver == _curver) {
                         li.ForeColor = Color.Green;
                         li.Tag = 1;
-                    }
-                    else if (hasver > _curver)
-                    {
+                    } else if (hasver > _curver) {
                         li.ForeColor = Color.YellowGreen;
                         li.Tag = 2;
-                    }
-                    else needcount++;
-                }
-                catch (Exception)
-                {
+                    } else needcount++;
+                } catch (Exception) {
                     _sql.Close();
                     _logger.DebugFormat("connecting fail: {0}|params:{1}", rds.Name, rds.Params.ToString());
                     li.Tag = 3;
@@ -138,14 +127,11 @@ namespace updater
                 li.SubItems.Add(_curver.ToString());
             }
             lv.Update();
-            if (needcount > 0)
-            {
+            if (needcount > 0) {
                 Status("Требуется обновить " + needcount.ToString() + " БД");
                 btUpdate.Enabled = true;
-                
-            }
-            else
-            {
+
+            } else {
                 Status("Обновления не требуются");
                 _needUpdateSomebody = false;
                 //button2.Enabled = true;
@@ -159,49 +145,46 @@ namespace updater
             progressBar1.Show();
             btClose.Enabled = !_batch;
             List<UpRow> uprows = new List<UpRow>();
-            foreach (ListViewItem li in lv.Items)
-            {
-                if ((int)li.Tag != 0) continue;
+            foreach (ListViewItem li in lv.Items) {
+                if ((int)li.Tag != 0) { 
+                    continue; 
+                }
                 uprows.Add(new UpRow(int.Parse(li.SubItems[2].Text), li.SubItems[0].Text, li.SubItems[1].Text));
             }
-            UpdateThread ut = new UpdateThread(uprows,_curver,_scripts);
+            UpdateThread ut = new UpdateThread(uprows, _curver, _scripts);
             ut.Error += new ErrorEventHandler(upError);
             ut.Progress += new ProgressEventHandler(upProgress);
             ut.EndUpdate += new EndUpdateEventHandler(upEnd);
-            ut.StartUpdate();           
+            ut.StartUpdate();
         }
 
         private void upProgress(string Name, int PreVer, int ver)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 this.Invoke(new ProgressEventHandler(upProgress), new object[] { Name, PreVer, ver });
-            }
-            else
+            } else {
                 Status(String.Format("Обновление '{0:s}' {1:d}->{2:d}", Name, PreVer, ver));
+            }
         }
 
-        private void upError(string db,Exception exc)
-        {           
+        private void upError(string db, Exception exc)
+        {
             MessageBox.Show(String.Format("Произошла ошибка при обновлении базы '{0:s}'. {1:s}", db, exc.Message));
             //upEnd();
         }
 
         private void upEnd()
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 this.Invoke(new EndUpdateEventHandler(upEnd));
-            }
-            else
-            {
+            } else {
                 UpdateList();
                 progressBar1.Hide();
                 btUpdate.Enabled = true;
                 btClose.Enabled = true;
             }
         }
-        
+
         //private static void OnUpdate(int tover,MySqlConnection con,UpdateStatus status)
         //{
         //    Application.DoEvents();
@@ -215,11 +198,11 @@ namespace updater
 
         private void UpdateForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_needUpdateSomebody)
-            {              
-                if(MessageBox.Show("Перед выходом необходимо обновить БазыДанных"+Environment.NewLine
-                    +"Вы точно хотите выйти?","",MessageBoxButtons.YesNo) == DialogResult.No)
-                e.Cancel = true;
+            if (_needUpdateSomebody) {
+                if (MessageBox.Show("Перед выходом необходимо обновить БазыДанных" + Environment.NewLine
+                    + "Вы точно хотите выйти?", "", MessageBoxButtons.YesNo) == DialogResult.No) {
+                    e.Cancel = true;
+                }
             }
         }
     }
