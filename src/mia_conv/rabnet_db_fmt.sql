@@ -309,7 +309,7 @@ CREATE TABLE rabbits (
   r_area int(10) unsigned NOT NULL DEFAULT '0',
   r_rate int(11) NOT NULL DEFAULT '0',
   r_group int(10) unsigned NOT NULL DEFAULT '1',
-  r_breed int(10) unsigned NOT NULL,
+  r_breed int(10) unsigned NOT NULL DEFAULT  '1',
   r_flags varchar(10) NOT NULL DEFAULT '00000' COMMENT '[0]Готовая Продукция [1]Готов к реализации [2]Брак [3]Не куковать [4]Потеря лактации',
   r_zone int(10) unsigned NOT NULL DEFAULT '0',
   r_born date DEFAULT NULL,

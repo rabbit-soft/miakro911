@@ -476,6 +476,7 @@ WHERE r_id={0:d};", rabFromID, DBHelper.Nullable(mom), count), sql);
             String query = String.Format(@"INSERT INTO rabbits(r_sex, r_parent) VALUES('{0}', {1});", Rabbit.SexToString(r.Sex), DBHelper.Nullable(mom));
             MySqlCommand cmd = new MySqlCommand(query, sql);
             cmd.ExecuteNonQuery();
+
             r.ID = (int)cmd.LastInsertedId;
             SetRabbit(sql, r);
             if (mom == 0 && r.NewAddress != "" && r.NewAddress != Rabbit.NULL_ADDRESS) {
@@ -483,7 +484,7 @@ WHERE r_id={0:d};", rabFromID, DBHelper.Nullable(mom), count), sql);
                 placeRabbit(sql, r.ID, int.Parse(adr[0]), int.Parse(adr[1]), int.Parse(adr[2]));
             }
             if (r.MotherID != 0 || r.FatherID != 0) {
-                cmd.CommandText = String.Format("UPDATE rabbits SET r_mother={0}, r_father={1} WHERE r_id={2}",
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_mother = {0}, r_father = {1} WHERE r_id = {2}",
                     DBHelper.Nullable(r.MotherID),
                     DBHelper.Nullable(r.FatherID), 
                     r.ID
@@ -491,7 +492,7 @@ WHERE r_id={0:d};", rabFromID, DBHelper.Nullable(mom), count), sql);
                 cmd.ExecuteNonQuery();
             }
             if (r.BirthPlace != 0) {
-                cmd.CommandText = String.Format("UPDATE rabbits SET r_birthplace={0:d} WHERE r_id={1:d}", r.BirthPlace, r.ID);
+                cmd.CommandText = String.Format("UPDATE rabbits SET r_birthplace = {0:d} WHERE r_id = {1:d}", r.BirthPlace, r.ID);
                 cmd.ExecuteNonQuery();
             }
             return r.ID;

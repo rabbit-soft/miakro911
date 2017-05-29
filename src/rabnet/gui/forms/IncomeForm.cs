@@ -83,10 +83,12 @@ namespace rabnet.forms
             listView1.Items.Clear();
             for (int i = 0; i < rbs.Count; i++) {
                 String name = "Бесполые";
-                if (rbs[i].Sex == Rabbit.SexType.MALE)
+                if (rbs[i].Sex == Rabbit.SexType.MALE) {
                     name = rbs[i].Group == 1 ? "Самец" : "Самцы";
-                if (rbs[i].Sex == Rabbit.SexType.FEMALE)
+                }
+                if (rbs[i].Sex == Rabbit.SexType.FEMALE) {
                     name = rbs[i].Group == 1 ? "Самка" : "Самки";
+                }
 
                 ListViewItem li = listView1.Items.Add(name);
                 li.SubItems.Add(rbs[i].Group.ToString());
@@ -159,8 +161,9 @@ namespace rabnet.forms
         private void btReplace_Click(object sender, EventArgs e)
         {
             ReplaceForm rpf = new ReplaceForm();
-            foreach (RabNetEngRabbit r in rbs)
+            foreach (RabNetEngRabbit r in rbs) {
                 rpf.AddRabbit(r);
+            }
             rpf.ShowDialog();
             update(false);
         }
@@ -172,8 +175,9 @@ namespace rabnet.forms
 
         private void commit(RabNetEngRabbit r1)
         {
-            if (r1.Tag != "done")
+            if (r1.Tag != "done") {
                 r1.CommitNew();
+            }
             r1.Tag = "done";
         }
 
@@ -184,7 +188,7 @@ namespace rabnet.forms
                 bool no_addresses = false;
                 //bool no_gens = false;
                 bool same_names = false;
-                foreach (RabNetEngRabbit r in rbs) {
+                foreach (RabNetEngRabbit r in this.rbs) {
                     if (r.NameID == 0 && r.SurnameID == 0) {
                         no_names = true;
                     }
