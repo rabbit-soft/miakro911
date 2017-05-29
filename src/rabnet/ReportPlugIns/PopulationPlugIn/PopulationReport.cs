@@ -6,7 +6,7 @@ using rabnet.forms;
 
 namespace rabnet
 {
-    public class PopulationReport:ReportBase
+    public class PopulationReport : ReportBase
     {
         private string[] XCL_HEADERS = new string[] { "Месяц", "Год", "Кол-во на начальный период", "Приход всего", "Родилось", 
             "Приоретено","Списано всего","Убой","Продажа племенного поголовья","Падеж","Другие причины","Кол-во на конец периода" };
@@ -17,27 +17,24 @@ namespace rabnet
 #if RELEASE || DEBUG
             PeriodForm dlg = new PeriodForm(MenuText);
             dlg.PeriodConstrain = 4;
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
+            if (dlg.ShowDialog() == DialogResult.OK) {
                 int year = int.Parse(dlg.PeriodValue);
                 XmlDocument doc = new XmlDocument();
-                DateTime dt = new DateTime(year,1,1);
-                while (dt.Year == year && dt.Date <= DateTime.Now.Date )
-                {
-                    if ((dlg.MinDate.Year == dt.Year && dlg.MinDate.Month > dt.Month))
-                    {
+                DateTime dt = new DateTime(year, 1, 1);
+                while (dt.Year == year && dt.Date <= DateTime.Now.Date) {
+                    if ((dlg.MinDate.Year == dt.Year && dlg.MinDate.Month > dt.Month)) {
                         dt = dt.AddMonths(1);
                         continue;
                     }
                     Filters f = new Filters("date", dt.ToString("yyyy-MM-dd"));
-                    if(doc.ChildNodes.Count == 0)
+                    if (doc.ChildNodes.Count == 0)
                         doc = Engine.db().makeReport(getSQL(f));
-                    else 
-                        doc.FirstChild.AppendChild(doc.ImportNode(Engine.db().makeReport(getSQL(f)).SelectSingleNode("Rows/Row"),true));
+                    else
+                        doc.FirstChild.AppendChild(doc.ImportNode(Engine.db().makeReport(getSQL(f)).SelectSingleNode("Rows/Row"), true));
                     dt = dt.AddMonths(1);
                 }
                 ReportViewForm rvf = new ReportViewForm(MenuText, FileName, new XmlDocument[] { doc }, XCL_HEADERS);
-                
+
                 rvf.Show();
             }
 #endif
@@ -60,7 +57,7 @@ namespace rabnet
   (SELECT Coalesce(sum(r_group),0) FROM rabbits WHERE r_born<'{1:s}') + (SELECT Coalesce(sum(r_group),0) FROM dead WHERE r_born<'{1:s}' AND d_date>='{1:s}') ecount;
 SELECT `month`, `year`, bcount, (born+buy) income,born, buy,(killed+dying+sell+another) gonetotal, killed, dying, sell, another, ecount FROM aaa;
 drop temporary table aaa;",
-                dt.ToString("yyyy-MM-dd"), dt.AddMonths(1).ToString("yyyy-MM-dd"), toRusMonth(dt.Month), dt.Year,dt.Month);
+                dt.ToString("yyyy-MM-dd"), dt.AddMonths(1).ToString("yyyy-MM-dd"), toRusMonth(dt.Month), dt.Year, dt.Month);
         }
 
         protected override System.IO.Stream getAssembly()
@@ -70,11 +67,9 @@ drop temporary table aaa;",
 
         private string toRusMonth(int dt)
         {
-            try
-            {
+            try {
                 string result = "";
-                switch (dt)
-                {
+                switch (dt) {
                     case 1: result += "Январь "; break;
                     case 2: result += "Февраль "; break;
                     case 3: result += "Март "; break;
@@ -89,9 +84,7 @@ drop temporary table aaa;",
                     case 12: result += "Декабрь "; break;
                 }
                 return result;
-            }
-            catch
-            {
+            } catch {
                 return "";
             }
         }

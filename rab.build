@@ -58,7 +58,7 @@
 	<property name="help_gtru" value="Руководство по обновлению Ключей Защиты.docx" />
 	<!-- TARGETS ! -->
 	<target name="build" depends="clear,buildall" description="Full build" />
-	<target name="buildall" depends="make_tmp_dir,git_info,protected,demo" description="Build all projects">
+	<target name="buildall" depends="make_tmp_dir,git_info, release, protected,demo" description="Build all projects">
 		<!--delete dir="${tmpdir}"/-->
 	</target>
 	<target name="make_tmp_dir">

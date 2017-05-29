@@ -15,15 +15,8 @@ namespace mia_conv
     /// После конвертации из старой базы. Устраняет неточности в конвертации
     /// </summary>
     class miaRepair
-    {
-        /*[DllImport("kernel32.dll")]
-        private static extern Boolean AllocConsole();
-        [DllImport("kernel32.dll")]
-        public static extern Boolean FreeConsole();*/
-
-        private static ILog _logger = LogManager.GetLogger("miaRepair");
-        //private static MySqlConnection _sql;
-        //private static MySqlCommand _cmd;
+    {        
+        private static ILog _logger = LogManager.GetLogger("miaRepair");        
         private static RabbitList _rabbits = new RabbitList();
         private static DeadList _deads = new DeadList();
         private static NameList _names = new NameList();
@@ -40,14 +33,10 @@ namespace mia_conv
         }
 
         public static void Go(MySqlCommand cmd)
-        {
-            //AllocConsole();
-
+        {            
 #if !NOCATCH
             try {
-#endif
-                //_sql.Open();
-                //_cmd = new MySqlCommand("", _sql);
+#endif                
                 _rabbits.LoadContent(cmd);
                 _names.LoadNames(cmd);
                 _deads.LoadContent(cmd);
@@ -95,8 +84,7 @@ namespace mia_conv
                         log("        we find name user rID:{0:d} name:{1:s} age:{2:d} but she is to young", mbMother.rID, mbMother.Name, mbMother.Age);
                         mbMother = null;
                     }
-                    if (mbMother == null)//если нет живого кандидата на мать, то ищем в мертвых
-                    {
+                    if (mbMother == null) {//если нет живого кандидата на мать, то ищем в мертвых
                         log("   we not find aliveMother, now searching in dead");
                         List<repRabbit> candidates = new List<repRabbit>();
                         foreach (repRabbit ded in _deads) {

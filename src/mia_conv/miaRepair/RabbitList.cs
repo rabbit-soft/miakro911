@@ -27,7 +27,8 @@ namespace mia_conv
         internal virtual void LoadContent(MySqlCommand cmd)
         {
             miaRepair.log("fill All Rabbits");
-            cmd.CommandText = String.Format(@"SELECT r_id,
+            cmd.CommandText = String.Format(@"SELECT 
+r_id,
 r_mother,
 r_father,
 r_sex,
@@ -42,15 +43,26 @@ to_days(NOW())-to_days(r_born) age,
 r_breed,
 bd.b_name
             FROM rabbits 
-            INNER JOIN breeds bd ON r_breed=bd.b_id
+            INNER JOIN breeds bd ON r_breed = bd.b_id
             ORDER BY r_id ASC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) {
-                this.Add(new repRabbit(rd.GetInt32("r_id"), rd.GetInt32("r_mother"), rd.GetInt32("r_father"),
-                                        rd.GetString("r_sex"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
-                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), rd.GetDateTime("ev_date"), rd.GetString("nm"), rd.GetInt32("age"),
-                                        rd.GetInt32("r_breed"), rd.GetString("b_name"))
-                            );
+                this.Add(new repRabbit(
+                    rd.GetInt32("r_id"),
+                    rd.IsDBNull(rd.GetOrdinal("r_mother")) ? 0 : rd.GetInt32("r_mother"),
+                    rd.IsDBNull(rd.GetOrdinal("r_father")) ? 0 : rd.GetInt32("r_father"),
+                    rd.GetString("r_sex"),
+                    rd.IsDBNull(rd.GetOrdinal("r_name")) ? 0 : rd.GetInt32("r_name"),
+                    rd.IsDBNull(rd.GetOrdinal("r_surname")) ? 0 : rd.GetInt32("r_surname"),
+                    rd.IsDBNull(rd.GetOrdinal("r_secname")) ? 0 : rd.GetInt32("r_secname"),
+                    rd.GetDateTime("r_born"),
+                    rd.IsDBNull(rd.GetOrdinal("r_parent")) ? 0 : rd.GetInt32("r_parent"),
+                    rd.GetDateTime("ev_date"),
+                    rd.GetString("nm"),
+                    rd.GetInt32("age"),
+                    rd.GetInt32("r_breed"),
+                    rd.GetString("b_name"))
+                );
             }
             rd.Close();
             miaRepair.log(" |rabbits count: {0:d}", this.Count);
@@ -116,7 +128,8 @@ bd.b_name
         internal override void LoadContent(MySqlCommand cmd)
         {
             miaRepair.log("fill dead Rabbits");
-            cmd.CommandText = String.Format(@"SELECT r_id,
+            cmd.CommandText = String.Format(@"SELECT 
+r_id,
 r_mother,
 r_father,
 r_sex,
@@ -134,11 +147,22 @@ bd.b_name
             ORDER BY r_id DESC;");
             MySqlDataReader rd = cmd.ExecuteReader();
             while (rd.Read()) {
-                this.Add(new repRabbit(rd.GetInt32("r_id"), rd.GetInt32("r_mother"), rd.GetInt32("r_father"),
-                                        rd.GetString("r_sex"), rd.GetInt32("r_name"), rd.GetInt32("r_surname"), rd.GetInt32("r_secname"),
-                                        rd.GetDateTime("r_born"), rd.GetInt32("r_parent"), DateTime.MinValue, rd.GetString("nm"), rd.GetInt32("age"),
-                                        rd.GetInt32("r_breed"), rd.GetString("b_name"))
-                            );
+                this.Add(new repRabbit(
+                    rd.GetInt32("r_id"),
+                    rd.IsDBNull(rd.GetOrdinal("r_mother")) ? 0 : rd.GetInt32("r_mother"),
+                    rd.IsDBNull(rd.GetOrdinal("r_father")) ? 0 : rd.GetInt32("r_father"),
+                    rd.GetString("r_sex"),
+                    rd.IsDBNull(rd.GetOrdinal("r_name")) ? 0 : rd.GetInt32("r_name"),
+                    rd.IsDBNull(rd.GetOrdinal("r_surname")) ? 0 : rd.GetInt32("r_surname"),
+                    rd.IsDBNull(rd.GetOrdinal("r_secname")) ? 0 : rd.GetInt32("r_secname"),
+                    rd.GetDateTime("r_born"),
+                    rd.IsDBNull(rd.GetOrdinal("r_parent")) ? 0 : rd.GetInt32("r_parent"),
+                    DateTime.MinValue,
+                    rd.GetString("nm"),
+                    rd.GetInt32("age"),
+                    rd.GetInt32("r_breed"),
+                    rd.GetString("b_name"))
+                );
             }
             rd.Close();
             miaRepair.log(" |deads count: {0:d}", this.Count);

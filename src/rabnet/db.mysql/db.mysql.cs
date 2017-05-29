@@ -62,6 +62,7 @@ namespace db.mysql
                 psql = null;
             }
         }
+
         /// <summary>
         /// Создает и открывает новое подключение к Базе Данных
         /// </summary>
@@ -74,6 +75,7 @@ namespace db.mysql
             psql.Open();
             new Users(sql).checktb();
         }
+
         /// <summary>
         /// Выполняет sql-Команду
         /// </summary>
@@ -85,6 +87,7 @@ namespace db.mysql
             MySqlCommand c = new MySqlCommand(cmd, sql);
             return c.ExecuteNonQuery();
         }
+
         /// <summary>
         /// Выполняет sql-команду и возвращает результат запроса как MySqlDataReader
         /// </summary>
@@ -116,7 +119,7 @@ namespace db.mysql
 
         public string getOption(string name, string subname, uint uid)
         {
-            MySqlDataReader rd = reader(String.Format("SELECT o_value FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND (o_uid={2:d} OR o_uid=0) ORDER BY o_uid DESC;",
+            MySqlDataReader rd = reader(String.Format("SELECT o_value FROM options WHERE o_name = '{0:s}' AND o_subname = '{1:s}' AND (o_uid={2:d} OR o_uid=0) ORDER BY o_uid DESC;",
                 name, subname, uid));
             string res = "";
             //if(subname=="xls_ask")
@@ -126,7 +129,7 @@ namespace db.mysql
                 rd.Close();
             } else {
                 rd.Close();
-                MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'0');", name, subname, uid), sql);
+                MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO options(o_name, o_subname, o_uid, o_value) VALUES('{0:s}', '{1:s}', {2:d}, '0');", name, subname, uid), sql);
                 cmd.ExecuteNonQuery();
             }
             return res;
@@ -134,8 +137,8 @@ namespace db.mysql
 
         public void setOption(string name, string subname, uint uid, string value)
         {
-            Exec(String.Format("DELETE FROM options WHERE o_name='{0:s}' AND o_subname='{1:s}' AND o_uid={2:d};", name, subname, uid));
-            Exec(String.Format("INSERT INTO options(o_name,o_subname,o_uid,o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');", name, subname, uid, value));
+            Exec(String.Format("DELETE FROM options WHERE o_name = '{0:s}' AND o_subname = '{1:s}' AND o_uid = {2:d};", name, subname, uid));
+            Exec(String.Format("INSERT INTO options(o_name, o_subname, o_uid, o_value) VALUES('{0:s}','{1:s}',{2:d},'{3:s}');", name, subname, uid, value));
         }
 
         public DateTime now()
@@ -182,7 +185,7 @@ namespace db.mysql
         public void setFilter(string type, string name, Filters filter)
         {
             Exec("DELETE FROM filters WHERE f_type='" + type + "' AND f_name='" + name + "';");
-            Exec(String.Format("INSERT INTO filters(f_type,f_name,f_filter) VALUES('{0:s}','{1:s}','{2:s}');",
+            Exec(String.Format("INSERT INTO filters(f_type, f_name, f_filter) VALUES('{0:s}', '{1:s}', '{2:s}');",
                 type, name, filter.toString()));
         }
 
@@ -225,13 +228,6 @@ namespace db.mysql
                 (rd.IsDBNull(rd.GetOrdinal("m_upper")) ? 0 : rd.GetInt32("m_upper")), 
                 (rd.IsDBNull(rd.GetOrdinal("m_lower")) ? 0 : rd.GetInt32("m_lower")) 
             };
-            /*            if (trs[1] != 0)
-                        {
-                            trs[0] ^= trs[1];
-                            trs[1] ^= trs[0];
-                            trs[0] ^= trs[1];
-                        }
-             */
             rd.Close();
             return trs;
         }
@@ -360,19 +356,10 @@ namespace db.mysql
             return Breeds.GetBreeds(sql);
         }
 
-        //public YoungRabbit[] getSuckers(int mom)
-        //{
-        //    return Youngers.GetYoungers(sql, mom);
-        //}
-
         public void replaceRabbit(int rid, int farm, int tierFloor, int sec)
         {
             RabbitGetter.replaceRabbit(sql, rid, farm, tierFloor, sec);
         }
-        //public void replaceYounger(int rid, int farm, int tier_id, int sec)
-        //{
-        //    RabbitGetter.replaceYounger(sql, rid, farm, tier_id, sec);
-        //}
 
         public int NewRabbit(OneRabbit r, int mom)
         {
@@ -701,9 +688,7 @@ namespace db.mysql
         {
             return Butcher.getButcherMonths(sql);
         }
-
-
-
+        
         public string[] logNames()
         {
             return new Logs(sql).logNames();

@@ -75,9 +75,10 @@ namespace rabnet.forms
             //int clientId = GRD.Instance.GetClientID();
             //string clientName = GRD.Instance.GetOrganizationName();
             Client c = GetThisClient();
-            if (c.ID == 0)
+            if (c.ID == 0) {
                 throw new RabNetException("Клиент не зарегистрирован. Чтобы экспортировать кролика, вам необходимо зарегистрировать свою ферму на сервере разработчика.");
-#elif DEBUG
+            }
+#else
             Client c = new Client(int.MaxValue, "Гамбито ферма", "Here");
 #endif
 

@@ -49,7 +49,7 @@ namespace mia_conv
 
         public int GetTier(int farm, int level)
         {
-            _cmd.CommandText = "SELECT " + (level == 1 ? "m_lower" : "m_upper") + " FROM minifarms WHERE m_id=" + farm.ToString() + ";";
+            _cmd.CommandText = "SELECT " + (level == 1 ? "m_lower" : "m_upper") + " FROM minifarms WHERE m_id = " + farm.ToString() + ";";
             MySqlDataReader rd = _cmd.ExecuteReader();
             rd.Read();
             int res = rd.GetInt32(0);
@@ -201,9 +201,10 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
         public void FillRabbit(Rabbit r, int parent, bool dead)
         {
             //Application.DoEvents();
-            String query = String.Format(@"INSERT INTO {0} (r_sex, r_parent, r_bon, r_name, r_surname,
-                r_secname, r_notes, r_okrol, r_farm, r_tier_id, r_tier, r_area, r_rate,r_group, r_breed, r_flags, r_zone,
-                r_born, r_status, r_last_fuck_okrol, r_genesis", (dead ? "dead" : "rabbits"));
+            String query = String.Format(@"INSERT INTO {0} (r_sex, r_parent, r_bon, r_name, r_surname, r_secname, r_notes, r_okrol, 
+r_farm, r_tier_id, r_tier, r_area, 
+r_rate, r_group, r_breed, r_flags, r_zone, 
+r_born, r_status, r_last_fuck_okrol, r_genesis", (dead ? "dead" : "rabbits"));
             String sex = "void";
             if (r.sex.value() == 1) {
                 sex = "male";
@@ -211,12 +212,13 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
             if (r.sex.value() == 2) {
                 sex = "female";
             }
+
             String bon = String.Format("{0:D1}{1:D1}{2:D1}{3:D1}{4:D1}", r.bon.manual.value(), r.bon.weight.value(), r.bon.body.value(), r.bon.hair.value(), r.bon.color.value());
-            String vals = String.Format("VALUES('{0:s}', {1:d}, '{2:s}'", sex, parent, bon);//,{3:d},{4:d}  ,r.number.value(),r.unique.value());
+            String vals = String.Format("VALUES('{0:s}', {1}, '{2:s}'", sex, this.protectFKForSet(parent), bon);//,{3:d},{4:d}  ,r.number.value(),r.unique.value());
             int name = GetNameId((ushort)r.namekey.value(), (ushort)r.sex.value(), true);
             int surname = GetNameId((ushort)r.surkey.value(), 2, false);
             int secname = GetNameId((ushort)r.pathkey.value(), 1, false);
-            vals += String.Format(", {0:d}, {1:d}, {2:d}, '{3:s}', {4:d}", name, surname, secname, r.notes.value(), r.okrol_num.value());
+            vals += String.Format(", {0}, {1}, {2}, '{3:s}', {4:d}", this.protectFKForSet(name), this.protectFKForSet(surname), this.protectFKForSet(secname), r.notes.value(), r.okrol_num.value());
 
             String flags = String.Format("{0:D1}{1:D1}{2:D1}", r.butcher.value(), r.risk.value(), r.multi.value());
             if (r.sex.value() == 2) {
@@ -228,12 +230,11 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
             int tier = GetTier((int)r.where.value(), (int)r.tier_id.value());
             if (parent == 0) {
                 int tier_id = r.tier_id.value() == 1 ? 2 : 1; //здесь перепутаны местами нежели в строениях
-                vals += String.Format(", {0:d}, {1:d}, {2:d}, {3:d}", r.where.value(), tier_id, tier, r.area.value());
+                vals += String.Format(", {0:d}, {1:d}, {2}, {3:d}", r.where.value(), tier_id, this.protectFKForSet(tier), r.area.value());
             } else {
-                vals += String.Format(", {0:d}, {1:d}, {2:d}, {3:d}", 0, 0, 0, 0);
+                vals += ", NULL, 0, NULL, 0";
             }
-            vals += String.Format(", {0:d}, {1:d}, {2:d}, '{3:s}', {4:d}", 0/*r.rate.value()*/, r.group.value(),
-                FindBreed((int)r.breed.value()), flags, r.zone.value());
+            vals += String.Format(", {0:d}, {1:d}, {2:d}, '{3:s}', {4:d}", 0, r.group.value(), this.FindBreed((int)r.breed.value()), flags, r.zone.value());
 
             int status = 0;
             String lfo = "NULL";
@@ -245,6 +246,7 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
                 status = (int)r.female.borns.value();
                 lfo = Convdt(r.female.last_okrol.value());
             }
+
             bool sukrol = false;
             vals += String.Format(", {0:s}, {1:d}, {2:s}, {3:d}", Convdt(r.borndate.value()), status, lfo, MakeGenesis(r.genesis));
             if (r.sex.value() == 2) {
@@ -257,8 +259,7 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
                 }
                 String edt = Convdt(r.female.ev_date.value());
                 sukrol = (edt != "NULL");
-                vals += String.Format(", '{0:s}',{1:s},{2:d},{3:d}", ev,
-                    edt, r.female.lost_babies.value(), r.female.overall_babies.value());//,  ,{5:d},{0:d}
+                vals += String.Format(", '{0:s}',{1:s},{2:d},{3:d}", ev, edt, r.female.lost_babies.value(), r.female.overall_babies.value());//,  ,{5:d},{0:d}
                 //makeWorker(r.female.worker.value()));  //r.female.child_count.value(),
             }
             _cmd.CommandText = query + ") " + vals + ");";
@@ -267,9 +268,10 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
             int crab = (int)_cmd.LastInsertedId;
             r.notes.tag = crab;
             //_curRabbit = crab + 1;
-            if (dead) return;
-
-
+            if (dead) {
+                return;
+            }
+            
             if (parent == 0) {
                 SetTierUser(tier, (int)r.area.value(), crab);
             }
@@ -277,11 +279,11 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
                 SetNameUser(name, crab);
             }
 
-            FillRabWeight(r, crab);
+            this.FillRabWeight(r, crab);
             if (r.sex.value() == 2) {
-                FillRabFuckers(r, crab, sukrol);
+                this.FillRabFuckers(r, crab, sukrol);
                 foreach (Rabbit xr in r.female.suckers.rabbits) {
-                    FillRabbit(xr, crab, false);
+                    this.FillRabbit(xr, crab, false);
                 }
             }
         }
@@ -289,7 +291,7 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
         public void NormalizeFuckers()
         {
 
-            _cmd.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id=fucks.f_partner), f_dead=0 WHERE f_dead=1;";
+            _cmd.CommandText = "UPDATE fucks SET f_partner=(SELECT n_use FROM names WHERE n_id = fucks.f_partner), f_dead = 0 WHERE f_dead = 1;";
             _cmd.ExecuteNonQuery();
             //_cmd.CommandText = "UPDATE rabbits SET r_vaccine_end=NOW()+interval 365 day WHERE r_flags LIKE '__2__' OR r_flags LIKE '__3__';";
             //_cmd.ExecuteNonQuery();
@@ -323,7 +325,7 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
             foreach (Rabbit r in Mia.Rabbits.rabbits) {
                 i++;
                 Mia.Setpb(i, cnt);
-                FillRabbit(r, 0, false);
+                this.FillRabbit(r, 0, false);
             }
             _cmd.CommandText = "ALTER TABLE `rabbits` ENABLE KEYS;";
             _cmd.ExecuteNonQuery();
@@ -331,18 +333,11 @@ VALUES({0:d}, {1:d}, {2:d}, {3:d}, {4:d}, '{5:s}', {6:d}, '{7:d}');",
             NormalizeFuckers();
         }
 
-        //public void FillDead()
-        //{
-        //    _cmd.CommandText = "ALTER TABLE `dead` DISABLE KEYS;";
-        //    _cmd.ExecuteNonQuery();
-        //    Debug("fill dead");
-        //    foreach (Rabbit r in Mia.Arcform.dead.rabbits)
-        //    {
-        //        FillRabbit(r, 0, true);
-        //    }
-        //    _cmd.CommandText = "ALTER TABLE `dead` ENABLE KEYS;";
-        //    _cmd.ExecuteNonQuery();
-        //}
+        public string protectFKForSet(int fk)
+        {
+            return fk == 0 ? "NULL": fk.ToString();
+        }
+
 
     }
 }
