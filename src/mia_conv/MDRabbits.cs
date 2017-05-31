@@ -72,7 +72,7 @@ namespace mia_conv
 
         public void SetNameUser(int nameid, int rabbit)
         {
-            _cmd.CommandText = "UPDATE names SET n_use=" + rabbit.ToString() + " WHERE n_id=" + nameid.ToString() + ";";
+            _cmd.CommandText = String.Format("UPDATE names SET n_use = {0} WHERE n_id = {1:d};", (rabbit == 0 ? "NULL" : rabbit.ToString()), nameid);
             _cmd.ExecuteNonQuery();
         }
 

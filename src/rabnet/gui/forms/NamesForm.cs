@@ -216,7 +216,7 @@ namespace rabnet.forms
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            load();
+            this.load();
         }
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)

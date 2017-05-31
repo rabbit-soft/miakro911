@@ -321,12 +321,12 @@ namespace mia_conv
             int cnt = Mia.MaleNames.Rabnames.Count + Mia.FemaleNames.Rabnames.Count;
             int c = 0;
             foreach (RabName nm in Mia.MaleNames.Rabnames) {
-                this.InsName(nm, true);
+                this.InsertName(nm, true);
                 c++;
                 Mia.Setpb(c, cnt);
             }
             foreach (RabName nm in Mia.FemaleNames.Rabnames) {
-                this.InsName(nm, false);
+                this.InsertName(nm, false);
                 c++;
                 Mia.Setpb(c, cnt);
             }
@@ -649,18 +649,19 @@ VALUES('{0:s}', {1:d}, {2:d}, {3:d}, '{4:s}', {5:d}, {6:s}-INTERVAL {7:d} DAY, {
         /// </summary>
         /// <param name="nm"></param>
         /// <param name="sex"></param>
-        public void InsName(RabName nm, bool sex)
+        public void InsertName(RabName nm, bool sex)
         {
             String xdt = "NULL";
             if (nm.Key.value() <= 365 && nm.Key.value() > 0) {
                 xdt = String.Format("DATE(NOW()) + INTERVAL {0:d} DAY", nm.Key.value());
             }
-            String use = "0";
+            String use = "NULL";
             if (nm.Key.value() > 365) {
                 use = String.Format("{0:d}", nm.Key.value());
             }
             _cmd.CommandText = String.Format("INSERT INTO names(n_sex, n_name, n_surname, n_use, n_block_date) VALUES('{0:s}', '{1:s}', '{2:s}', {3:s}, {4:s});",
-                sex ? "male" : "female", nm.Name.value(), nm.Surname.value(), use, xdt);
+                (sex ? "male" : "female"), nm.Name.value(), nm.Surname.value(), use, xdt);
+
             try {
                 _cmd.ExecuteNonQuery();
                 nm.Key.tag = (int)_cmd.LastInsertedId;
