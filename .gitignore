@@ -4,3 +4,4 @@ _tmp
 host_spec.*
 /src/_bin
 /version.txt
+/src/libs/pickers/obj/x86/Debug/*.cache

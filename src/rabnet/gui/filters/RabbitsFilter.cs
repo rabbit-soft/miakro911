@@ -135,9 +135,15 @@ namespace rabnet.filters
 
             // todo количество проблем у пользователей 1
             if (cbPregTo.Checked) {
+                if (nudPregTo.Minimum > f.safeInt("Pf", 20)) {
+                    nudPregTo.Minimum = f.safeInt("Pf", 20);
+                }
                 nudPregTo.Value = f.safeInt("Pf", 20);
             }
             if (cbPregFrom.Checked) {
+                if (nudPregFrom.Minimum > f.safeInt("pf", 20)) {
+                    nudPregFrom.Minimum = f.safeInt("pf", 20);
+                }
                 nudPregFrom.Value = f.safeInt("pf", 10);
             }            
             if (cbPregFrom.Checked || cbPregTo.Checked) {
