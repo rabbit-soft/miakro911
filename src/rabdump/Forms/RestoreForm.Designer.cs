@@ -36,8 +36,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbDataBase = new System.Windows.Forms.ComboBox();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btExtMode = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button4 = new System.Windows.Forms.Button();
@@ -58,7 +58,7 @@
             // btRestore
             // 
             this.btRestore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btRestore.Location = new System.Drawing.Point(408, 481);
+            this.btRestore.Location = new System.Drawing.Point(375, 326);
             this.btRestore.Name = "btRestore";
             this.btRestore.Size = new System.Drawing.Size(97, 23);
             this.btRestore.TabIndex = 0;
@@ -70,7 +70,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(327, 481);
+            this.button2.Location = new System.Drawing.Point(294, 326);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 1;
@@ -118,13 +118,15 @@
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(12, 72);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(493, 237);
+            this.listView1.Size = new System.Drawing.Size(460, 237);
             this.listView1.TabIndex = 6;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -142,7 +144,8 @@
             // 
             // btExtMode
             // 
-            this.btExtMode.Location = new System.Drawing.Point(12, 315);
+            this.btExtMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btExtMode.Location = new System.Drawing.Point(12, 326);
             this.btExtMode.Name = "btExtMode";
             this.btExtMode.Size = new System.Drawing.Size(160, 23);
             this.btExtMode.TabIndex = 7;
@@ -152,6 +155,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.tbFile);
             this.groupBox1.Controls.Add(this.label7);
@@ -163,16 +168,17 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.tbHost);
-            this.groupBox1.Location = new System.Drawing.Point(12, 344);
+            this.groupBox1.Location = new System.Drawing.Point(12, 189);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(493, 128);
+            this.groupBox1.Size = new System.Drawing.Size(460, 128);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Расширенный режим";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(460, 90);
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.Location = new System.Drawing.Point(427, 90);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(27, 23);
             this.button4.TabIndex = 5;
@@ -182,9 +188,11 @@
             // 
             // tbFile
             // 
+            this.tbFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFile.Location = new System.Drawing.Point(81, 92);
             this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(373, 20);
+            this.tbFile.Size = new System.Drawing.Size(340, 20);
             this.tbFile.TabIndex = 4;
             this.tbFile.TextChanged += new System.EventHandler(this.tbFile_TextChanged);
             // 
@@ -276,7 +284,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(517, 516);
+            this.ClientSize = new System.Drawing.Size(484, 361);
             this.Controls.Add(this.btExtMode);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.cbDataBase);
@@ -286,10 +294,10 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btRestore);
             this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(500, 400);
             this.Name = "RestoreForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Восстановить резервную копию";

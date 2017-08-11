@@ -231,7 +231,7 @@ namespace RabGRD
             // Initialize this copy of GrdAPI. GrdStartup() must be called once before first GrdAPI call at application startup
             logStr = "Initialize this copy of GrdAPI : ";
             retCode = GrdApi.GrdStartup(GrdFMR.Local); // + GrdFMR.Remote if you want to use network dongles
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             ErrorHandling(new Handle(IntPtr.Zero), retCode);
             if (retCode != GrdE.OK && retCode != GrdE.AlreadyInitialized)
             {
@@ -242,7 +242,7 @@ namespace RabGRD
             _grdHandle = GrdApi.GrdCreateHandle(GrdCHM.MultiThread);
             if (_grdHandle.Address == IntPtr.Zero) // Some error found?
             {
-                logStr += GrdApi.PrintResult(GrdE.MemoryAllocation);
+                logStr += GrdApi.PrintResult((int)GrdE.MemoryAllocation);
 
                 ErrorHandling(new Handle(IntPtr.Zero), GrdE.MemoryAllocation);
                 return;
@@ -254,7 +254,7 @@ namespace RabGRD
             logStr = "Storing dongle codes in Guardant protected container : ";
             retCode = GrdApi.GrdSetAccessCodes(_grdHandle,	// Handle to Guardant protected container
                                     0);    // Private read code; you can omit this code and all following via using of overloaded function;
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
 
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
@@ -279,7 +279,7 @@ namespace RabGRD
                                             GrdDT.TRU,
                                             GrdFMM.ALL,
                                             GrdFMI.ALL);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
 
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
@@ -355,7 +355,7 @@ namespace RabGRD
                     // Close hGrd handle, log out from dongle/server, free allocated memory
                     logStr = ("Closing handle: ");
                     nRet = GrdApi.GrdCloseHandle(hGrd);
-                    logStr += GrdApi.PrintResult(nRet);
+                    logStr += GrdApi.PrintResult((int)nRet);
 
                 }
 

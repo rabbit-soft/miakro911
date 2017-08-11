@@ -64,6 +64,7 @@ namespace rabnet
         public static RabPlace Parse(String rawAddress)
         {
             String[] dts = rawAddress.Split(',');
+            // todo бывает так, что адрес не в правильной форме
             return new RabPlace(int.Parse(dts[0]), int.Parse(dts[1]), int.Parse(dts[2]), Building.ParseType(dts[3]), dts[4], dts[5]);
         }
         

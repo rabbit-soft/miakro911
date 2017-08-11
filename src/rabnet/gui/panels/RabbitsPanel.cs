@@ -70,22 +70,31 @@ namespace rabnet.panels
         protected override void onItem(IData data)
         {
             AdultRabbit rab = (data as AdultRabbit);
+#if !NOCATCH
+            try {
+#endif
             ListViewItem li = listView1.Items.Add(rab.NameFull);
-            li.Tag = rab;
-            li.SubItems.Add(rab.FSex());
-            li.SubItems.Add(rab.Age.ToString());
-            li.SubItems.Add(rab.BreedName);
-            li.SubItems.Add(rab.FWeight());
-            li.SubItems.Add(rab.FStatus(_runF.safeBool(Filters.SHORT), _runF.safeInt(Filters.MAKE_CANDIDATE), _runF.safeInt(Filters.MAKE_BRIDE)));
-            li.SubItems.Add(rab.FFlags());
-            li.SubItems.Add(rab.FGroup());
-            li.SubItems.Add(rab.KidsAge.ToString());
-            li.SubItems.Add(rab.Rate.ToString());
-            li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
-            li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_DESCR)));
-            li.SubItems.Add(rab.Notes);
+                li.Tag = rab;
+                li.SubItems.Add(rab.FSex());
+                li.SubItems.Add(rab.Age.ToString());
+                li.SubItems.Add(rab.BreedName);
+                li.SubItems.Add(rab.FWeight());
+                li.SubItems.Add(rab.FStatus(_runF.safeBool(Filters.SHORT), _runF.safeInt(Filters.MAKE_CANDIDATE), _runF.safeInt(Filters.MAKE_BRIDE)));
+                li.SubItems.Add(rab.FFlags());
+                li.SubItems.Add(rab.FGroup());
+                li.SubItems.Add(rab.KidsAge.ToString());
+                li.SubItems.Add(rab.Rate.ToString());
+                li.SubItems.Add(rab.FBon(_runF.safeBool(Filters.SHORT)));
+                li.SubItems.Add(rab.FAddress(_runF.safeBool(Filters.SHOW_BLD_TIERS), _runF.safeBool(Filters.SHOW_BLD_DESCR)));
+                li.SubItems.Add(rab.Notes);
 
-            this.rsbTotalCount += rab.GroupFullCount();
+                this.rsbTotalCount += rab.GroupFullCount();
+#if !NOCATCH
+            } catch (Exception exc) {
+                _logger.Error(exc);
+                MessageBox.Show(exc.Message + " " + rab.ID + " " + rab.NameFull);
+            }
+#endif
         }
 
         protected override void onFinishUpdate()

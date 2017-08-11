@@ -110,7 +110,7 @@ namespace RabGRD
             // Initialize this copy of GrdAPI. GrdStartup() must be called once before first GrdAPI call at application startup
             logStr = "Initialize this copy of GrdAPI : ";
             retCode = GrdApi.GrdStartup(_findPropRemoteMode); // + GrdFMR.Remote if you want to use network dongles
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(new Handle(IntPtr.Zero), retCode);
             if (retCode != GrdE.OK && retCode != GrdE.AlreadyInitialized) {
@@ -121,11 +121,11 @@ namespace RabGRD
             _grdHandle = GrdApi.GrdCreateHandle(GrdCHM.MultiThread);
             if (_grdHandle.Address == IntPtr.Zero) // Some error found?
             {
-                logStr += GrdApi.PrintResult(GrdE.MemoryAllocation);
+                logStr += GrdApi.PrintResult((int)GrdE.MemoryAllocation);
                 _logger.Debug(logStr);
                 return ErrorHandling(new Handle(IntPtr.Zero), GrdE.MemoryAllocation);
             } else {
-                logStr += GrdApi.PrintResult(GrdE.OK);
+                logStr += GrdApi.PrintResult((int)GrdE.OK);
                 _logger.Debug(logStr);
                 ErrorHandling(_grdHandle, GrdE.OK); // Print success information
             }
@@ -134,7 +134,7 @@ namespace RabGRD
                                             PublicCode + CryptPu,   // Public code, should always be specified
                                             ReadCode + CryptRd);*/
             // Private read code; you can omit this code and all following via using of overloaded function;
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK) {
@@ -158,7 +158,7 @@ namespace RabGRD
                                             _findPropDongleType,
                                             _findPropDongleModel,
                                             _findPropDongleInterface);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK) {
@@ -188,7 +188,7 @@ namespace RabGRD
 
             logStr = "Reading Marker : ";
             retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + DEV_MARKER_OFFSET, 16, out bts);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             if (retCode == GrdE.OK) {
                 marker = AsciiBytesToString(bts, 0, 32);
                 logStr += "; \"" + marker + "\"";
@@ -222,7 +222,7 @@ namespace RabGRD
             /// Close hGrd handle. Log out from dongle/server & free allocated memory
             logStr = "Closing dongle handle: ";
             retCode = GrdApi.GrdCloseHandle(_grdHandle);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
@@ -230,7 +230,7 @@ namespace RabGRD
             /// GrdCleanup() must be called after last GrdAPI call before program termination
             logStr = "Deinitializing this copy of GrdAPI : ";
             retCode = GrdApi.GrdCleanup();
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
@@ -251,20 +251,20 @@ namespace RabGRD
             //log.Debug(GrdApi.PrintResult((int)nRet));
             string logStr = "";
             if (nRet != GrdE.OK) {
-                _logger.Warn("ErrorHandling : " + GrdApi.PrintResult(nRet));
+                _logger.Warn("ErrorHandling : " + GrdApi.PrintResult((int)nRet));
                 if (hGrd.Address != IntPtr.Zero)	// Perform some cleanup operations if hGrd handle exists
                 {
                     // Close hGrd handle, log out from dongle/server, free allocated memory
                     logStr = ("Closing handle: ");
                     //nRet = GrdApi.GrdCloseHandle(hGrd); // при каждой ошибке закрывать не обязательно. Наверное
-                    logStr += GrdApi.PrintResult(nRet);
+                    logStr += GrdApi.PrintResult((int)nRet);
                     _logger.Debug(logStr);
                 }
 
                 /// Deinitialize this copy of GrdAPI. GrdCleanup() must be called after last GrdAPI call before program termination
                 logStr = "Deinitializing this copy of GrdAPI : ";
                 //nRet = GrdApi.GrdCleanup();
-                logStr += GrdApi.PrintResult(nRet);
+                logStr += GrdApi.PrintResult((int)nRet);
                 _logger.Debug(logStr);
             }
             return nRet;
@@ -285,7 +285,7 @@ namespace RabGRD
 
             logStr = "Reading Farm cnt : ";
             retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + MAX_BUILDINGS_COUNT_OFFSET, out farms);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             if (retCode == GrdE.OK) {
                 logStr += string.Format("; CNT = {0:D}", farms);
                 farmCnt = (int)farms;
@@ -347,7 +347,7 @@ namespace RabGRD
 
             logStr = "Reading Role Flags : ";
             retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + FLAGS_MASK_OFFSET, 8, out bts);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             if (retCode == GrdE.OK) {
                 UInt64 flgs = BitConverter.ToUInt64(bts, 0);
                 logStr += string.Format("; Full Flags = {0:D}", flgs);
@@ -376,7 +376,7 @@ namespace RabGRD
             logStr = "Reading TempDateEnd : ";
             retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + TEMP_FLAGS_END_OFFSET, 12, out bts);
             DateTime dt2 = ReadDate(USER_DATA_BEGINING + TEMP_FLAGS_END_OFFSET);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
 
             if (retCode == GrdE.OK) {
                 string date = Cp1251BytesToString(bts, 0, 12);
@@ -387,7 +387,7 @@ namespace RabGRD
                         bts = new byte[8];
                         logStr = "Reading TempRole Flags : ";
                         retCode = GrdApi.GrdRead(_grdHandle, USER_DATA_BEGINING + TEMP_FLAGS_MASK_OFFSET, 8, out bts);
-                        logStr += GrdApi.PrintResult(retCode);
+                        logStr += GrdApi.PrintResult((int)retCode);
                         if (retCode == GrdE.OK) {
                             UInt64 flgs = BitConverter.ToUInt64(bts, 0);
                             logStr += string.Format("; Full TempFlags = {0:D}", flgs);
@@ -479,7 +479,7 @@ namespace RabGRD
         {
             string logStr = "Reading Bytes : ";
             GrdE retCode = GrdApi.GrdRead(_grdHandle, offset, (int)length, out buffer);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
 
@@ -647,7 +647,7 @@ namespace RabGRD
             /// Search for the specified local or remote dongle and log in
             logStr = "Searching for the specified local or remote dongle and log in : ";
             retCode = GrdApi.GrdLogin(_grdHandle, 0, GrdLM.PerStation);
-            logStr += GrdApi.PrintResult(retCode);
+            logStr += GrdApi.PrintResult((int)retCode);
             _logger.Debug(logStr);
             ErrorHandling(_grdHandle, retCode);
             if (retCode != GrdE.OK)
