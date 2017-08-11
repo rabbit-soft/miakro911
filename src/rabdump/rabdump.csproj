@@ -96,8 +96,9 @@
       <HintPath>..\..\party3d\ccxmlrpc.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="GuardantDotNetApi">
-      <HintPath>..\..\party3d\GuardantDotNetApi.dll</HintPath>
+    <Reference Include="GuardantDotNetApi, Version=6.3.0.17, Culture=neutral, PublicKeyToken=f52c2a12f8fa28a6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Guardant\SDK7\Lib\windows\GuardantDotNetApi.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
