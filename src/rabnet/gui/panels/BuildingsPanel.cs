@@ -33,7 +33,7 @@ namespace rabnet.panels
         /// Защита от расхода памяти
         /// </summary>
         private const int NEW_FARMS_LIMIT = 0xff;
-        public const int DEMO_MAX_FARMS = 10;
+        public const int DEMO_MAX_FARMS = 20;
         private bool manual = true;
         //protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
         const String NEW_BUILDING = "Новое строение";
