@@ -22,13 +22,11 @@ namespace rabnet.filters
 
         protected override void initAgain()
         {
-#if !DEMO
             lbLogs.Items.Clear();
             String[] lg = Engine.db().logNames();
             for (int i = 0; i < lg.Length; i++) {
                 lbLogs.Items.Add(lg[i]);
             }
-#endif
         }
 
         #region FilterPanel overrides

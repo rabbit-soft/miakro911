@@ -1,5 +1,4 @@
-﻿#if !DEMO
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -132,4 +131,3 @@ WHERE end_eat > adulthood", DBHelper.DateToSqlString(from), DBHelper.DateToSqlSt
         }
     }
 }
-#endif

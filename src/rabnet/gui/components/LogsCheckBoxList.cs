@@ -16,12 +16,11 @@ namespace rabnet.components
 
         public void UpdateList()
         {
-#if !DEMO
             lbLogs.Items.Clear();
             String[] lg = Engine.db().logNames();
-            for (int i = 0; i < lg.Length; i++)
+            for (int i = 0; i < lg.Length; i++) {
                 lbLogs.Items.Add(lg[i]);
-#endif
+            }
         }
 
         public String GetChecked()
@@ -39,8 +38,9 @@ namespace rabnet.components
 
         private void btAll_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < lbLogs.Items.Count; i++)            
-                lbLogs.SetItemChecked(i,true);           
+            for (int i = 0; i < lbLogs.Items.Count; i++) {
+                lbLogs.SetItemChecked(i, true);
+            }
         }
     }
 }
