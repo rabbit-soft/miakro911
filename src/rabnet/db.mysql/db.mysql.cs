@@ -219,8 +219,10 @@ namespace db.mysql
 
         public int[] getTiers(int farm)
         {
-            if (farm == 0)
+            if (farm == 0) {
                 return new int[] { 0, 0 };
+            }
+
             MySqlDataReader rd = reader("SELECT m_upper, m_lower FROM minifarms WHERE m_id=" + farm.ToString() + ";");
             rd.Read();
 
@@ -583,12 +585,11 @@ namespace db.mysql
                     return v;
             return null;
         }
-#if !DEMO
+
         public int AddVaccine(string name, int duration, int age, int after, bool zoo, int times)
         {
             return new Vaccines(sql).Add(name, duration, age, after, zoo, times);
         }
-#endif
 
         public void EditVaccine(int id, string name, int duration, int age, int after, bool zoo, int times)
         {
@@ -681,9 +682,7 @@ namespace db.mysql
                 cmd.ExecuteNonQuery();
             }
         }
-
-#if !DEMO
-
+        
         public List<String> getButcherMonths()
         {
             return Butcher.getButcherMonths(sql);
@@ -833,8 +832,6 @@ namespace db.mysql
         {
             FucksGetter.SpermTake(sql, rId);
         }
-
-#endif
 
         #endregion IRabNetDataLayer Members
 

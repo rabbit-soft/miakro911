@@ -154,9 +154,9 @@ namespace rabnet
         List<Vaccine> GetVaccines(bool withSpec);
         Vaccine GetVaccine(int vid);
         void EditVaccine(int id, string name, int duration, int age, int after, bool zoo,int times);
-#if !DEMO
+
         int AddVaccine(string name, int duration, int age, int after, bool zoo,int times);
-#endif
+
 
         void addWeight(int rabbit, int weight, DateTime date);
         void deleteWeight(int rabbit, DateTime date);
@@ -191,7 +191,7 @@ namespace rabnet
         /// Проверяем не сдился ли AI у таблицы Rabbits
         /// </summary>
         void RabbitsTableAiCheck();
-#if !DEMO   
+  
         void ArchLogs();
         String[] logNames();        
 
@@ -235,7 +235,7 @@ namespace rabnet
         /// </summary>
         /// <param name="rId"></param>
         void SpermTake(int rId);
-#endif
+
         IRabNetDataLayer Clone();        
         
         BreedsList GetBreeds();
