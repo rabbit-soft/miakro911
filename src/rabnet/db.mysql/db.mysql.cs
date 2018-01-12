@@ -692,6 +692,7 @@ namespace db.mysql
         {
             return new Logs(sql).logNames();
         }
+
         public void ArchLogs()
         {
             (new Logs(sql)).ArchLogs();

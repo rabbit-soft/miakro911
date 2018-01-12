@@ -4,7 +4,6 @@ using System.Text;
 
 namespace rabnet
 {
-#if !DEMO
     public class sMeal
     {
         public enum MoveType { In, Out };
@@ -49,5 +48,4 @@ namespace rabnet
         }
 
     }
-#endif
 }
