@@ -5,7 +5,6 @@ using System.Xml;
 
 namespace rabnet
 {
-#if !DEMO
     static class ReportHelperExt
     {
         internal static XmlDocument rabToXml(OneRabbit er, OneRabbit or)
@@ -156,5 +155,4 @@ namespace rabnet
             return docs;
         }
     }
-#endif
 }

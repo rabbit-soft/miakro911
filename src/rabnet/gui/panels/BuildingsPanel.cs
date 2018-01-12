@@ -33,7 +33,7 @@ namespace rabnet.panels
         /// Защита от расхода памяти
         /// </summary>
         private const int NEW_FARMS_LIMIT = 0xff;
-        public const int DEMO_MAX_FARMS = 50;
+        public const int DEMO_MAX_FARMS = 100;
         private bool manual = true;
         //protected static readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
         const String NEW_BUILDING = "Новое строение";
@@ -707,7 +707,6 @@ namespace rabnet.panels
 
         private void shedReportMenuItem_Click(object sender, EventArgs e)
         {
-#if !DEMO
             if (treeView1.SelectedNode == null) {
                 return;
             }
@@ -728,17 +727,14 @@ namespace rabnet.panels
                 });
             dlg.ExcelEnabled = false;
             dlg.Show();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void emptyRevMenuItem_Click(object sender, EventArgs e)
         {
-#if !DEMO
             if (treeView1.SelectedNode == null) {
                 return;
             }
+
             if (this.isFarm()) {
                 return;
             }
@@ -748,9 +744,6 @@ namespace rabnet.panels
             f["bld"] = bid.ToString();
             new ReportViewForm(myReportType.REVISION, new XmlDocument[]{
                 Engine.db().makeReport(myReportType.REVISION,f),getBuildDoc(bid)}).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void makeExcel()

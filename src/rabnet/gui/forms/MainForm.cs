@@ -128,7 +128,7 @@ namespace rabnet.forms
 #endif
 
             tabControl1.SelectedIndex = 0;//раньше было в конструкторе
-            tabControl1_SelectedIndexChanged(null, null);            
+            tabControl1_SelectedIndexChanged(null, null);
         }
 
 #if !DEMO
@@ -201,7 +201,7 @@ namespace rabnet.forms
                 rabStatusBar1.SetText(i, "");
             }
             curpanel = panels[tabControl1.SelectedIndex];
-            panel1.Controls.Add(curpanel);            
+            panel1.Controls.Add(curpanel);
             curpanel.activate();
             Working();
             ProtectTest();
@@ -339,13 +339,12 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
             }
 #endif
 #if DEMO
-            if (farms > BuildingsPanel.DEMO_MAX_FARMS)
-            {
+            if (farms > BuildingsPanel.DEMO_MAX_FARMS) {
                 MessageBox.Show(this, "Превышено количество разрешенных ферм." + Environment.NewLine + "Программа будет закрыта.", "Демонстрационная версия", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 // Надо сделать выход более доброжелательным
-//                LoginForm.stop = true;
-//                mustclose = true;
-//                Close();
+                //                LoginForm.stop = true;
+                //                mustclose = true;
+                //                Close();
                 Environment.Exit(100);
             }
 #endif
@@ -407,23 +406,16 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
 
         private void tsmiProductTypesView_Click(object sender, EventArgs e)
         {
-#if !DEMO
             new CatalogForm(CatalogForm.CatalogType.PRODUCTS).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void tsmiVaccines_Click(object sender, EventArgs e)
         {
-#if !DEMO
             //new CatalogForm(CatalogForm.CatalogType.VACCINES).ShowDialog();
             new VaccinesCatalogForm().ShowDialog();
-            if (!_mustclose)
+            if (!_mustclose) {
                 rabStatusBar1.Run();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
+            }
         }
 
         #endregion Views
@@ -442,19 +434,14 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
 
         private void tsmiBreeds_Click(object sender, EventArgs e)
         {
-#if !DEMO
             Filters f = new Filters();
             f["brd"] = Engine.get().brideAge().ToString();
             f["cnd"] = Engine.get().candidateAge().ToString();
             (new ReportViewForm(myReportType.BREEDS, Engine.get().db().makeReport(myReportType.BREEDS, f))).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void tsmiFuckProductivity_Click(object sender, EventArgs e)
         {
-#if !DEMO
             FuckerForm dlg = new FuckerForm();
             if (dlg.ShowDialog() == DialogResult.OK) {
                 Filters f = new Filters();
@@ -464,35 +451,21 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
                 (new ReportViewForm(myReportType.FUCKER, new XmlDocument[]{
                     Engine.get().db().makeReport(myReportType.FUCKER, f),dlg.getXml()})).Show();
             }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void tsmiAgeAndCount_Click(object sender, EventArgs e)
         {
-#if !DEMO
-            (new ReportViewForm(myReportType.AGE,
-                Engine.get().db().makeReport(myReportType.AGE, null))).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
+            (new ReportViewForm(myReportType.AGE, Engine.get().db().makeReport(myReportType.AGE, null))).ShowDialog();
         }
 
         private void tsmiCountByMonth_Click(object sender, EventArgs e)
         {
-#if !DEMO
             Filters f = new Filters();
-            (new ReportViewForm(myReportType.BY_MONTH, new XmlDocument[]{
-                    Engine.get().db().makeReport(myReportType.BY_MONTH,f)})).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
+            (new ReportViewForm(myReportType.BY_MONTH, new XmlDocument[]{Engine.get().db().makeReport(myReportType.BY_MONTH,f)})).ShowDialog();
         }
 
         private void tsmiDeads_Click(object sender, EventArgs e)
         {
-#if !DEMO
             Filters f = new Filters();
             //XmlDocument dt = null;
             PeriodForm dlg = new PeriodForm(myReportType.DEADREASONS);
@@ -505,9 +478,6 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
                     dlg.GetXml()
                 })).ShowDialog();
             }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         /// <summary>
@@ -515,7 +485,6 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
         /// </summary>
         private void tsmiDeadsReaport_Click(object sender, EventArgs e)
         {
-#if !DEMO
             Filters f = new Filters();
             //XmlDocument dt = null;
             PeriodForm dlg = new PeriodForm(myReportType.DEAD);
@@ -530,14 +499,10 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
                     }
                  )).ShowDialog();
             }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void tsmiFucksByUsers_Click(object sender, EventArgs e)
         {
-#if !DEMO
             OkrolUser dlg = new OkrolUser();
             if (dlg.ShowDialog() == DialogResult.OK) {
                 Filters f = new Filters();
@@ -555,14 +520,10 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
                     )).Show();
 
             }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void fucksByDateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-#if !DEMO
             Filters f = new Filters();
             PeriodForm dlg = new PeriodForm(myReportType.FUCKS_BY_DATE);
             if (dlg.ShowDialog() == DialogResult.OK) {
@@ -573,87 +534,38 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
                     Engine.get().db().makeReport(myReportType.FUCKS_BY_DATE,f)
                 })).ShowDialog();
             }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void miButcher_Click(object sender, EventArgs e)
         {
-#if PROTECTED
-            if (GRD.Instance.GetFlag(GRD.FlagType.Butcher)) {
-#endif
-#if !DEMO
-                ButcherReportDate brd = new ButcherReportDate();
-                if (brd.ShowDialog() == DialogResult.OK) {
-                    Filters f = new Filters();
-                    f[Filters.DATE_PERIOD] = brd.PeriodChar;
-                    f[Filters.DATE_VALUE] = brd.DateValue;
-                    (new ReportViewForm("Отчет по стерильному цеху", "butcher", new XmlDocument[]
-                    { 
-                        Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f),
-                        //brd.getXml()
-                    }
-                    )).ShowDialog();
+            ButcherReportDate brd = new ButcherReportDate();
+            if (brd.ShowDialog() == DialogResult.OK) {
+                Filters f = new Filters();
+                f[Filters.DATE_PERIOD] = brd.PeriodChar;
+                f[Filters.DATE_VALUE] = brd.DateValue;
+                (new ReportViewForm("Отчет по стерильному цеху", "butcher", new XmlDocument[]
+                { 
+                    Engine.get().db().makeReport(myReportType.BUTCHER_PERIOD, f),
+                    //brd.getXml()
                 }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
-#if PROTECTED
-            } else
-                MessageBox.Show("Текущая лицензия не распространяется на данный отчет.");
-#endif
+                )).ShowDialog();
+            }
         }
-
-        //        private void showRepport(myReportType type)
-        //        {
-        //            Filters f = new Filters();
-        //            ReportViewForm dlg = null;
-        //            switch (type)
-        //            {
-        //                case myReportType.AGE: break;
-        //            }
-        //            if (dlg == null) return;
-        //#if DEBUG
-        //            dlg.Show();
-        //#else
-        //            dlg.ShowDialog();
-        //#endif
-        //        }
 
         #endregion reports
 
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (tabControl1.SelectedTab == tpButcher) {
-#if PROTECTED
-                if (!GRD.Instance.GetFlag(GRD.FlagType.Butcher)) {
-                    MessageBox.Show("Текущая лицензия не распространяется на данный модуль");
-                    e.Cancel = true;
-                }
-#elif DEMO
-                DemoErr.DemoNoModuleMsg();
-                e.Cancel = true;
-#endif
-            }
         }
 
         private void tsmiReports_DropDownOpening(object sender, EventArgs e)
         {
-#if PROTECTED
-            miButcher.Visible = GRD.Instance.GetFlag(GRD.FlagType.Butcher) && Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE) == 0 && GRD.Instance.GetFlag(GRD.FlagType.Butcher);
-#elif DEMO
-            miButcher.Visible = false;        
-#endif
+            miButcher.Visible = true; //GRD.Instance.GetFlag(GRD.FlagType.Butcher) && Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE) == 0 && GRD.Instance.GetFlag(GRD.FlagType.Butcher);
         }
 
         private void miMeal_Click(object sender, EventArgs e)
         {
-#if !DEMO
             (new MealForm()).ShowDialog();
-#else
-            DemoErr.DemoNoModuleMsg();
-#endif
         }
 
         private void miScale_Click(object sender, EventArgs e)
@@ -685,12 +597,7 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
 
         private void miLogs_Click(object sender, EventArgs e)
         {
-#if !DEMO
             (new LogsForm()).Show();
-#else
-            DemoErr.DemoNoModuleMsg();
-#endif
-
         }
 
         private void miRabExport_Click(object sender, EventArgs e)

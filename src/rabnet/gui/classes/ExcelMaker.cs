@@ -1,5 +1,4 @@
-﻿#if !DEMO
-using System;
+﻿using System;
 using System.Windows.Forms;
 using System.Xml;
 using System.IO;
@@ -211,4 +210,3 @@ namespace rabnet
 
 
 }
-#endif

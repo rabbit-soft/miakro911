@@ -380,7 +380,6 @@ namespace rabnet.panels
 
         private void printMenuItem_Click(object sender, EventArgs e)
         {
-#if !DEMO
             List<String> fuckers = new List<string>();
             XmlDocument rep = new XmlDocument();
             rep.AppendChild(rep.CreateElement("Rows")).AppendChild(rep.CreateElement("Row")).AppendChild(rep.CreateElement("date")).AppendChild(rep.CreateTextNode(reportDate.ToLongDateString() + " " + reportDate.ToLongTimeString()));
@@ -425,9 +424,6 @@ namespace rabnet.panels
                 xmls = new XmlDocument[] { doc, rep };
             }
             new ReportViewForm("Зоотехплан " + reportDate.ToLongDateString() + " " + reportDate.ToLongTimeString(), plan, xmls).ShowDialog();
-#else 
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void makeExcel()

@@ -149,8 +149,9 @@ namespace rabnet
                 tbUser.ReadOnly =
                 tbPass.ReadOnly = readOnly;
 #if PROTECTED
-            if(GRD.Instance.GetFlag(GRD.FlagType.WebReports))
+            if(GRD.Instance.GetFlag(GRD.FlagType.WebReports)) {
                 chWebReport.Enabled = !readOnly;
+            }
 #endif
         }
 

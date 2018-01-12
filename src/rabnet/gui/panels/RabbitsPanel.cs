@@ -378,6 +378,7 @@ namespace rabnet.panels
             if (listView1.SelectedItems.Count < 1) {
                 return;
             }
+
 #if !NOCATCH
             try {
 #endif
@@ -464,7 +465,6 @@ namespace rabnet.panels
 
         private void svidMenuItem_Click(object sender, EventArgs e)
         {
-#if !DEMO
             if (listView1.SelectedItems.Count != 1) {
                 return;
             }
@@ -476,14 +476,10 @@ namespace rabnet.panels
                 int num = Engine.opt().getIntOption(Options.OPT_ID.NEXT_SVID);
                 Engine.opt().setOption(Options.OPT_ID.NEXT_SVID, num + 1);
             }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void plemMenuItem_Click(object sender, EventArgs e)
         {
-#if !DEMO
             if (listView1.SelectedItems.Count < 1) {
                 return;
             }
@@ -518,26 +514,20 @@ namespace rabnet.panels
                 _logger.Warn(exc);
                 _rsb.Run();
             }
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void miRealize_Click(object sender, EventArgs e)
         {
-#if !DEMO
             if (listView1.SelectedItems.Count < 1) {
                 return;
             }
+
             Filters f = new Filters();
             f["cnt"] = listView1.SelectedItems.Count.ToString();
             for (int i = 0; i < listView1.SelectedItems.Count; i++) {
                 f["r" + i.ToString()] = ((listView1.SelectedItems[i].Tag as AdultRabbit).ID).ToString();
             }
             new ReportViewForm(myReportType.REALIZE, Engine.db().makeReport(myReportType.REALIZE, f)).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void miGenetic_Click(object sender, EventArgs e)
@@ -548,9 +538,9 @@ namespace rabnet.panels
 
             try {
 #if PROTECTED
-                if (!RabGRD.GRD.Instance.GetFlag(RabGRD.GRD_Base.FlagType.Genetics))
+                if (!RabGRD.GRD.Instance.GetFlag(RabGRD.GRD_Base.FlagType.Genetics)) {
                     throw new Exception("Текущая лицензия не распространяется на данный модуль");
-
+                }
 #endif
                 if (GeneticsManagerSafe.GeneticsModuleTest()) {
                     for (int i = 0; i < listView1.SelectedItems.Count; i++)
@@ -566,7 +556,6 @@ namespace rabnet.panels
 
         private void miPlanReplace_Click(object sender, EventArgs e)
         {
-#if !DEMO
             if (listView1.SelectedItems.Count < 1) {
                 return;
             }
@@ -577,19 +566,20 @@ namespace rabnet.panels
                 XmlElement rw = (XmlElement)doc.DocumentElement.AppendChild(doc.CreateElement("Row"));
                 ReportHelper.Append(rw, doc, "age", li.SubItems[2].Text); //rw.AppendChild(doc.CreateElement("age")).AppendChild(doc.CreateTextNode(li.SubItems[2].Text));
                 String cn = li.SubItems[11].Text;
-                if (cn.IndexOf('[') > -1)
+                if (cn.IndexOf('[') > -1) {
                     cn = cn.Remove(cn.IndexOf('['));
+                }
                 ReportHelper.Append(rw, doc, "address", cn); //rw.AppendChild(doc.CreateElement("address")).AppendChild(doc.CreateTextNode(cn));
                 cn = li.SubItems[NFIELD].Text;
-                if (cn[0] == '[')
+                if (cn[0] == '[') {
                     cn = int.Parse(cn.Substring(1, cn.Length - 2)).ToString();
-                if (cn == "-") cn = "1";
+                }
+                if (cn == "-") { 
+                    cn = "1"; 
+                }
                 ReportHelper.Append(rw, doc, "count", cn);//rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(cn));
             }
             new ReportViewForm(myReportType.REPLACE, doc).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void miBon_Click(object sender, EventArgs e)
@@ -626,7 +616,10 @@ namespace rabnet.panels
 
         private void countKidsMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
+
             try {
                 CountKids f = new CountKids((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
                 if (f.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
@@ -663,12 +656,15 @@ namespace rabnet.panels
 
         private void miFucks_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
 
             try {
                 FuckForm dlg = new FuckForm((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
-                if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                if (dlg.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
@@ -678,27 +674,34 @@ namespace rabnet.panels
 
         private void miLust_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0) {
+                return;
+            }
 
             foreach (ListViewItem it in listView1.SelectedItems) {
                 AdultRabbit rab = it.Tag as AdultRabbit;
-                if (rab.Sex == Rabbit.SexType.FEMALE && !rab.FFlags().Contains("vS"))
+                if (rab.Sex == Rabbit.SexType.FEMALE && !rab.FFlags().Contains("vS")) {
                     Engine.db().SetRabbitVaccine(rab.ID, Vaccine.V_ID_LUST);
+                }
             }
-            if (!MainForm.MustClose)
+            if (!MainForm.MustClose) {
                 _rsb.Run();
+            }
         }
 
         private void miBoysOut_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
+            if (listView1.SelectedItems.Count != 1) {
+                return;
+            }
 
             try {
                 ReplaceForm rpf = new ReplaceForm();
                 rpf.AddRabbit((listView1.SelectedItems[0].Tag as AdultRabbit).ID);
                 rpf.SetAction(ReplaceForm.Action.BOYSOUT);
-                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                if (rpf.ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
                 _logger.Warn(exc);
@@ -708,21 +711,24 @@ namespace rabnet.panels
 
         private void miEPasportMake_Click(object sender, EventArgs e)
         {
-#if !DEMO
-            if (listView1.SelectedItems.Count == 0) return;
+
+            if (listView1.SelectedItems.Count == 0) {
+                return;
+            }
 
             try {
                 List<int> rIds = new List<int>();
-                foreach (ListViewItem it in listView1.SelectedItems)
+                foreach (ListViewItem it in listView1.SelectedItems) {
                     rIds.Add((it.Tag as AdultRabbit).ID);
-                if ((new EPasportForm(rIds)).ShowDialog() == DialogResult.OK && !MainForm.MustClose)
+                }
+#if !DEMO
+                if ((new EPasportForm(rIds)).ShowDialog() == DialogResult.OK && !MainForm.MustClose) {
                     _rsb.Run();
+                }
+#endif
             } catch (RabNetException exc) {
                 MessageBox.Show(exc.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
-#else
-            DemoErr.DemoNoModuleMsg();
-#endif
         }
 
         #endregion menuItems

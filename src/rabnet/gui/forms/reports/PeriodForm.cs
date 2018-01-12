@@ -16,12 +16,10 @@ namespace rabnet.forms
         public static XmlDocument nullDocument = new XmlDocument();
         public static XmlElement nullElem = nullDocument.CreateElement("none");        
                 
-#if !DEMO
         public readonly myReportType ReportType = myReportType.TEST;
 
         public PeriodForm(myReportType type) : this()
         {
-
             switch (type)
             {
                 case myReportType.DEAD:
@@ -36,7 +34,7 @@ namespace rabnet.forms
             }
             this.ReportType = type;
         }
-#endif
+
         private PeriodForm()
         {
             InitializeComponent();

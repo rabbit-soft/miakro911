@@ -166,10 +166,10 @@ namespace rabnet.panels
 
         private void replacePlanMenuItem_Click(object sender, EventArgs e)
         {
-#if !DEMO
             if (listView1.SelectedItems.Count < 1) {
                 return;
             }
+
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("Rows"));
             foreach (ListViewItem li in listView1.SelectedItems) {
@@ -179,9 +179,6 @@ namespace rabnet.panels
                 rw.AppendChild(doc.CreateElement("count")).AppendChild(doc.CreateTextNode(li.SubItems[1].Text));
             }
             new ReportViewForm(myReportType.REPLACE, doc).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
         private void makeExcel()
