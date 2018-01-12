@@ -5,7 +5,6 @@ using System.Xml;
 
 namespace rabnet
 {
-#if !DEMO
     public enum myReportType
     {
         TEST, BREEDS, AGE, FUCKER, DEAD, DEADREASONS, REALIZE, SHED, REPLACE, REVISION, BY_MONTH, FUCKS_BY_DATE, BUTCHER_PERIOD, RABBIT, PRIDE, ZOOTECH,
@@ -133,5 +132,4 @@ namespace rabnet
         public int Proholosts = 0;
         public int Okrols = 0;
     }
-#endif
 }

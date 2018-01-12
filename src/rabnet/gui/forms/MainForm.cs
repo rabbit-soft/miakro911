@@ -424,11 +424,7 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
-#if !DEMO
             (new ReportViewForm(myReportType.TEST, Engine.get().db().makeReport(myReportType.TEST, null))).ShowDialog();
-#else
-            DemoErr.DemoNoReportMsg();
-#endif
         }
 
 
