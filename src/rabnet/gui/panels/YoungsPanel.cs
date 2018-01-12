@@ -183,9 +183,7 @@ namespace rabnet.panels
 
         private void makeExcel()
         {
-#if !DEMO
             ExcelMaker.MakeExcelFromLV(listView1, "Молодняк");
-#endif
         }
 
     }

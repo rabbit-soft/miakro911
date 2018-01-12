@@ -567,7 +567,6 @@ namespace rabnet
             return _eng.db().GetDeadChildrenCount(_id, this.Sex);            
         }
 
-#if !DEMO
         public void SpermTake()
         {
 
@@ -578,7 +577,6 @@ namespace rabnet
             ///todo логи на забор спермы
 
         }
-#endif
         #endregion methods
 
         private void cloneOnThis(OneRabbit r)

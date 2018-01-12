@@ -160,7 +160,7 @@ namespace rabnet.forms
         [Category("Племенные свидетельства"), DisplayName("Генеральный директор"), Description("Иницияалы Генерального директора предприятия, отображаемые в конце племенного свидетельства")]
         public string GenDir { get { return gd; } set { gd = value; } }
         #endregion plem
-#if !DEMO
+
         #region excel
         [Category("Выгрузка в Excel"), DisplayName("Спрашивать папку"), Description("При выгрузке в Excel спрашивать папку для сохранения")]
         public RUBOOL XlsAskFolder
@@ -198,7 +198,6 @@ namespace rabnet.forms
                 bt = value;
             }
         }
-#endif
 
         public static OptionsHolder Make()
         {
@@ -259,7 +258,7 @@ namespace rabnet.forms
             NextSvid = o.getIntOption(Options.OPT_ID.NEXT_SVID);
             SvidHead = o.getOption(Options.OPT_ID.SVID_HEAD);
             GenDir = o.getOption(Options.OPT_ID.SVID_GEN_DIR);
-#if !DEMO
+
             //xls
             XlsAskFolder = toR(o.getIntOption(Options.OPT_ID.XLS_ASK));
             xf = o.getOption(Options.OPT_ID.XLS_FOLDER);
@@ -267,7 +266,6 @@ namespace rabnet.forms
                 xf = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             //buch
             bt = (BuchTp)o.getIntOption(Options.OPT_ID.BUCHER_TYPE);
-#endif
         }
 
         public void save()
@@ -310,13 +308,13 @@ namespace rabnet.forms
             o.setOption(Options.OPT_ID.NEXT_SVID, NextSvid);
             o.setOption(Options.OPT_ID.SVID_HEAD, SvidHead);
             o.setOption(Options.OPT_ID.SVID_GEN_DIR, GenDir);
-#if !DEMO
+
             //xls
             o.setOption(Options.OPT_ID.XLS_ASK, fromR(ask));
             o.setOption(Options.OPT_ID.XLS_FOLDER, protectPath(xf));
             //buch
             o.setOption(Options.OPT_ID.BUCHER_TYPE, (int)bt);
-#endif
+
         }
 
         private string protectPath(string path)

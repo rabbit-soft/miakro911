@@ -49,7 +49,6 @@ namespace rabnet.panels
         protected override IDataGetter onPrepare(Filters f)
         {
             _colSort.PrepareForUpdate();
-#if !DEMO
             if (f == null) f = new Filters();
             f.Add("type", Engine.opt().getOption(Options.OPT_ID.BUCHER_TYPE));
 
@@ -57,15 +56,10 @@ namespace rabnet.panels
             _rsb.SetText(1, dg.getCount().ToString() + " дат забоя");
             _rsb.SetText(2, dg.getCount2().ToString() + " забито");
             return dg;
-#else
-            return null;
-#endif
-
         }
 
         protected override void onItem(IData data)
         {
-#if !DEMO
             if (data == null) {
                 return;
             }
@@ -73,12 +67,10 @@ namespace rabnet.panels
             ListViewItem lvi = lvButcherDates.Items.Add(bd.Date.ToShortDateString());
             lvi.SubItems.Add(bd.Victims.ToString());
             lvi.SubItems.Add(bd.Products.ToString());
-#endif
         }
 
         private void lvButcherDates_SelectedIndexChanged(object sender, EventArgs e)
         {
-#if !DEMO
             if (lvButcherDates.SelectedItems.Count == 0) {
                 return;
             }
@@ -120,14 +112,11 @@ namespace rabnet.panels
                 //    lvi.SubItems.Add(sm.TotalWeight.ToString());
                 //}
             }
-#endif
         }
 
         private void makeExcel()
         {
-#if !DEMO
             ExcelMaker.MakeExcelFromLV(lvMeat, "Продукция");
-#endif
         }
 
         private void ButcherPanel_Load(object sender, EventArgs e)
@@ -137,7 +126,6 @@ namespace rabnet.panels
 
         private void miDelete_Click(object sender, EventArgs e)
         {
-#if !DEMO
             //if (lvMeat.SelectedItems.Count == 0) return;
             //if (!CAS.CasLP16.Instance.Connected)
             //{
@@ -151,7 +139,6 @@ namespace rabnet.panels
             //CAS.CasLP16.Instance.LoadPLUs();
             //DateTime lc = CAS.CasLP16.Instance.GetPLUbyID(pid).LastClear;
             //Engine.db().deletePLUsummary(sid,lc);
-#endif
         }
 
         private void lvVictims_SelectedIndexChanged(object sender, EventArgs e)

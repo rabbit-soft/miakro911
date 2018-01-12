@@ -6,7 +6,6 @@ using rabnet;
 
 namespace db.mysql
 {
-#if !DEMO
     static class Import
     {
 
@@ -115,5 +114,4 @@ namespace db.mysql
         }
 
     }
-#endif
 }

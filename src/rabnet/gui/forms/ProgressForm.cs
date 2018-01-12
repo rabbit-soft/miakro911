@@ -15,7 +15,7 @@ namespace rabnet.forms
             InitializeComponent();
         }
 
-#if !DEMO
+
         public void progressUp(int p)
         {
             if (this.InvokeRequired)
@@ -28,7 +28,6 @@ namespace rabnet.forms
                 progressBar1.Value = p;
             }
         }
-#endif
 
     }
 }

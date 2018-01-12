@@ -143,7 +143,6 @@ namespace rabnet.forms
 
         private void fillDates()
         {
-#if !DEMO
             cbMonth.Items.Clear();
             cbYear.Items.Clear();
 
@@ -177,7 +176,6 @@ namespace rabnet.forms
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();
             }
-#endif
         }
 
         public DateTime MaxDate { get { return dtpDay.MaxDate; } }

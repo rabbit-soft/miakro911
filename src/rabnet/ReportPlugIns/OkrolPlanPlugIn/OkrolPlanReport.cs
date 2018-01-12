@@ -1,5 +1,4 @@
-﻿#if !DEMO
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
@@ -82,4 +81,3 @@ ORDER BY r_event_date;", Engine.opt().getIntOption(Options.OPT_ID.NEST_IN), f.sa
         }
     }
 }
-#endif

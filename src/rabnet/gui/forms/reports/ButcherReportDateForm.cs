@@ -56,7 +56,6 @@ namespace rabnet.forms
 
         private void fillButcherDates()
         {
-#if !DEMO
             cbMonth.Items.Clear();
             cbYear.Items.Clear();
             List<String> dates = Engine.get().db().getButcherMonths();
@@ -78,7 +77,6 @@ namespace rabnet.forms
                 MessageBox.Show("Нет информации о продукции");
                 this.Close();
             }
-#endif
         }
 
         private void rbMonth_CheckedChanged(object sender, EventArgs e)

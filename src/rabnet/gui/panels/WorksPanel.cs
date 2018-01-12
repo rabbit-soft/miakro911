@@ -340,13 +340,9 @@ namespace rabnet.panels
                     break;
 
                 case JobType.SpermTake:
-#if !DEMO
                     RabNetEngRabbit r = Engine.get().getRabbit(job.ID);
                     r.SpermTake();
                     needUpdate = false;
-#else
-                    DemoErr.DemoNoModuleMsg();
-#endif
                     break;
             }
 
@@ -428,9 +424,7 @@ namespace rabnet.panels
 
         private void makeExcel()
         {
-#if !DEMO
             ExcelMaker.MakeExcelFromLV(lvZooTech, "Зоотехплан");
-#endif
         }
 
         private void WorksPanel_Load(object sender, EventArgs e)

@@ -118,9 +118,7 @@ namespace rabnet.forms
 
             if (editRow.Cells[FIELD_ID].Value == null)
             {
-#if !DEMO
                 editRow.Cells[FIELD_ID].Value = Engine.db().AddVaccine(name, duration, age, after, zoo,times);
-#endif
                 //fillTable();
             }
             else
@@ -142,7 +140,6 @@ namespace rabnet.forms
 
         private void btAddRow_Click(object sender, EventArgs e)
         {
-#if !DEMO
             //надо быть отчаянным вакцинатором чтобы вывести это сообщение
             if (dataGridView1.Rows.Count > Vaccine.MAX_VACS_COUNT)
             {
@@ -155,9 +152,6 @@ namespace rabnet.forms
             dataGridView1.Rows[rind].Cells[FIELD_AGE].Value = 45;
             dataGridView1.Rows[rind].Cells[FIELD_AFTER].Value = chAfter.Items[0];
             _manual = true;
-#else
-            DemoErr.DemoNoModuleMsg();
-#endif
         }
 
         private void btSpetial_Click(object sender, EventArgs e)

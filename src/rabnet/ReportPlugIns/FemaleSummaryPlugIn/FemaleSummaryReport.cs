@@ -1,5 +1,4 @@
-﻿#if !DEMO
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
@@ -49,4 +48,3 @@ WHERE r_sex='female' AND r_name!=0) aaa ORDER BY name;";
         }
     }
 }
-#endif

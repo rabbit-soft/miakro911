@@ -63,18 +63,6 @@ namespace rabnet.forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //#if !DEMO
-            //            //CAS.ScaleForm.SummarySaving += new CAS.AddPLUSummaryHandler(AddPluSummary);
-            //            if (
-            //    #if PROTECTED
-            //                GRD.Instance.GetFlag(GRD.FlagType.Butcher) && 
-            //    #endif
-            //                Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE)==1)
-            //            {
-
-            //                //CAS.ScaleForm.StartMonitoring();
-            //            }
-            //#endif
             _mustclose = false;
             usersMenuItem.Visible = Engine.get().isAdmin();
             _manual = true;
@@ -397,11 +385,7 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
 
         private void tsmiDeadReasonsView_Click(object sender, EventArgs e)
         {
-            //#if !DEMO
             new CatalogForm(CatalogForm.CatalogType.DEAD).ShowDialog();
-            //#else
-            //            DemoErr.DemoNoReportMsg();
-            //#endif
         }
 
         private void tsmiProductTypesView_Click(object sender, EventArgs e)

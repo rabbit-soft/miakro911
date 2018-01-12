@@ -748,9 +748,7 @@ namespace rabnet.panels
 
         private void makeExcel()
         {
-#if !DEMO
             ExcelMaker.MakeExcelFromLV(listView1, "Строения");
-#endif
         }
 
         private void miNotesEdit_Click(object sender, EventArgs e)

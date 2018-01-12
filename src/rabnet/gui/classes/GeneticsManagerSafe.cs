@@ -8,10 +8,9 @@ namespace rabnet
     {
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(GeneticsManagerSafe));
-#if !DEMO
+
         private static Boolean _hasModule = false;
         private const string DllPath = @"..\Genetics";
-#endif
 
         [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = true)]
         public static Boolean GeneticsModuleTest()

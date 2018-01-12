@@ -326,9 +326,7 @@ namespace rabnet.panels
 
         private void makeExcel()
         {
-#if !DEMO
             ExcelMaker.MakeExcelFromLV(listView1, "Поголовье");
-#endif
         }
 
         private void listView1_KeyDown(object sender, KeyEventArgs e)
