@@ -1,5 +1,4 @@
-﻿#if !DEMO
-using System;
+﻿using System;
 
 namespace rabnet
 {
@@ -67,4 +66,3 @@ namespace rabnet
     //    }
     //}
 }
-#endif

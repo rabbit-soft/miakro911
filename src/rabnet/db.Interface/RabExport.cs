@@ -5,7 +5,6 @@ using System.Xml;
 
 namespace rabnet
 {
-#if !DEMO
     public class RabExporter
     {
         private Client _client = null;
@@ -229,5 +228,4 @@ namespace rabnet
             this.FileGuid = guid;
         }
     }
-#endif
 }
