@@ -64,8 +64,9 @@ namespace rabnet
             if (File.Exists(path))
             {
                 FileInfo fi = new FileInfo(path);
-                if (fi.Length != stream.Length)
+                if (fi.Length != stream.Length) {
                     File.Delete(path);
+                }
             }
 
             if (!File.Exists(path))
@@ -93,8 +94,9 @@ namespace rabnet
                 try
                 {
                     Assembly Asm = Assembly.LoadFile(Filename);//загружаем Сборку
-                    foreach (Type AsmType in Asm.GetTypes())//Проверяем все имеющиеся типы данных (классы)
+                    foreach (Type AsmType in Asm.GetTypes())
                     {
+                        //Проверяем все имеющиеся типы данных (классы)
                         if (AsmType.BaseType==typeof(ReportBase))
                         {
                             ReportBase Plugin = (ReportBase)Activator.CreateInstance(AsmType);
@@ -116,17 +118,20 @@ namespace rabnet
         {
             foreach (ReportBase p in Plugins)
             {
-                if (p.UniqueName == name)
+                if (p.UniqueName == name) {
                     return p;
+                }
             }
             return null;
         }
 
         private static bool alreadyLoaded(ReportBase rb)
         {
-            foreach (ReportBase pl in Plugins)
-                if (pl.UniqueName == rb.UniqueName)
+            foreach (ReportBase pl in Plugins) {
+                if (pl.UniqueName == rb.UniqueName) {
                     return true;
+                }
+            }
             return false;
         }
 
