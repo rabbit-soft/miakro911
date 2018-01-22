@@ -204,8 +204,7 @@
 				</replacetokens>
 				<!--tabstospaces /-->
 			</filterchain>
-		</copy>
-		<echo message="Build nsis version: ${string::replace(shortver,'-','.')}" />
+		</copy>		
 		<copy file="./distrib/distrib_nsis/include/LangStrings.nsh.tmp" tofile="./distrib/distrib_nsis/include/LangStrings.nsh" overwrite="true">
 			<filterchain>
 				<replacetokens>
