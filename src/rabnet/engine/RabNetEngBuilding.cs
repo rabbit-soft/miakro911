@@ -93,18 +93,23 @@ namespace rabnet
 
         public void setHeater(int value, int sec)
         {
-            if (value == 2 || value > 3) { value = 3; }
-            if (b.Heaters[sec] == value.ToString()[0]) {
+            if (value == 2 || value > 3) { 
+                value = 3; 
+            }
+
+            char charVal = value.ToString()[0];
+            if (b.Heaters[sec] == charVal) {
                 return;
             }
+
             LogType tp = LogType.HEATER_OUT;
             if (value == 1) { tp = LogType.HEATER_OFF; }
             if (value == 3) { tp = LogType.HEATER_ON; }
             _eng.logs().log(tp, b.Busy[sec].ID, b.SmallName(sec));
 
-            b.Heaters = String.Format("{0:D1}", value) + b.Heaters.Substring(1);
+            //b.Heaters = String.Format("{0:D1}", value) + b.Heaters.Substring(1, 1);
             char[] cHeaters = b.Heaters.ToCharArray();
-            cHeaters[sec] = (char)value;
+            cHeaters[sec] = charVal;
             b.Heaters = new String(cHeaters);
 
             this.commit();

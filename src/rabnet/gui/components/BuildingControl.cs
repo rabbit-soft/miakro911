@@ -19,12 +19,17 @@ namespace rabnet.components
             public EVTYPE type;
             public int farm;
             public int tier;
+
             public BCEvent(EVTYPE type, int val)
             {
                 this.type = type;
                 value = val;
             }
-            public BCEvent(EVTYPE type, bool val) : this(type, val ? 1 : 0) { }
+
+            public BCEvent(EVTYPE type, bool val) : this(type, val ? 1 : 0) 
+            { 
+            }
+
             public bool val()
             {
                 return value == 1;
@@ -150,12 +155,21 @@ namespace rabnet.components
 
         private void makeComboEvent(object sender, EventArgs e)
         {
-            if (ValueChanged == null) return;
+            if (ValueChanged == null) {
+                return;
+            }
+
             ComboBox cb = sender as ComboBox;
             BCEvent.EVTYPE type = BCEvent.EVTYPE.HEATER;
-            if (cb == cbHeater) type = BCEvent.EVTYPE.HEATER;
-            if (cb == cbHeater2) type = BCEvent.EVTYPE.HEATER2;
-            if (cb == cbVigul) type = BCEvent.EVTYPE.VIGUL;
+            if (cb == cbHeater) {
+                type = BCEvent.EVTYPE.HEATER;
+            }
+            if (cb == cbHeater2) {
+                type = BCEvent.EVTYPE.HEATER2;
+            }
+            if (cb == cbVigul) {
+                type = BCEvent.EVTYPE.VIGUL;
+            }
             ValueChanged(this, new BCEvent(type, cb.SelectedIndex));
         }
 

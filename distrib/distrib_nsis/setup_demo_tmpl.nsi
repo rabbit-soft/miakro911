@@ -93,9 +93,14 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 	Call InstBothReqFiles
     File ${BinDir}\bin\rabnet.exe
 	File ${BinDir}\bin\rabnet.exe.config
-    File ${BinDir}\bin\Pickers.dll
-    File ${BinDir}\bin\rabHelp.chm    
+	        
+	File ${BinDir}\bin\Pickers.dll
+	File ${BinDir}\bin\RdlEngine.dll
+    File ${BinDir}\bin\RdlViewer.dll
 	File ${BinDir}\bin\SplitButton.dll
+	
+	File ${BinDir}\bin\changeLog.html
+	File ${BinDir}\bin\rabHelp.chm
 	
 #    SetOutPath $INSTDIR\bin
 #    SetOverwrite off

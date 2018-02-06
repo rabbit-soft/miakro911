@@ -97,13 +97,14 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 	
     File ${BinDir}\bin\rabnet.exe
 	File ${BinDir}\bin\rabnet.exe.config	   
-      
+    
+	File ${BinDir}\bin\Pickers.dll 	
     File ${BinDir}\bin\RdlEngine.dll
     File ${BinDir}\bin\RdlViewer.dll
 	File ${BinDir}\bin\SplitButton.dll			
 	#File ${BinDir}\bin\CAS.DLL
 	File ${BinDir}\bin\gui_genetics.dll   
-	File ${BinDir}\bin\Pickers.dll 
+	
 	File ${BinDir}\bin\changeLog.html
     File ${BinDir}\bin\rabHelp.chm
 	
