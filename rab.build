@@ -125,7 +125,9 @@
 		<property name="log4net.use" value="${bin_dir_bin}/${log4net.lib}" />
 		<property name="sb.use" value="${bin_dir_bin}/${sb.lib}" />
 		<property name="mysql.use" value="${bin_dir_bin}/${mysql.lib}" />
-		<!-- property name="mysql.t.use" value="${bin_dir}/Tools/${mysql.lib}" / -->
+		<property name="rep.use" value="${bin_dir_bin}/${rep.lib}" />
+		<property name="repeng.use" value="${bin_dir_bin}/${repeng.lib}" />
+		
 		<copy file="${log4net.ass}" tofile="${log4net.use}" />
 		<copy file="${sb.ass}" tofile="${sb.use}" />
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
