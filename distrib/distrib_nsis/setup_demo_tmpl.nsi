@@ -102,6 +102,9 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
 	File ${BinDir}\bin\changeLog.html
 	File ${BinDir}\bin\rabHelp.chm
 	
+	SetOutPath $INSTDIR\bin\reports
+    File ${BinDir}\bin\reports\*.rdl
+	File ${BinDir}\..\PlugIns\*.dll
 #    SetOutPath $INSTDIR\bin
 #    SetOverwrite off
     

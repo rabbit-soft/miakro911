@@ -133,7 +133,11 @@
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
-		<!-- copy file="${mysql.ass}" tofile="${mysql.t.use}" / -->
+		<copy todir="${bin_dir_bin}/reports">
+			<fileset basedir="${srcdir}/rabnet/gui/reports">
+				<include name="*.rdl" />
+			</fileset>
+		</copy>
 		<copy todir="${bin_dir_bin}">
 			<fileset basedir="${helpdir}/rabnet_help">
 				<include name="*.chm" />
