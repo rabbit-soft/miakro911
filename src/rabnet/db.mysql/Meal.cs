@@ -114,14 +114,14 @@ namespace db.mysql
 
         protected static int getRabDays(DateTime from, DateTime to, MySqlConnection sql)
         {
-            string query = String.Format(@"SELECT Coalesce(SUM(DATEDIFF(end_eat, GREATEST(adulthood, {0})) * cnt), 0)
+            string query = String.Format(@"SELECT Coalesce(SUM((DATEDIFF(end_eat, GREATEST(adulthood, {0})) - 1) * cnt), 0)
 FROM (
     SELECT 
         Coalesce(SUM(r_group),0) cnt, 
         DATE_ADD(Date(r_born), INTERVAL {2:d} DAY) adulthood, #дата достижения совершеннолетия
         IFNULL(Date(d_date), {1}) AS end_eat #дата окончания питания
     FROM allrabbits 
-    WHERE d_date IS NULL OR d_date BETWEEN {0} AND {1}
+    WHERE d_date IS NULL OR DATE(d_date) >= {0}
     GROUP BY adulthood, end_eat
     HAVING adulthood <= {1} #кролик был старше 18 дней в этот период
     ORDER BY adulthood, end_eat
