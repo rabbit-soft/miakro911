@@ -104,7 +104,7 @@ namespace db.mysql
             foreach (sMeal m in meals) {
                 if (m.Type.ToString().ToLower() == "in" && m.endDate != DateTime.MaxValue && m.totalAmount > 0) {
                     int rabDays = getRabDays(m.StartDate, m.endDate, sql);
-                    float rate = (float)m.totalAmount / rabDays;
+                    float rate = rabDays > 0 ? (float)m.totalAmount / rabDays : 0;
 
                     cmd.CommandText = String.Format("UPDATE meal SET m_rate = {0} WHERE m_id = {1:d}", rate.ToString("0.0000").Replace(',', '.'), m.Id);
                     cmd.ExecuteNonQuery();
@@ -114,13 +114,16 @@ namespace db.mysql
 
         protected static int getRabDays(DateTime from, DateTime to, MySqlConnection sql)
         {
-            string query = String.Format(@"SELECT Coalesce(SUM(DATEDIFF(end_eat, adulthood) * cnt), 0)
+            string query = String.Format(@"SELECT Coalesce(SUM(DATEDIFF(end_eat, GREATEST(adulthood, {0})) * cnt), 0)
 FROM (
-    SELECT Coalesce(SUM(r_group),0) cnt, DATE_ADD(Date(r_born), INTERVAL {2:d} DAY) adulthood, IFNULL(Date(d_date), {1}) AS end_eat
+    SELECT 
+        Coalesce(SUM(r_group),0) cnt, 
+        DATE_ADD(Date(r_born), INTERVAL {2:d} DAY) adulthood, #дата достижения совершеннолетия
+        IFNULL(Date(d_date), {1}) AS end_eat #дата окончания питания
     FROM allrabbits 
     WHERE d_date IS NULL OR d_date BETWEEN {0} AND {1}
     GROUP BY adulthood, end_eat
-    HAVING adulthood BETWEEN {0} AND {1} # кролик был старше 18 дней в этот период
+    HAVING adulthood <= {1} #кролик был старше 18 дней в этот период
     ORDER BY adulthood, end_eat
 ) c
 WHERE end_eat > adulthood", DBHelper.DateToSqlString(from), DBHelper.DateToSqlString(to), Meal.START_EAT);
