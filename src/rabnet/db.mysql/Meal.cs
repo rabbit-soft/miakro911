@@ -114,7 +114,7 @@ namespace db.mysql
 
         protected static int getRabDays(DateTime from, DateTime to, MySqlConnection sql)
         {
-            string query = String.Format(@"SELECT Coalesce(SUM((DATEDIFF(end_eat, GREATEST(adulthood, {0})) - 1) * cnt), 0)
+            string query = String.Format(@"SELECT Coalesce(SUM(DATEDIFF(LEAST(end_eat, {1}), GREATEST(adulthood, {0})) * cnt), 0)
 FROM (
     SELECT 
         Coalesce(SUM(r_group),0) cnt, 
