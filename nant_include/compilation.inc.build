@@ -183,7 +183,6 @@
 			<references>		
 				<include name="${log4net.use}"/>
 				<include name="${sb.use}"/>
-				<include name="${bin_dir_bin}/${grd_lib.NET}" />
 				<include name="${bin_dir_bin}/db.Interface.dll" />
 				<include name="${bin_dir_bin}/engine.dll" />
 				<include name="${rep.use}"/>
