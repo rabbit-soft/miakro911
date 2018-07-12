@@ -262,15 +262,15 @@ namespace rabdump
 #endif
                 RestoreRarams p = (RestoreRarams)prms;
 
-                if (p.fromServer) {
-                    string filepath = RabServWorker.DownloadDump(Path.GetFileName(p.File));
-                    if (filepath == "") {
-                        RestoreThrCb(false, new ApplicationException("Проблема при скачки файла." + Environment.NewLine + "Востановление отменено"));
-                        return;
-                    } else {
-                        File.Move(filepath, p.File);
-                    }
-                }
+                //if (p.fromServer) {
+                //    string filepath = RabServWorker.DownloadDump(Path.GetFileName(p.File));
+                //    if (filepath == "") {
+                //        RestoreThrCb(false, new ApplicationException("Проблема при скачки файла." + Environment.NewLine + "Востановление отменено"));
+                //        return;
+                //    } else {
+                //        File.Move(filepath, p.File);
+                //    }
+                //}
 
                 ArchiveJobThread.UndumpDB(p.Host, p.Db, p.User, p.Password, p.File);
 #if !NOCATCH

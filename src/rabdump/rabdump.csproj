@@ -127,14 +127,8 @@
     <Compile Include="..\libs\gamlib\Helper.Other.cs">
       <Link>classes\Helper.Other.cs</Link>
     </Compile>
-    <Compile Include="..\libs\pEngine\pAppUpdater.cs">
-      <Link>remote\pAppUpdater.cs</Link>
-    </Compile>
     <Compile Include="..\libs\pEngine\pException.cs">
       <Link>remote\pException.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\pEngine\RequestPack.cs">
-      <Link>remote\RequestPack.cs</Link>
     </Compile>
     <Compile Include="..\libs\pEngine\xxTEA.cs">
       <Link>remote\xxTEA.cs</Link>
@@ -216,16 +210,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="remote\RabDumpLan.cs" />
-    <Compile Include="remote\RabServWorker.AppUpdate.cs" />
-    <Compile Include="remote\RabServWorker.cs" />
-    <Compile Include="remote\RabUpdater.cs" />
     <Compile Include="Forms\RestoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\RestoreForm.Designer.cs">
       <DependentUpon>RestoreForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="remote\ServerMethods.cs" />
     <Compile Include="remote\SockServ.cs" />
     <Compile Include="Properties\VerInfo.cs" />
     <Compile Include="classes\x_tools.cs" />

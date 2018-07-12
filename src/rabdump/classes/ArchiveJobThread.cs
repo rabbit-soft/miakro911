@@ -12,6 +12,8 @@ using gamlib;
 
 namespace rabdump
 {
+    public delegate void MessageSenderCallbackDelegate(string msg, string ttl, int type, bool hide);
+
     class ArchiveJobThread
     {
         private const String ZIP_PASSWORD = "ns471lbNITfq3";
@@ -206,7 +208,11 @@ namespace rabdump
                 OnMessage(msg, ttl, type, hide);
             }
         }
-        private void callOnMessage(string msg, string ttl, int type) { callOnMessage(msg, ttl, type, false); }
+
+        private void callOnMessage(string msg, string ttl, int type) 
+        { 
+            callOnMessage(msg, ttl, type, false); 
+        }
 
         #region static
         /// <summary>
