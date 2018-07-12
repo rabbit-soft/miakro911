@@ -120,9 +120,6 @@
     <Compile Include="..\libs\gamlib\Helper.Other.cs">
       <Link>classes\Helper.Other.cs</Link>
     </Compile>
-    <Compile Include="..\libs\pEngine\pException.cs">
-      <Link>remote\pException.cs</Link>
-    </Compile>
     <Compile Include="..\mia_conv\miaExitCode.cs">
       <Link>classes\miaExitCode.cs</Link>
     </Compile>

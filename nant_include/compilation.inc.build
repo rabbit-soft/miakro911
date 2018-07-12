@@ -113,12 +113,7 @@
 				<include name="${srcdir}/rabdump/remote/*.cs"/>		
 				<include name="${srcdir}/rabdump/Forms/*.cs"/>				
 				<include name="${srcdir}/rabdump/Properties/AssemblyInfo.cs"/>
-				
-				<include name="${srcdir}/libs/pEngine/RequestPack.cs"/>
-				<include name="${srcdir}/libs/pEngine/xxTEA.cs"/>
-				<include name="${srcdir}/libs/pEngine/Helper.cs"/>
-				<include name="${srcdir}/libs/pEngine/pException.cs"/>
-				
+								
 				<include name="${srcdir}/libs/gamlib/*.cs"/>
 				
 				<include name="${srcdir}/mia_conv/miaExitCode.cs"/>				
@@ -139,7 +134,6 @@
 				<include name="${log4net.use}"/>											
 				<include name="${bin_dir_bin}/db.Interface.dll"/>
 				<include name="${bin_dir_bin}/engine.dll"/>
-				<include name="${party3d.path}/ccxmlrpc.dll"/>
 			</references>
 		</csc>
 		<copy file="${srcdir}/rabdump/clean_config/rabdump.exe.config" tofile="${bin_dir_bin}/rabdump.exe.config" />
