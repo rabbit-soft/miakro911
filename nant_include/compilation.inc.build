@@ -114,10 +114,6 @@
 				<include name="${srcdir}/rabdump/Forms/*.cs"/>				
 				<include name="${srcdir}/rabdump/Properties/AssemblyInfo.cs"/>
 				
-				<include name="${srcdir}/libs/GRD/GRD_Base.cs"/>
-				<include name="${srcdir}/libs/GRD/GRD_BaseTRU.cs"/>
-				<include name="${srcdir}/libs/GRD/GRD_BaseCodes.cs"/>
-				<include name="${srcdir}/libs/GRD/GRDCommon.cs"/>
 				<include name="${srcdir}/libs/pEngine/RequestPack.cs"/>
 				<include name="${srcdir}/libs/pEngine/xxTEA.cs"/>
 				<include name="${srcdir}/libs/pEngine/Helper.cs"/>
@@ -132,10 +128,6 @@
 				<include name="${srcdir}/rabnet/gui/classes/lan/RabLan.cs"/>
 				<include name="${srcdir}/rabnet/gui/panels/FarmsPanel.cs"/>
 				<include name="${srcdir}/rabnet/gui/panels/FarmsPanel.Designer.cs"/>
-				
-				<include name="${srcdir}/GrdRemoteUpdate/Admin/engine/Structures.cs"/>
-				<include name="${srcdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.cs"/>
-				<include name="${srcdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.designer.cs"/>
 			</sources>
 			<resources>
 				<include name="${srcdir}/rabdump/*.resx"/>
@@ -143,11 +135,9 @@
 				<include name="${srcdir}/rabdump/Forms/*.resx"/>
 				<include name="${srcdir}/rabdump/panels/*.resx"/>
 				<include name="${srcdir}/rabnet/gui/panels/FarmsPanel.resx"/>
-				<include name="${srcdir}/GrdRemoteUpdate/Admin/gui/form/AddDongleForm.resx"/>
 			</resources>
 			<references>
-				<include name="${log4net.use}"/>
-				<include name="${bin_dir_bin}/${grd_lib.NET}" />												
+				<include name="${log4net.use}"/>											
 				<include name="${bin_dir_bin}/db.Interface.dll"/>
 				<include name="${bin_dir_bin}/engine.dll"/>
 				<include name="${party3d.path}/ccxmlrpc.dll"/>
@@ -179,9 +169,6 @@
 				
 				<include name="${srcdir}/libs/gamlib/*.cs"/>
 				<include name="${srcdir}/libs/pEngine/xxTEA.cs"/>
-				
-				<include name="${srcdir}/libs/GRD/GRD_Base.cs"/>
-				<include name="${srcdir}/libs/GRD/GRD_BaseCodes.cs"/>
 				
 				<include name="${srcdir}/mia_conv/miaExitCode.cs"/>
 			</sources>
