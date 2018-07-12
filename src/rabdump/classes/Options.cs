@@ -8,9 +8,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Reflection;
 using rabnet.RNC;
-#if PROTECTED
-using RabGRD;
-#endif
 
 namespace rabdump
 {

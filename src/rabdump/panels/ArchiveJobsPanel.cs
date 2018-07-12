@@ -6,9 +6,6 @@ using System.IO;
 using System.Windows.Forms;
 using rabnet.RNC;
 using gamlib;
-#if PROTECTED
-    using RabGRD;
-#endif
 
 namespace rabdump
 {

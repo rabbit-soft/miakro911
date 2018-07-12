@@ -6,9 +6,6 @@ using System;
 using System.Windows.Forms;
 using System.Threading;
 using log4net;
-#if PROTECTED
-using RabGRD;
-#endif
 
 namespace rabdump
 {
@@ -38,34 +35,8 @@ namespace rabdump
                     Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Threaded);
                     try {
 #endif
-#if PROTECTED
-                        bool exit;
-                        do {
-                            exit = true;
-
-                            if (!GRD.Instance.ValidKey()) {
-                                throw new GrdException("Ключ защиты не найден!");
-                            }
-                            if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump)) {
-                                throw new GrdException("Данный ключ защиты не позволяет запуск приложения!");
-                            }
-#endif
                             Application.Run(new MainForm());
-#if PROTECTED
-                            if (!GRD.Instance.ValidKey()) {
-                                exit = false;
-                            }
-                        }
-                        while (!exit);
-#endif
 #if !NOCATCH
-#if PROTECTED
-                    } catch (GrdException exc) {
-                        _logger.Error(exc);
-                        MessageBox.Show(exc.Message + Environment.NewLine + "Пробуем удаленно обновить лицензию",
-                            "Ключ защиты", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        //todo запуск обновления
-#endif
                     } catch (Exception e) {
                         _logger.Error("<exp>", e);
                         MessageBox.Show(e.Message + e.StackTrace);
@@ -89,11 +60,12 @@ namespace rabdump
         {
             _logger.Fatal(ex);
             string msg = "Произошла ошибка. Программа будет закрыта.\n\r" + ex.Message;
-            if (ex.Source == "MySql.Data")
+            if (ex.Source == "MySql.Data") {
                 msg = "Соединение с MySQL-сервером было разорвано.\n\rПрграмма будет закрыта";
-            else if (ex is UnauthorizedAccessException)
+            } else if (ex is UnauthorizedAccessException) {
                 msg = "Произошла ошибка доступа" + Environment.NewLine +
                     "Программу необходимо запустить от Имени администратора";
+            }
             MessageBox.Show(msg, "Серьезная ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 

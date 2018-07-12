@@ -13,7 +13,6 @@ using X_Tools;
 using rabnet;
 
 #if PROTECTED
-using RabGRD;
 using System.Reflection;
 using System.Threading;
 #endif
@@ -50,11 +49,6 @@ namespace rabdump
             RabServWorker.Url = Options.Inst.ServerUrl;
 
             ArchiveJobThread.OnMessage += new MessageSenderCallbackDelegate(messageCb);
-#if PROTECTED
-            miSendGlobRep.Enabled = GRD.Instance.GetFlag(GRD_Base.FlagType.WebReports);
-            //miSendGlobRep.Visible =
-                //miRemoteSeparator.Visible = false;
-#endif
             //_rupd = new RabUpdater();
             //_rupd.MessageSenderCallback = MessageCb;          
             //_rupd.CloseCallback = CloseCb;
@@ -306,18 +300,6 @@ namespace rabdump
             {
                 _updDelayCnt++;
             }
-#if PROTECTED
-            if (!GRD.Instance.ValidKey())
-            {
-                _canclose = true;
-                Close();
-            }
-            if (!GRD.Instance.GetFlag(GRD.FlagType.RabDump))
-            {
-                _canclose = true;
-                Close();
-            }
-#endif
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -426,23 +408,9 @@ namespace rabdump
         private void dongleUpdateThread()
         {
             enableChange(miUpdateKey, false);
-            try
-            {
-#if PROTECTED
+            try {
 
-                string q = GRD.Instance.GetTRUQuestion();
-                ResponceItem ri = RabServWorker.ReqSender.ExecuteMethod(MethodName.ClientGetUpdate,
-                    MPN.question, q);
-                GRD.Instance.SetTRUAnswer(ri.Value as String);
-                messageCb("Обновлено. Требуется перезагрузка.", "", PUP_INFO);
-                Thread.Sleep(2000);
-                restart();
-#elif DEBUG
-            throw new Exception("Как бэ нельзя под дебагом обновлять ключи");
-#endif
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 if (exc.InnerException != null)
                     exc = exc.InnerException;
                 _logger.Warn(exc);

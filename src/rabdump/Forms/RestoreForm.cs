@@ -9,9 +9,6 @@ using log4net;
 using System.Collections.Generic;
 using pEngine;
 using rabnet.RNC;
-#if PROTECTED
-    using RabGRD;
-#endif
 
 namespace rabdump
 {
@@ -100,21 +97,13 @@ namespace rabdump
             DirectoryInfo di = new DirectoryInfo(j.DumpPath);
             string searchName = j.Name.Replace(' ', ArchiveJobThread.SPACE_REPLACE).Replace("_", ArchiveJobThread.UNDERSCORE_REPLACE) + "_" + db.Replace(' ', ArchiveJobThread.SPACE_REPLACE).Replace("_", ArchiveJobThread.UNDERSCORE_REPLACE);
             List<sDump> servDumps = null;
-#if PROTECTED           
-            if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
-            {
-#endif
-#if PROTECTED ||DEBUG
             try {
                 //sDump[] dmps = RabServWorker.ReqSender.ExecuteMethod(MethodName.GetDumpList).Value as sDump[];
                 //servDumps = new List<sDump>(dmps);
             } catch (Exception exc) {
                 log.Warn(exc);
             }
-#endif
-#if PROTECTED               
-            }
-#endif
+
 
             int idx;
             DateTime dtm;
@@ -273,10 +262,6 @@ namespace rabdump
 #endif
                 RestoreRarams p = (RestoreRarams)prms;
 
-#if PROTECTED
-                if (GRD.Instance.GetFlag(GRD.FlagType.ServerDump))
-                {
-#endif
                 if (p.fromServer) {
                     string filepath = RabServWorker.DownloadDump(Path.GetFileName(p.File));
                     if (filepath == "") {
@@ -286,9 +271,6 @@ namespace rabdump
                         File.Move(filepath, p.File);
                     }
                 }
-#if PROTECTED
-                }
-#endif
 
                 ArchiveJobThread.UndumpDB(p.Host, p.Db, p.User, p.Password, p.File);
 #if !NOCATCH

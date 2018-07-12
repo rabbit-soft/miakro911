@@ -96,10 +96,6 @@
       <HintPath>..\..\party3d\ccxmlrpc.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="GuardantDotNetApi, Version=6.3.0.17, Culture=neutral, PublicKeyToken=f52c2a12f8fa28a6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Guardant\SDK7\Lib\windows\GuardantDotNetApi.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\party3d\log4net.dll</HintPath>
@@ -130,18 +126,6 @@
     </Compile>
     <Compile Include="..\libs\gamlib\Helper.Other.cs">
       <Link>classes\Helper.Other.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\GRD\GRDCommon.cs">
-      <Link>classes\GRDCommon.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\GRD\GRD_Base.cs">
-      <Link>classes\GRD_Base.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\GRD\GRD_BaseCodes.cs">
-      <Link>classes\GRD_BaseCodes.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\GRD\GRD_BaseTRU.cs">
-      <Link>classes\GRD_BaseTRU.cs</Link>
     </Compile>
     <Compile Include="..\libs\pEngine\pAppUpdater.cs">
       <Link>remote\pAppUpdater.cs</Link>
@@ -281,22 +265,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\party3d\GrdAPI32.DLL">
-      <Link>GrdAPI32.DLL</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\party3d\GrdAPI64.DLL">
-      <Link>GrdAPI64.DLL</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="icon_white.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <Compile Include="classes\RabnetConfig.ArchiveJobs.cs" />
-    <None Include="gnclient.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

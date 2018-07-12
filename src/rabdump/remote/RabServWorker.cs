@@ -14,7 +14,6 @@ using rabnet.RNC;
 using pEngine;
 using gamlib;
 #if PROTECTED
-    using RabGRD;
 	using System.Reflection;  
 #endif
 
@@ -68,22 +67,10 @@ namespace rabdump
                 {
                     _reqSend = new RabReqSender();
                     _reqSend.Url = _url;
-#if PROTECTED
-                    _reqSend.UserID = GRD.Instance.GetClientID();
-                    _reqSend.Key = GRD.Instance.GetKeyCode();
-                    if (_reqSend.UserID == 0) // если старый ключ
-                    {                        
-                        if (Helper.Array_IsEmpty(_reqSend.Key))
-                        {
-                            byte[] defPass = Encoding.UTF8.GetBytes(DEF_PWD);
-                            Array.Copy(defPass, _reqSend.Key, defPass.Length);
-                        }
-                    }
-#elif DEBUG
+
                     _reqSend.Key = new byte[262];//GRD.KEY_CODE_LENGHT
                     byte[] defPass = Encoding.UTF8.GetBytes("user_with_old_key");
                     Array.Copy(defPass, _reqSend.Key, defPass.Length);
-#endif
                 }
                 return _reqSend;
             }
@@ -313,11 +300,9 @@ namespace rabdump
 
             wc.Encoding = Encoding.UTF8;
             NameValueCollection values = new NameValueCollection();
-#if PROTECTED
-            values.Add("clientId", GRD.Instance.GetClientID().ToString());
-#elif DEBUG
+
             values.Add("clientId", "1");
-#endif
+
             values.Add("file", filename);
             if (offset != -1)
                 values.Add("offset", offset.ToString());
@@ -425,11 +410,7 @@ namespace rabdump
                 UploadFile[] files = new UploadFile[] { fl };
 
                 NameValueCollection values = new NameValueCollection();
-#if PROTECTED
-                values.Add("clientId", GRD.Instance.GetClientID().ToString());
-#elif DEBUG
                 values.Add("clientId", "1");
-#endif
                 values.Add("md5dump", md5dump);
 
                 byte[] result = Helper.UploadFiles(address, files, values);
