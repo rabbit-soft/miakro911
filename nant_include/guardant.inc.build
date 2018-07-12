@@ -56,7 +56,7 @@
 	</target>
 	
 	
-	<target name="protect" depends="buildall,protect_demo" description="Obfuscate and Protect code">
+	<target name="protect" depends="buildall, protect_demo" description="Obfuscate and Protect code">
 		<property name="dir_bin" value="${bindir}/protected/bin"/>
 			
 		<exec program="${obfuscator_eaz}">
