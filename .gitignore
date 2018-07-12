@@ -5,3 +5,6 @@ host_spec.*
 /src/_bin
 /version.txt
 /src/libs/pickers/obj/x86/Debug/*.cache
+/src/bin/Protected/rabdump
+/src/libs/pickers/obj/x86/Protected
+/src/rabdump/obj/Debug

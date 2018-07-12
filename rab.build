@@ -61,7 +61,7 @@
 	
 	<target name="build" depends="clear,buildall" description="Full build" />
 	
-	<target name="buildall" depends="make_tmp_dir,git_info, release, protected,demo" description="Build all projects">
+	<target name="buildall" depends="make_tmp_dir, git_info, release, protected, demo" description="Build all projects">
 		<!--delete dir="${tmpdir}"/-->
 	</target>
 	
@@ -95,8 +95,8 @@
 		<copy file="${mysql.ass}" tofile="${mysql.use}" />
 		<copy file="${rep.ass}" tofile="${rep.use}" />
 		<copy file="${repeng.ass}" tofile="${repeng.use}" />
-		<call target="include_grd_libs" />
-		<call target="include_grd_tools" />
+		<!--call target="include_grd_libs" /-->
+		<!--call target="include_grd_tools" /-->
 		<copy todir="${bin_dir_bin}/reports">
 			<fileset basedir="${srcdir}/rabnet/gui/reports">
 				<include name="*.rdl" />
@@ -187,7 +187,7 @@
 		</csc>
 	</target>
 	
-	<target name="distrib_nsis" depends="protect">
+	<target name="distrib_nsis">
 		<!-- собираем защищенную версию -->
 		<property name="dist_type" value="rabnet_protected" />
 		<property name="bin_dir" value="${bindir}\protected" />
