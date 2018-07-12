@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
-#if PROTECTED
-using RabGRD;
-#endif
 
 namespace rabnet.forms
 {
@@ -24,27 +21,10 @@ namespace rabnet.forms
 
         public static string licFarms()
         {
-#if PROTECTED
-            string info = "";
-            //            return String.Format("Лицензия - {0:d} ферм",PClient.get().farms());
-            info += String.Format("Лицензия{0:s}:", GRD.Instance.GetClientID()>0?" зарегистрирована":"");
-            info += Environment.NewLine;
-            info += String.Format("Владелец - "+ GRD.Instance.GetClientName());
-            info += Environment.NewLine;
-            info += String.Format("Адрес - "+GRD.Instance.GetClientAddress());
-            info += Environment.NewLine;
-            info += String.Format("Ограничение на количство ферм - {0:d}", GRD.Instance.GetFarmsCnt());
-            info += Environment.NewLine;
-            info += String.Format("Период действия - с {0} по {1}", GRD.Instance.GetDateStart().ToShortDateString(), GRD.Instance.GetDateEnd().ToShortDateString());
-            info += Environment.NewLine;
-            info += String.Format("Поддержка до {0}", GRD.Instance.GetSupportEnd().ToShortDateString());
-            return info;
-#else
 #if DEMO
             return string.Format("Демонстрационная версия{0:s}Ограничение на {1:d} ферм", Environment.NewLine,panels.BuildingsPanel.DEMO_MAX_FARMS);
 #else
             return "Без ограничений";
-#endif
 #endif
         }
 

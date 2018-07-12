@@ -9,9 +9,6 @@ using log4net;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using rabnet.forms;
-#if PROTECTED
-using RabGRD;
-#endif
 
 namespace rabnet
 {
@@ -47,36 +44,6 @@ namespace rabnet
 #endif
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-#if PROTECTED
-                    bool exit = true;
-                    do {
-                        exit = true;
-                        int hkey = 0;
-
-                        //while (PClient.get().farms() == -1 && hkey == 0)
-                        while (GRD.Instance.GetFarmsCnt() == -1 && hkey == 0) {
-                            if (MessageBox.Show(null, "Ключ защиты не найден!\nВставьте ключ защиты в компьютер и нажмите кнопку повтор.",
-                                    "Ключ защиты", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel) {
-                                hkey = -1;
-                                break;
-                            }
-                            GRD.Instance.Reconnect();
-                        }
-
-                        if (GRD.Instance.GetFarmsCnt() == -1) {
-                            return;
-                        }
-                        if (!GRD.Instance.GetFlag(GRD_Base.FlagType.RabNet)) {
-                            MessageBox.Show("Программа не может работать с данным ключом защиты");
-                            return;
-                        }
-                        //if (GRD.Instance.GetSupportEnd() < MainForm.BuildDate)
-                        //{
-                        //    _logger.WarnFormat("Support is ending. BuildDate:{0:yyyy-MM-dd} SupportDate: {1:yyyy-MM-dd}", MainForm.BuildDate, GRD.Instance.GetSupportEnd());
-                        //    MessageBox.Show("Дата поддержки истекла. Свежие версии не доступны для данной лицензии. Свяжитесь с разработчиком.");
-                        //    return;
-                        //}                        
-#endif
                         LoginForm lf = new LoginForm();
                         LoginForm.stop = false;
                         while (!LoginForm.stop) {
@@ -84,20 +51,7 @@ namespace rabnet
                             if (lf.ShowDialog() == DialogResult.OK) {
                                 Application.Run(new MainForm());
                             }
-#if PROTECTED
-                            if (GRD.Instance.GetFarmsCnt() == -1) {
-                                LoginForm.stop = true;
-                            }
-#endif
                         }
-#if PROTECTED
-                        if (GRD.Instance.GetFarmsCnt() == -1) {
-                            exit = false;
-                        }
-                    }
-                    while (!exit);
-
-#endif
 #if !ONLYONE
                 } else {   //new_instance
                     SwitchRabWindow();

@@ -535,11 +535,6 @@ namespace rabnet.panels
             }
 
             try {
-#if PROTECTED
-                if (!RabGRD.GRD.Instance.GetFlag(RabGRD.GRD_Base.FlagType.Genetics)) {
-                    throw new Exception("Текущая лицензия не распространяется на данный модуль");
-                }
-#endif
                 if (GeneticsManagerSafe.GeneticsModuleTest()) {
                     for (int i = 0; i < listView1.SelectedItems.Count; i++)
                         GeneticsManagerSafe.AddNewGenetics(((listView1.SelectedItems[i].Tag as AdultRabbit).ID));

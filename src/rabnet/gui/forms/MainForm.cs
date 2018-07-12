@@ -5,10 +5,6 @@ using log4net;
 using System.Xml;
 using rabnet.panels;
 
-#if PROTECTED
-using RabGRD;
-#endif
-
 namespace rabnet.forms
 {
     internal delegate void WorkingHandler();
@@ -102,13 +98,6 @@ namespace rabnet.forms
 #if !DEMO            
             Engine.db().ArchLogs();
             checkPlugins();
-#if PROTECTED
-            EPasportForm.CheckSelfCidInDb();
-            uint elapsed = (uint)GRD.Instance.GetDateEnd().Subtract(DateTime.Now).Days;
-            if (elapsed <= 10) {
-                MessageBox.Show(String.Format("Срок лицензии истекает через {0:d} дней", elapsed));
-            }
-#endif
 #endif
 
 #if PROTECTED || DEMO
@@ -122,36 +111,24 @@ namespace rabnet.forms
 #if !DEMO
         private void checkPlugins()
         {
-#if PROTECTED
-            if (GRD.Instance.GetFlag(GRD.FlagType.ReportPlugIns)) {
-#endif
-                if (ReportBase.CheckPlugins() != 0) {
-                    tsmiReports.DropDownItems.Add(new ToolStripSeparator());
-                    foreach (ReportBase p in ReportBase.Plugins) {
-                        ToolStripMenuItem menu = new ToolStripMenuItem(p.MenuText);
-                        menu.Tag = p.UniqueName;
-                        menu.Click += new EventHandler(reportPluginMenu_Click);
-                        tsmiReports.DropDownItems.Add(menu);
-                    }
+            if (ReportBase.CheckPlugins() != 0) {
+                tsmiReports.DropDownItems.Add(new ToolStripSeparator());
+                foreach (ReportBase p in ReportBase.Plugins) {
+                    ToolStripMenuItem menu = new ToolStripMenuItem(p.MenuText);
+                    menu.Tag = p.UniqueName;
+                    menu.Click += new EventHandler(reportPluginMenu_Click);
+                    tsmiReports.DropDownItems.Add(menu);
                 }
-#if PROTECTED
             }
-#endif
         }
 
         private void reportPluginMenu_Click(object sender, EventArgs e)
         {
             try {
-#if PROTECTED
-                if (GRD.Instance.GetFlag(GRD.FlagType.ReportPlugIns)) {
-#endif
-                    ReportBase p = ReportBase.GetPluginByName((sender as ToolStripMenuItem).Tag.ToString());
-                    if (p != null) {
-                        p.MakeReport();
-                    }
-#if PROTECTED
+                ReportBase p = ReportBase.GetPluginByName((sender as ToolStripMenuItem).Tag.ToString());
+                if (p != null) {
+                    p.MakeReport();
                 }
-#endif
             } catch (Exception exc) {
                 _logger.Error(exc);
                 MessageBox.Show(exc.Message);
@@ -211,11 +188,7 @@ namespace rabnet.forms
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 #if !DEMO
-            if (
-#if PROTECTED
-GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
-#endif
- Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE) == 1) {
+            if (Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE) == 1) {
                 //CAS.ScaleForm.StopMonitoring();
             }
 #endif
@@ -260,24 +233,6 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
         {
             tNoWorking.Stop();
             tNoWorking.Start();
-#if PROTECTED
-            if (timeToPTest() && (DateTime.Today < GRD.Instance.GetDateStart() || DateTime.Today > GRD.Instance.GetDateEnd())) {
-                MessageBox.Show("Срок дейсвия лицензии истек!" + Environment.NewLine +
-                                "Ваша лицензия позволяла работать с " + GRD.Instance.GetDateStart().ToShortDateString() + " по " + GRD.Instance.GetDateEnd().ToShortDateString() + Environment.NewLine +
-                                "Для продления обратитесь к продавцу у которого вы приобрели программу." + Environment.NewLine + "Программа будет закрыта.", "Истекла лицензия", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                Environment.Exit(101);
-            }
-        }
-
-        private bool timeToPTest()
-        {
-            TimeSpan testDelay = DateTime.Now.Subtract(_lastPTest);
-            bool res = testDelay.TotalSeconds >= PTEST_DELAY_SEC;
-            if (res) {
-                _lastPTest = DateTime.Now;
-            }
-            return res;
-#endif
         }
         /// <summary>
         /// Сбрасывает таймер простоя. Тем самым обозначает что с программой работают.
@@ -310,22 +265,6 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
 
         public void ptest(int farms)
         {
-#if PROTECTED
-            String msg = "";
-            //            GRD.Instance.ValidKey();
-            if (!GRD.Instance.ValidKey()) {
-                msg = "Ключ защиты не найден.";
-            }
-            if (farms > 0 && farms > GRD.Instance.GetFarmsCnt()) {
-                msg = "Превышено количество разрешенных ферм.";
-            }
-            if (msg != "") {
-                MessageBox.Show(this, msg + "\nПрограмма будет закрыта.", "Ошибка защиты", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                LoginForm.stop = true;
-                _mustclose = true;
-                Environment.Exit(100);
-            }
-#endif
 #if DEMO
             if (farms > BuildingsPanel.DEMO_MAX_FARMS) {
                 MessageBox.Show(this, "Превышено количество разрешенных ферм." + Environment.NewLine + "Программа будет закрыта.", "Демонстрационная версия", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -337,6 +276,7 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
             }
 #endif
         }
+
         private void MainForm_MouseMove(object sender, MouseEventArgs e)
         {
             Working();
@@ -559,15 +499,7 @@ GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
 
         private void tsmiOptions_DropDownOpening(object sender, EventArgs e)
         {
-#if !DEMO
-            miScale.Visible =
-#if PROTECTED
- GRD.Instance.GetFlag(GRD.FlagType.Butcher) &&
-#endif
- Engine.opt().getIntOption(Options.OPT_ID.BUCHER_TYPE) == 1;
-#else
             miScale.Visible = false;
-#endif
         }
 
         //private void AddPluSummary(int pluID, string pluPN1, int pluTSell, int TSumm, int TWeight, DateTime LastClear)

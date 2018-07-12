@@ -325,15 +325,10 @@ namespace rabnet.forms
             fillList(breed, _breeds, _rab.BreedID);
             _zones = cts.getZones();
             if (_rab.BirthPlace == 0) {
-                if (_rab.Zone != 0)
+                if (_rab.Zone != 0) {
                     fillList(cbZone, _zones, _rab.Zone);
-#if !DEMO
-#if PROTECTED
-                else {
-                    cbZone.Items.Add(EPasportForm.GetThisClient().Name);
-                    cbZone.SelectedIndex = 0;
                 }
-#endif
+#if !DEMO
             } else {//если кролик импортирован            
                 ClientsList cl = Engine.db().GetClients();
                 cbZone.Items.Add(cl.GetName(_rab.BirthPlace));

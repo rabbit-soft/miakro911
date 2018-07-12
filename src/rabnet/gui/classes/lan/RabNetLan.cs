@@ -86,8 +86,9 @@ namespace rabnet
                         ufiles.RemoveAt(i);
                         continue;
                     }
-                    if (ufiles[i].Name == "rabnet.exe")
+                    if (ufiles[i].Name == "rabnet.exe") {
                         update = Helper.VersionCompare(ufiles[i].Version, curVer) == 1;
+                    }
                     i++;
                 }
             }

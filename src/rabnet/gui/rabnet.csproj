@@ -91,10 +91,6 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GuardantDotNetApi, Version=7.0.193.0, Culture=neutral, PublicKeyToken=f52c2a12f8fa28a6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Guardant\SDK7\Bin\GuardantDotNetApi.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\party3d\log4net.dll</HintPath>
@@ -135,12 +131,6 @@
     </Compile>
     <Compile Include="..\..\libs\gamlib\Helper.Other.cs">
       <Link>classes\Helper.Other.cs</Link>
-    </Compile>
-    <Compile Include="..\..\libs\GRD\GRD_Base.cs">
-      <Link>classes\GRD_Base.cs</Link>
-    </Compile>
-    <Compile Include="..\..\libs\GRD\GRD_BaseCodes.cs">
-      <Link>classes\GRD_BaseCodes.cs</Link>
     </Compile>
     <Compile Include="..\..\libs\pEngine\xxTEA.cs">
       <Link>classes\xxTEA.cs</Link>
@@ -906,14 +896,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="changeLog.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="C:\Program Files %28x86%29\Guardant\SDK7\Lib\windows\x64\GrdAPI64.dll">
-      <Link>GrdAPI64.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="C:\Program Files %28x86%29\Guardant\SDK7\Lib\windows\x86\GrdAPI32.dll">
-      <Link>GrdAPI32.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="icon_green.ico" />

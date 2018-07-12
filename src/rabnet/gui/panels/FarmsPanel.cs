@@ -9,9 +9,6 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using rabnet.RNC;
 using gamlib;
-#if PROTECTED
-using RabGRD;
-#endif
 
 namespace rabnet
 {
@@ -148,11 +145,6 @@ namespace rabnet
                 tbDB.ReadOnly =
                 tbUser.ReadOnly =
                 tbPass.ReadOnly = readOnly;
-#if PROTECTED
-            if(GRD.Instance.GetFlag(GRD.FlagType.WebReports)) {
-                chWebReport.Enabled = !readOnly;
-            }
-#endif
         }
 
         private void chCreate_CheckedChanged(object sender, EventArgs e)

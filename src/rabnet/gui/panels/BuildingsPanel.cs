@@ -13,9 +13,6 @@ using rabnet.components;
 using rabnet.forms;
 using rabnet.filters;
 using System.Text.RegularExpressions;
-#if PROTECTED
-using RabGRD;
-#endif
 
 namespace rabnet.panels
 {
@@ -141,11 +138,7 @@ namespace rabnet.panels
             ///ищем предлагаемые имена
             _freeFarmsId = getNewFarmCandidates(busyFarmsId);
             int allowFarms = 0;
-#if PROTECTED
-            allowFarms = GRD.Instance.GetFarmsCnt() - Engine.db().getMFCount();
-#elif DEMO
-            allowFarms = DEMO_MAX_FARMS - Engine.db().getMFCount();
-#endif
+
             if (allowFarms > 0 && _freeFarmsId.Count > allowFarms) {
                 int last = _freeFarmsId[_freeFarmsId.Count - 1];
                 _freeFarmsId = _freeFarmsId.GetRange(0, allowFarms - 1);
@@ -665,13 +658,7 @@ namespace rabnet.panels
             if (isFarm()) {
                 return;
             }
-            if (_freeFarmsId.Count == 0
-#if DEMO
-                || Engine.db().getMFCount() >= DEMO_MAX_FARMS
-#elif PROTECTED
-                || Engine.db().getMFCount() >= GRD.Instance.GetFarmsCnt()
-#endif
-) {
+            if (_freeFarmsId.Count == 0) {
                 MessageBox.Show("Достигнуто максимальное количество ферм.");
                 return;
             }

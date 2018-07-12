@@ -14,9 +14,6 @@ using System.IO;
 using System.Xml;
 using gamlib;
 using org.phprpc.util;
-#if PROTECTED
-using RabGRD;
-#endif
 
 namespace rabnet.forms
 {
@@ -71,16 +68,7 @@ namespace rabnet.forms
         protected EPasportForm()
         {
             InitializeComponent();
-#if PROTECTED
-            //int clientId = GRD.Instance.GetClientID();
-            //string clientName = GRD.Instance.GetOrganizationName();
-            Client c = GetThisClient();
-            if (c.ID == 0) {
-                throw new RabNetException("Клиент не зарегистрирован. Чтобы экспортировать кролика, вам необходимо зарегистрировать свою ферму на сервере разработчика.");
-            }
-#else
-            Client c = new Client(int.MaxValue, "Гамбито ферма", "Here");
-#endif
+            Client c = new Client(int.MaxValue, "ферма", "Here");
 
             _rabExport = new RabExporter(c, Engine.get().GetDBGuid());
             _breeds = Engine.db().GetBreeds();
@@ -90,24 +78,7 @@ namespace rabnet.forms
                 lvNames.ListViewItemSorter =
                 lvBreeds.ListViewItemSorter = new LVSorter();
         }
-#if PROTECTED
-        public static Client GetThisClient()
-        {
-            int id = GRD.Instance.GetClientID();
-            string name = GRD.Instance.GetClientName();
-            string address = GRD.Instance.GetClientAddress();
-            return new Client(id,name,address);
-        }
 
-        public static void CheckSelfCidInDb()
-        {
-            Client c = EPasportForm.GetThisClient();
-            if (c.ID != 0)
-            {
-                checkClientInDb(c);
-            }
-        }
-#endif
         private static void checkClientInDb(Client client)
         {
             ClientsList list = Engine.db().GetClients();
@@ -227,14 +198,10 @@ namespace rabnet.forms
 
         private bool exportToFile()
         {
-            saveFileDialog1.FileName = String.Format("{0:s}_{1:s}_{2:s}",
-#if PROTECTED
-                    GRD.Instance.GetClientName(),
-#else
- "Гамбито ферма \"Пыщт-Пыщь\" ",
-#endif
- Engine.get().FarmName, DateTime.Now.ToShortDateString()).Replace("\"", "");
-            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return false;
+            saveFileDialog1.FileName = String.Format("{0:s}_{1:s}_{2:s}", "Гамбито ферма \"Пыщт-Пыщь\" ", Engine.get().FarmName, DateTime.Now.ToShortDateString()).Replace("\"", "");
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK) {
+                return false;
+            }
 
             string data = _rabExport.Export(getRabForExport(), getAscendantsForExport(), getBreedsForExport(), getNamesForExport());
             makeExportFile(saveFileDialog1.OpenFile(), data);

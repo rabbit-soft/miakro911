@@ -20,7 +20,7 @@
 	</if>
 	<include buildfile="${host_spec_path}/host_spec.include" /-->
 	<include buildfile="./host_spec.include" />
-	<include buildfile="./nant_include/guardant.inc.build" />
+	<!--include buildfile="./nant_include/guardant.inc.build" /-->
 	<include buildfile="./nant_include/compilation.inc.build" />
 	<include buildfile="./nant_include/firmuper.inc.build" />
 	<!--if test="${path::get-file-name(project::get-base-directory())!='trunk'}">
@@ -80,7 +80,7 @@
 		<delete dir="${bin_dir}" />
 		<mkdir dir="${bin_dir}" />
 		<mkdir dir="${bin_dir}/7z" />
-		<mkdir dir="${bin_dir}/Guardant" />
+		<!--mkdir dir="${bin_dir}/Guardant" /-->
 		<mkdir dir="${bin_dir}/bin" />
 		
 		<property name="bin_dir_bin" value="${bin_dir}/bin" />
