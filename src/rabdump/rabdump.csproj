@@ -18,6 +18,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,7 +33,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,10 +92,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ccxmlrpc, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\party3d\ccxmlrpc.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\party3d\log4net.dll</HintPath>
@@ -109,9 +105,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\GrdRemoteUpdate\Admin\engine\Structures.cs">
-      <Link>remote\Structures.cs</Link>
-    </Compile>
     <Compile Include="..\libs\gamlib\AppUpdater.cs">
       <Link>remote\AppUpdater.cs</Link>
     </Compile>
@@ -129,9 +122,6 @@
     </Compile>
     <Compile Include="..\libs\pEngine\pException.cs">
       <Link>remote\pException.cs</Link>
-    </Compile>
-    <Compile Include="..\libs\pEngine\xxTEA.cs">
-      <Link>remote\xxTEA.cs</Link>
     </Compile>
     <Compile Include="..\mia_conv\miaExitCode.cs">
       <Link>classes\miaExitCode.cs</Link>
@@ -166,12 +156,6 @@
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PaymentForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PaymentForm.Designer.cs">
-      <DependentUpon>PaymentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\WaitForm.cs">
       <SubType>Form</SubType>
@@ -216,7 +200,6 @@
     <Compile Include="Forms\RestoreForm.Designer.cs">
       <DependentUpon>RestoreForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="remote\SockServ.cs" />
     <Compile Include="Properties\VerInfo.cs" />
     <Compile Include="classes\x_tools.cs" />
   </ItemGroup>
@@ -227,10 +210,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PaymentForm.resx">
-      <DependentUpon>PaymentForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RestoreForm.resx">
       <DependentUpon>RestoreForm.cs</DependentUpon>
