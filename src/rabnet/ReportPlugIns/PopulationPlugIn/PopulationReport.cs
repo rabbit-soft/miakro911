@@ -8,8 +8,11 @@ namespace rabnet
 {
     public class PopulationReport : ReportBase
     {
-        private string[] XCL_HEADERS = new string[] { "Месяц", "Год", "Кол-во на начальный период", "Приход всего", "Родилось", 
-            "Приоретено","Списано всего","Убой","Продажа племенного поголовья","Падеж","Другие причины","Кол-во на конец периода" };
+        private string[] XCL_HEADERS = new string[] { 
+            "Месяц", "Год", "Кол-во на начальный период", "Приход всего", "Родилось", 
+            "Приоретено", "Списано всего", "Убой", "Продажа племенного поголовья", "Падеж", "Другие причины", "Кол-во на конец периода" 
+        };
+
         public PopulationReport() : base("population", "Наличие и движение поголовья за период") { }
 
         public override void MakeReport()
@@ -27,10 +30,11 @@ namespace rabnet
                         continue;
                     }
                     Filters f = new Filters("date", dt.ToString("yyyy-MM-dd"));
-                    if (doc.ChildNodes.Count == 0)
+                    if (doc.ChildNodes.Count == 0) {
                         doc = Engine.db().makeReport(getSQL(f));
-                    else
+                    } else {
                         doc.FirstChild.AppendChild(doc.ImportNode(Engine.db().makeReport(getSQL(f)).SelectSingleNode("Rows/Row"), true));
+                    }
                     dt = dt.AddMonths(1);
                 }
                 ReportViewForm rvf = new ReportViewForm(MenuText, FileName, new XmlDocument[] { doc }, XCL_HEADERS);
@@ -46,16 +50,16 @@ namespace rabnet
             return String.Format(@"create temporary table aaa as SELECT
   CONCAT('{2:s}',IF(Month(NOW())='{4:d}' AND Year(NOW())={3:d},' (now)','')) month,
   '{3:d}' year,
-  (SELECT Coalesce(sum(r_group),0) FROM rabbits WHERE r_born<'{0:s}') + (SELECT Coalesce(sum(r_group),0) FROM dead WHERE r_born<'{0:s}' AND d_date>='{0:s}') bcount,
-  (SELECT Coalesce(sum(f_children+f_added),0) FROM fucks where f_state='okrol' AND f_end_date>='{0:s}' AND f_end_date<'{1:s}') born,
+  (SELECT Coalesce(sum(r_group),0) FROM rabbits WHERE r_born<'{0:s}') + (SELECT Coalesce(sum(r_group),0) FROM dead WHERE r_born < '{0:s}' AND d_date >= '{0:s}') bcount,
+  (SELECT Coalesce(sum(f_children+f_added),0) FROM fucks where f_state = 'okrol' AND f_end_date >= '{0:s}' AND f_end_date < '{1:s}') born,
   (SELECT Coalesce(sum(t_count),0) FROM import WHERE t_date>= '{0:s}' AND t_date<'{1:s}') buy,
-#(select Coalesce(sum(r_group),0) FROM dead WHERE d_reason>2 AND d_date>='{0:s}' AND d_date<'{1:s}') gonetotal,
-  (SELECT Coalesce(sum(r_group),0) FROM dead WHERE d_reason=3 AND d_date>='{0:s}' AND d_date<'{1:s}' ) killed,
-  (SELECT Coalesce(sum(r_group),0) FROM dead WHERE d_reason=4 AND d_date>='{0:s}' AND d_date<'{1:s}') sell,
-  (SELECT Coalesce(sum(r_group),0) FROM dead WHERE (d_reason=5 OR d_reason=6) AND d_date>='{0:s}' AND d_date<'{1:s}' ) dying,
-  (SELECT Coalesce(sum(r_group),0) FROM dead WHERE d_reason>6 AND d_date>='{0:s}' AND d_date<'{1:s}' ) another,  
-  (SELECT Coalesce(sum(r_group),0) FROM rabbits WHERE r_born<'{1:s}') + (SELECT Coalesce(sum(r_group),0) FROM dead WHERE r_born<'{1:s}' AND d_date>='{1:s}') ecount;
-SELECT `month`, `year`, bcount, (born+buy) income,born, buy,(killed+dying+sell+another) gonetotal, killed, dying, sell, another, ecount FROM aaa;
+#(select Coalesce(sum(r_group),0) FROM dead WHERE d_reason > 2 AND d_date >= '{0:s}' AND d_date < '{1:s}') gonetotal,
+  (SELECT Coalesce(sum(r_group),0) FROM dead WHERE d_reason = 3 AND d_date >= '{0:s}' AND d_date < '{1:s}' ) killed,
+  (SELECT Coalesce(sum(r_group),0) FROM dead WHERE d_reason = 4 AND d_date >= '{0:s}' AND d_date < '{1:s}') sell,
+  (SELECT Coalesce(sum(r_group),0) FROM dead WHERE (d_reason = 5 OR d_reason = 6) AND d_date >= '{0:s}' AND d_date < '{1:s}' ) dying,
+  (SELECT Coalesce(sum(r_group),0) FROM dead WHERE d_reason > 6 AND d_date >= '{0:s}' AND d_date < '{1:s}' ) another,  
+  (SELECT Coalesce(sum(r_group),0) FROM rabbits WHERE r_born < '{1:s}') + (SELECT Coalesce(sum(r_group),0) FROM dead WHERE r_born < '{1:s}' AND d_date >= '{1:s}') ecount;
+SELECT `month`, `year`, bcount, (born+buy) income, born, buy, (killed+dying+sell+another) gonetotal, killed, dying, sell, another, ecount FROM aaa;
 drop temporary table aaa;",
                 dt.ToString("yyyy-MM-dd"), dt.AddMonths(1).ToString("yyyy-MM-dd"), toRusMonth(dt.Month), dt.Year, dt.Month);
         }

@@ -243,7 +243,7 @@
 	<target name="plugins" description="Make report plug ins"> 
 		<delete dir="${bindir.plugins}"/>
 		<mkdir dir="${bindir.plugins}"/>
-		<call target="populationplugin"/>
+		<!-- временно убрали call target="populationplugin"/>
 		<call target="okrolplanplugin"/>
 		<call target="FemaleSummary" />
 		<call target="TotalRevisionPlugIn" />
