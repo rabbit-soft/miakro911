@@ -21,8 +21,7 @@
 	<include buildfile="${host_spec_path}/host_spec.include" /-->
 	<include buildfile="./host_spec.include" />
 	<!--include buildfile="./nant_include/guardant.inc.build" /-->
-	<include buildfile="./nant_include/compilation.inc.build" />
-	<include buildfile="./nant_include/firmuper.inc.build" />
+	<include buildfile="./nant_include/compilation.inc.build" />	
 	<!--if test="${path::get-file-name(project::get-base-directory())!='trunk'}">
 		<property name="build.version" value="${path::get-file-name(directory::get-parent-directory(project::get-base-directory()))}" unless="${property::exists('build.version')}" />
 		<echo message="Build version base from directory name: ${build.version}" />
@@ -166,7 +165,7 @@
 		<call target="compile_demo" />
 	</target>
 	
-	<target name="compile" depends="miaconv, updater, rabnet, rabdump, plugins, firmuper" />
+	<target name="compile" depends="miaconv, updater, rabnet, rabdump, plugins" />
 	
 	<target name="compile_demo" depends="miaconv, updater, rabnet_demo">
 		<!--xmlpoke file="${bindir}/demo/RabNet/rabnet.exe.config" xpath="/configuration/log4net/root/level/@value" value="ERROR" /-->

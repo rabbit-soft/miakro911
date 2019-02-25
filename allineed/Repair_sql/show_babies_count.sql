@@ -1,1 +1,0 @@
-﻿select r_id,rabname(r_id,2) name, r_lost_babies,r_overall_babies from rabbits where r_sex='female';
