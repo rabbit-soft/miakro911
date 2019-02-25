@@ -11,7 +11,6 @@
 - .NET Framework 3.5 SDK <https://www.microsoft.com/en-us/download/details.aspx?id=3138>
 - Eazfuscator.NET 3.1
 - NSIS
-- так же необходим Электронный ключ защиты Guardant USB Dongle SignIII
 	
 ## подготовка к сборке
 	
