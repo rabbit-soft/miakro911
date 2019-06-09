@@ -93,7 +93,10 @@ namespace rabnet
         void makeProholost(int female, int daysPast);
         int makeOkrol(int female, int daysPast, int children, int dead);
         String makeName(int nm, int sur, int sec, int grp, Rabbit.SexType sex);
+        RabName GetName(int id);
         bool unblockName(int id);
+        bool CanDeleteName(int id);
+        bool deleteName(int id);
 
         BuildingList getBuildings(Filters f);
         void replaceRabbit(int rid, int farm, int floor, int sec);

@@ -30,6 +30,7 @@ namespace rabnet
             this.Use = use;
             this.ReleaseDate = dt;
         }
+
         public RabName(int id, String name, String surname, String sex):this(id, name, surname, sex,0,DateTime.MinValue)
         {
         }

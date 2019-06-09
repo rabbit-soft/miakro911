@@ -19,7 +19,7 @@ namespace db.mysql
         {
             String w = "";
             if (options.safeInt("sex") != 0) {
-                w = "n_sex='" + (options.safeInt("sex") == 1 ? "male" : "female") + "'";
+                w = "n_sex = '" + (options.safeInt("sex") == 1 ? "male" : "female") + "'";
             }
             if (options.ContainsKey("state")) {
                 if (options.safeInt("state") == 1) {
@@ -50,7 +50,7 @@ namespace db.mysql
 
         public static int AddName(MySqlConnection sql, Rabbit.SexType sex, String name, String surname)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO names(n_sex,n_name,n_surname,n_block_date) 
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"INSERT INTO names(n_sex, n_name, n_surname, n_block_date) 
 VALUES('{0:s}','{1:s}','{2:s}',NULL);", (sex == Rabbit.SexType.FEMALE) ? "female" : "male", name, surname), sql);
             cmd.ExecuteNonQuery();
             if (cmd.LastInsertedId > int.MaxValue) {///it can't be
@@ -58,9 +58,10 @@ VALUES('{0:s}','{1:s}','{2:s}',NULL);", (sex == Rabbit.SexType.FEMALE) ? "female
             }
             return (int)cmd.LastInsertedId;
         }
+
         public static void changeName(MySqlConnection sql, string orgName, string name, string surname)
         {
-            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE names SET n_name='{0:s}',n_surname='{1:s}' 
+            MySqlCommand cmd = new MySqlCommand(String.Format(@"UPDATE names SET n_name='{0:s}', n_surname='{1:s}' 
 WHERE n_name='{2:s}';", name, surname, orgName), sql);
             cmd.ExecuteNonQuery();
         }
@@ -77,13 +78,13 @@ WHERE n_name='{2:s}';", name, surname, orgName), sql);
             if (cmd.ExecuteScalar().ToString() != "0") {
                 return false;
             }
+
             cmd.CommandText = String.Format("UPDATE names SET n_block_date=null WHERE n_id = {0:d};", id);
             cmd.ExecuteNonQuery();
             return true;
         }
 
-
-        internal static RabNamesList GetNames(MySqlConnection sql)
+        public static RabNamesList GetNames(MySqlConnection sql)
         {
             RabNamesList result = new RabNamesList();
             MySqlCommand cmd = new MySqlCommand("SELECT n_id, n_sex, n_name, n_surname, n_use, n_block_date FROM names ORDER BY n_name;", sql);
@@ -103,6 +104,35 @@ WHERE n_name='{2:s}';", name, surname, orgName), sql);
                 DBHelper.GetNullableInt(rd, "n_use"),
                 rd.IsDBNull(rd.GetOrdinal("n_block_date")) ? DateTime.MinValue : rd.GetDateTime("n_block_date")
             );
+        }
+
+        public static bool CanDeleteName(MySqlConnection sql, int id)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT COUNT(1) FROM rabbits WHERE r_name = {0:d} OR r_surname = {0:d} OR r_secname = {0:d};", id), sql);
+
+            int cnt = Convert.ToInt32(cmd.ExecuteScalar());
+            return cnt == 0;
+        }
+
+        public static bool deleteName(MySqlConnection sql, int id)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("DELETE FROM names WHERE n_id = {0:d};", id), sql);
+
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+
+        public static RabName GetName(MySqlConnection sql, int id)
+        {
+            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT n_id, n_sex, n_name, n_surname, n_use, n_block_date FROM names WHERE n_id = {0:d};", id), sql);
+            MySqlDataReader rd = cmd.ExecuteReader();
+            RabName n = null;
+            if (rd.Read()) {
+                n = Names.fillName(rd);
+            }
+            rd.Close();
+
+            return n;
         }
     }
 }

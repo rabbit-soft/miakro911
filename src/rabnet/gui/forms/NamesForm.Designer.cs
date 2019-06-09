@@ -38,8 +38,8 @@ namespace rabnet.forms
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miUnBlock = new System.Windows.Forms.ToolStripMenuItem();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
+            this.btAdd = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,15 +50,16 @@ namespace rabnet.forms
             this.tpMale = new System.Windows.Forms.TabPage();
             this.tpFemale = new System.Windows.Forms.TabPage();
             this.rabStatusBar1 = new rabnet.components.RabStatusBar();
+            this.btDelete = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // listView1
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -104,40 +105,40 @@ namespace rabnet.forms
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miUnBlock});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(190, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(189, 26);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // miUnBlock
             // 
             this.miUnBlock.Name = "miUnBlock";
-            this.miUnBlock.Size = new System.Drawing.Size(189, 22);
+            this.miUnBlock.Size = new System.Drawing.Size(188, 22);
             this.miUnBlock.Text = "Разблокировать имя";
             this.miUnBlock.Click += new System.EventHandler(this.miUnBlock_Click);
             // 
-            // button2
+            // btCancel
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(500, 159);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(70, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCancel.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btCancel.Enabled = false;
+            this.btCancel.Location = new System.Drawing.Point(500, 182);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(70, 23);
+            this.btCancel.TabIndex = 4;
+            this.btCancel.Text = "Отмена";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button1
+            // btAdd
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(500, 124);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(70, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Добавить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btAdd.Enabled = false;
+            this.btAdd.Location = new System.Drawing.Point(500, 124);
+            this.btAdd.Name = "btAdd";
+            this.btAdd.Size = new System.Drawing.Size(70, 23);
+            this.btAdd.TabIndex = 3;
+            this.btAdd.Text = "Добавить";
+            this.btAdd.UseVisualStyleBackColor = true;
+            this.btAdd.Click += new System.EventHandler(this.button1_Click);
             // 
             // label4
             // 
@@ -240,7 +241,9 @@ namespace rabnet.forms
             // rabStatusBar1
             // 
             this.rabStatusBar1.ExcelButtonClick = null;
+            this.rabStatusBar1.FilterOn = false;
             this.rabStatusBar1.FilterPanel = null;
+            this.rabStatusBar1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.rabStatusBar1.Location = new System.Drawing.Point(0, 339);
             this.rabStatusBar1.Name = "rabStatusBar1";
             this.rabStatusBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -251,16 +254,27 @@ namespace rabnet.forms
             this.rabStatusBar1.OnFinishUpdate += new rabnet.components.RSBEventHandler(this.rabStatusBar1_OnFinishUpdate);
             this.rabStatusBar1.ItemGet += new rabnet.components.RSBItemEventHandler(this.rabStatusBar1_itemGet);
             // 
+            // btDelete
+            // 
+            this.btDelete.Location = new System.Drawing.Point(500, 153);
+            this.btDelete.Name = "btDelete";
+            this.btDelete.Size = new System.Drawing.Size(70, 23);
+            this.btDelete.TabIndex = 8;
+            this.btDelete.Text = "Удалить";
+            this.btDelete.UseVisualStyleBackColor = true;
+            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
+            // 
             // NamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 362);
+            this.Controls.Add(this.btDelete);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btCancel);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.listView1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btAdd);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.rabStatusBar1);
             this.Controls.Add(this.label2);
@@ -296,12 +310,13 @@ namespace rabnet.forms
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btAdd;
+        private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tpFemale;
         private System.Windows.Forms.TabPage tpMale;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem miUnBlock;
+        private System.Windows.Forms.Button btDelete;
     }
 }

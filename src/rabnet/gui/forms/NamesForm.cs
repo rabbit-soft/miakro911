@@ -44,9 +44,9 @@ namespace rabnet.forms
         {
             textBox1.Clear();
             textBox2.Clear();
-            button1.Text = btext[0];
+            btAdd.Text = btext[0];
             this.originName = this.originSurname = null;
-            button1.Enabled = button2.Enabled = false;
+            btAdd.Enabled = btCancel.Enabled = false;
             rabStatusBar1.Run();
         }
 
@@ -95,33 +95,38 @@ namespace rabnet.forms
                 return;
             }
 
-            button1.Enabled = button2.Enabled = true;
+            int id = (int)listView1.SelectedItems[0].Tag;
+            RabName rn = Engine.db().GetName(id);
+            btDelete.Enabled = 0 == rn.Use && rn.ReleaseDate == DateTime.MinValue;
+
+            btAdd.Enabled =  btCancel.Enabled = true;
             try {
                 this.originName = textBox1.Text = listView1.SelectedItems[0].SubItems[0].Text;
                 this.originSurname = textBox2.Text = listView1.SelectedItems[0].SubItems[1].Text;
             } catch (ArgumentOutOfRangeException) {
                 return;
             }
-            button1.Text = btext[1];
+
+            btAdd.Text = btext[1];
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (button1.Text == btext[1]) {
+            if (btAdd.Text == btext[1]) {
                 listView1.SelectedItems.Clear();
             }
 
             textBox1.Clear();
             textBox2.Clear();
-            button1.Text = btext[0];
+            btAdd.Text = btext[0];
             this.originName = this.originSurname = null;
-            button1.Enabled = button2.Enabled = false;
+            btAdd.Enabled = btCancel.Enabled = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             try {
-                if (button1.Text == btext[0]) {
+                if (btAdd.Text == btext[0]) {
                     Rabbit.SexType sx = Rabbit.SexType.MALE;
                     if (tabControl1.SelectedIndex == 1) {
                         sx = Rabbit.SexType.FEMALE;
@@ -138,7 +143,10 @@ namespace rabnet.forms
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (!manual) return;
+            if (!manual) {
+                return;
+            }
+
             manual = false;
 
             String txt = textBox1.Text;
@@ -165,14 +173,14 @@ namespace rabnet.forms
             }
             manual = true;
             if (textBox1.Text != "" && textBox2.Text != "") {
-                button1.Enabled = true;
+                btAdd.Enabled = true;
             } else {
-                button1.Enabled = false;
+                btAdd.Enabled = false;
             }
             if (textBox1.Text != "" || textBox2.Text != "") {
-                button2.Enabled = true;
+                btCancel.Enabled = true;
             } else {
-                button2.Enabled = false;
+                btCancel.Enabled = false;
             }
             if ((sender as TextBox).Name == textBox2.Name) {
                 return;
@@ -185,6 +193,7 @@ namespace rabnet.forms
             if (nm == "") {
                 return nm;
             }
+
             if (nm.EndsWith("ъ")) {
                 nm = nm.Remove(nm.Length - 1);
             }
@@ -195,6 +204,7 @@ namespace rabnet.forms
             if (nm.EndsWith("ч") || nm.EndsWith("ш")) {
                 return nm + "ев";
             }
+
             string[] soglas = new string[] { "ц", "к", "н", "г", "щ", "з", "х", "ф", "в", "п", "р", "л", "д", "ж", "с", "м", "т", "б" };
             for (int i = 0; i < soglas.Length; i++) {
                 if (nm.EndsWith(soglas[i])) {
@@ -244,6 +254,29 @@ namespace rabnet.forms
             listView1.ListViewItemSorter = cs.Clear();
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listView1.Show();
+        }
+
+        private void btDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Удалить имя?", "Удалить имя", MessageBoxButtons.YesNo) != DialogResult.Yes) {
+                return;
+            }
+
+            int id = (int)listView1.SelectedItems[0].Tag;
+
+            RabName rn = Engine.db().GetName(id);
+            if (0 != rn.Use || rn.ReleaseDate != DateTime.MinValue) {
+                MessageBox.Show("Имя используется", "Имя используется", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (false == Engine.db().CanDeleteName(id)) {
+                MessageBox.Show("Имя используется в чьей-то родословной", "Имя используется", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            Engine.db().deleteName(id);
+            rabStatusBar1.Run();
         }
 
     }

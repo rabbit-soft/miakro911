@@ -208,10 +208,12 @@ namespace db.mysql
         {
             return new Youngers(sql, filters);
         }
+
         public YoungRabbitList GetYoungers(int momId)
         {
             return Youngers.GetYoungers(sql, momId);
         }
+
         public OneRabbit[] GetNeighbors(int rabId)
         {
             return RabbitGetter.GetNeighbors(sql, rabId);
@@ -343,9 +345,24 @@ namespace db.mysql
             return RabbitGetter.makeName(sql, nm, sur, sec, grp, sex);
         }
 
+        public RabName GetName(int id)
+        {
+            return Names.GetName(sql, id);
+        }
+
         public bool unblockName(int id)
         {
             return Names.unblockName(sql, id);
+        }
+
+        public bool CanDeleteName(int id)
+        {
+            return Names.CanDeleteName(this.sql, id);
+        }
+
+        public bool deleteName(int id)
+        {
+            return Names.deleteName(this.sql, id);
         }
 
         public RabNamesList GetNames()
