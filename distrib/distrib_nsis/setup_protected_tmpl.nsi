@@ -93,7 +93,6 @@ Section $(SEC_Rabnet_NAME) SEC_Rabnet
     SetOverwrite on
 	
 	Call InstBothReqFiles
-	Call InstGrdFiles
 	
     File ${BinDir}\bin\rabnet.exe
 	File ${BinDir}\bin\rabnet.exe.config	   
@@ -138,7 +137,6 @@ Section $(SEC_RabDump_NAME) SEC_RabDump
     SetOverwrite on
 	
 	Call InstBothReqFiles
-	Call InstGrdFiles	
 	
 	File ${BinDir}\bin\rabdump.exe
 	File ${BinDir}\bin\rabdump.exe.config
@@ -261,11 +259,7 @@ Section un.$(SEC_Rabnet_NAME) UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\bin\rabHelp.chm
     Delete /REBOOTOK $INSTDIR\bin\RdlEngine.dll
     Delete /REBOOTOK $INSTDIR\bin\log4net.dll
-    Delete /REBOOTOK $INSTDIR\bin\RdlViewer.dll
-    Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
-    Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
-    Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
-    Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
+    Delete /REBOOTOK $INSTDIR\bin\RdlViewer.dll    
 	#Delete /REBOOTOK $INSTDIR\bin\CAS.dll		
 	Delete /REBOOTOK $INSTDIR\bin\changeLog.txt
 	Delete /REBOOTOK $INSTDIR\bin\SplitButton.dll
@@ -279,9 +273,6 @@ SectionEnd
 
 Section un.$(SEC_RabDump_NAME) UNSEC_RabDump
     Call un.CloseAll
-
-    Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
-    Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
 	
 	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
 	
@@ -402,13 +393,6 @@ Function CloseRabDump
     done:
     Pop $5
 
-FunctionEnd
-
-Function InstGrdFiles
-	File ${BinDir}\bin\GrdAPI32.DLL
-    File ${BinDir}\bin\GrdAPI64.DLL
-	File ${BinDir}\bin\CodeStorage32.dll
-    File ${BinDir}\bin\CodeStorage64.dll
 FunctionEnd
 
 # Uninstaller functions
