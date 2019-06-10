@@ -262,9 +262,9 @@
 				<include name="${rdlfile}"/>
 			</resources>
 			<references>
-				<include name="${bindir}/Protected/bin/rabnet.exe" />
-				<include name="${bindir}/Protected/bin/db.Interface.dll" />
-				<include name="${bindir}/Protected/bin/engine.dll" />
+				<include name="${bin_dir_bin}/bin/rabnet.exe" />
+				<include name="${bin_dir_bin}/bin/db.Interface.dll" />
+				<include name="${bin_dir_bin}/bin/engine.dll" />
 			</references>
 		</csc>
 	</target>
@@ -284,9 +284,9 @@
 				<include name="${srcdir}/rabnet/gui/forms/BuildTreeForm.resx"/>
 			</resources>
 			<references>
-				<include name="${bindir}/Protected/bin/rabnet.exe" />
-				<include name="${bindir}/Protected/bin/db.Interface.dll" />
-				<include name="${bindir}/Protected/bin/engine.dll" />				
+				<include name="${bin_dir_bin}/bin/rabnet.exe" />
+				<include name="${bin_dir_bin}/bin/db.Interface.dll" />
+				<include name="${bin_dir_bin}/bin/engine.dll" />				
 			</references>
 		</csc>
 	</target>
@@ -303,9 +303,9 @@
 				<include name="${rdlfile}"/>
 			</resources>
 			<references>
-				<include name="${bindir}/Protected/bin/rabnet.exe" />
-				<include name="${bindir}/Protected/bin/db.Interface.dll" />
-				<include name="${bindir}/Protected/bin/engine.dll" />
+				<include name="${bin_dir_bin}/bin/rabnet.exe" />
+				<include name="${bin_dir_bin}/bin/db.Interface.dll" />
+				<include name="${bin_dir_bin}/bin/engine.dll" />
 			</references>
 		</csc>
 	</target>
@@ -322,9 +322,9 @@
 				<include name="${rdlfile}"/>
 			</resources>
 			<references>
-				<include name="${bindir}/Protected/bin/rabnet.exe" />
-				<include name="${bindir}/Protected/bin/db.Interface.dll" />
-				<include name="${bindir}/Protected/bin/engine.dll" />
+				<include name="${bin_dir_bin}/bin/rabnet.exe" />
+				<include name="${bin_dir_bin}/bin/db.Interface.dll" />
+				<include name="${bin_dir_bin}/bin/engine.dll" />
 			</references>
 		</csc>
 	</target>
