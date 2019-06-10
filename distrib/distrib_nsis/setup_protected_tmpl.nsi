@@ -144,9 +144,6 @@ Section $(SEC_RabDump_NAME) SEC_RabDump
 	File ${BinDir}\bin\rabdump.exe.config
 	File ${BinDir}\bin\ccxmlrpc.dll    	   	
 	#File ${BinDir}\bin\gnclient.ini
-
-	SetOutPath $INSTDIR\Guardant
-	File /r ${BinDir}\Guardant\Server
 	
     SetOutPath $INSTDIR\7z
     File ${BinDir}\7z\7-zip.chm
@@ -189,11 +186,6 @@ Section -com_comps SEC_Common
     SetOverwrite on  
     Call InstCommonFiles
 	
-	SetOutPath $INSTDIR\Guardant
-    File ${BinDir}\Guardant\GrdTRU.exe
-	
-	#File ${BinDir}\Guardant\grdmon.exe
-	#File ${BinDir}\Guardant\grdsrv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Conv_NAME).lnk $INSTDIR\bin\mia_conv.exe
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\$(SM_Up_NAME).lnk $INSTDIR\bin\updater.exe
     WriteRegStr HKCU "${REGKEY}\components" com_comps 1
@@ -272,7 +264,6 @@ Section un.$(SEC_Rabnet_NAME) UNSEC_Rabnet
     Delete /REBOOTOK $INSTDIR\bin\RdlViewer.dll
     Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
     Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
-    Delete /REBOOTOK $INSTDIR\bin\GuardantDotNetApi.dll
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
 	#Delete /REBOOTOK $INSTDIR\bin\CAS.dll		
@@ -291,9 +282,6 @@ Section un.$(SEC_RabDump_NAME) UNSEC_RabDump
 
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI32.DLL
     Delete /REBOOTOK $INSTDIR\bin\GrdAPI64.DLL
-#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage32.dll
-#    Delete /REBOOTOK $INSTDIR\bin\CodeStorage64.dll
-	Delete /REBOOTOK $INSTDIR\bin\GuardantDotNetApi.dll
 	
 	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
 	
@@ -313,8 +301,7 @@ Section un.$(SEC_RabDump_NAME) UNSEC_RabDump
 SectionEnd
 
 Section un.com_comps UNSEC_Common
-	RmDir /REBOOTOK /r $INSTDIR\Guardant
-    
+	    
 	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe
 	Delete /REBOOTOK $INSTDIR\bin\mia_conv.exe.config
 	Delete /REBOOTOK $INSTDIR\bin\log4net.dll
@@ -422,7 +409,6 @@ Function InstGrdFiles
     File ${BinDir}\bin\GrdAPI64.DLL
 	File ${BinDir}\bin\CodeStorage32.dll
     File ${BinDir}\bin\CodeStorage64.dll
-    File ${BinDir}\bin\GuardantDotNetApi.dll
 FunctionEnd
 
 # Uninstaller functions
