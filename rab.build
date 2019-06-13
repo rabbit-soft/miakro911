@@ -317,6 +317,7 @@ namespace rabnet.forms
 }
 		</echo>
 		<echo file="version.txt" message="${fullver}"/>
+		<echo file="ver.txt" message="${shortver}"/>
 
 	</target>
 	
