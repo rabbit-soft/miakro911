@@ -49,8 +49,8 @@ namespace rabnet.forms
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpMale = new System.Windows.Forms.TabPage();
             this.tpFemale = new System.Windows.Forms.TabPage();
-            this.rabStatusBar1 = new rabnet.components.RabStatusBar();
             this.btDelete = new System.Windows.Forms.Button();
+            this.rabStatusBar1 = new rabnet.components.RabStatusBar();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -70,7 +70,6 @@ namespace rabnet.forms
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(4, 28);
-            this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.OwnerDraw = true;
             this.listView1.Size = new System.Drawing.Size(487, 308);
@@ -238,6 +237,17 @@ namespace rabnet.forms
             this.tpFemale.Text = "Женские";
             this.tpFemale.UseVisualStyleBackColor = true;
             // 
+            // btDelete
+            // 
+            this.btDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btDelete.Location = new System.Drawing.Point(500, 153);
+            this.btDelete.Name = "btDelete";
+            this.btDelete.Size = new System.Drawing.Size(70, 23);
+            this.btDelete.TabIndex = 8;
+            this.btDelete.Text = "Удалить";
+            this.btDelete.UseVisualStyleBackColor = true;
+            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
+            // 
             // rabStatusBar1
             // 
             this.rabStatusBar1.ExcelButtonClick = null;
@@ -253,16 +263,6 @@ namespace rabnet.forms
             this.rabStatusBar1.PrepareGet += new rabnet.components.RSBPrepareHandler(this.rabStatusBar1_prepareGet);
             this.rabStatusBar1.OnFinishUpdate += new rabnet.components.RSBEventHandler(this.rabStatusBar1_OnFinishUpdate);
             this.rabStatusBar1.ItemGet += new rabnet.components.RSBItemEventHandler(this.rabStatusBar1_itemGet);
-            // 
-            // btDelete
-            // 
-            this.btDelete.Location = new System.Drawing.Point(500, 153);
-            this.btDelete.Name = "btDelete";
-            this.btDelete.Size = new System.Drawing.Size(70, 23);
-            this.btDelete.TabIndex = 8;
-            this.btDelete.Text = "Удалить";
-            this.btDelete.UseVisualStyleBackColor = true;
-            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
             // 
             // NamesForm
             // 

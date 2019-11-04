@@ -46,7 +46,7 @@ namespace rabnet.forms
             textBox2.Clear();
             btAdd.Text = btext[0];
             this.originName = this.originSurname = null;
-            btAdd.Enabled = btCancel.Enabled = false;
+            btAdd.Enabled = btCancel.Enabled = btDelete.Enabled = false;
             rabStatusBar1.Run();
         }
 
@@ -258,24 +258,33 @@ namespace rabnet.forms
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Удалить имя?", "Удалить имя", MessageBoxButtons.YesNo) != DialogResult.Yes) {
+            if (MessageBox.Show("Удалить выбранные имена?", "Удалить имена", MessageBoxButtons.YesNo) != DialogResult.Yes) {
                 return;
             }
 
-            int id = (int)listView1.SelectedItems[0].Tag;
+            bool selectedOne = 1 == listView1.SelectedItems.Count;
+            foreach (ListViewItem item in listView1.SelectedItems) {
+                int id = (int)item.Tag;
 
-            RabName rn = Engine.db().GetName(id);
-            if (0 != rn.Use || rn.ReleaseDate != DateTime.MinValue) {
-                MessageBox.Show("Имя используется", "Имя используется", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                RabName rn = Engine.db().GetName(id);
+                if (0 != rn.Use || rn.ReleaseDate != DateTime.MinValue) {
+                    if (selectedOne) {
+                        // если выбрали только одно имя, то выводим сообщение
+                        MessageBox.Show("Имя используется", "Имя используется", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    continue;
+                }
+
+                if (false == Engine.db().CanDeleteName(id)) {
+                    if (selectedOne) {                        
+                        MessageBox.Show("Имя используется в чьей-то родословной", "Имя используется", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                    continue;
+                }
+
+                Engine.db().deleteName(id);
             }
-
-            if (false == Engine.db().CanDeleteName(id)) {
-                MessageBox.Show("Имя используется в чьей-то родословной", "Имя используется", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
-            Engine.db().deleteName(id);
+            
             rabStatusBar1.Run();
         }
 
