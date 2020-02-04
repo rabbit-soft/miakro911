@@ -1,3 +1,5 @@
+[Скачать программу](https://github.com/rabbit-soft/miakro911/releases/download/1.4.2-1-g11124b0/miakro911.zip)
+
 # для разработки необходимы:
 	.NET Framework 3.5
 	
