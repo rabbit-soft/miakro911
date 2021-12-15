@@ -384,7 +384,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS vaccines;
 CREATE TABLE vaccines (
   v_id tinyint(4) NOT NULL AUTO_INCREMENT,
-  v_name varchar(45) DEFAULT NULL,
+  v_name varchar(100) DEFAULT NULL,
   v_do_after int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'делать после рождения(0) или после прививки с ID',
   v_duration int(10) unsigned NOT NULL COMMENT 'Продолжительность прививки в Днях',
   v_age int(10) unsigned NOT NULL DEFAULT '45' COMMENT 'Назначать с (дней)',
