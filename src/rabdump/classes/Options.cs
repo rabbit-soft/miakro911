@@ -59,13 +59,23 @@ namespace rabdump
             get { return _myPath;}
             set
             {
-                if(Directory.Exists(value) )
+                if (Directory.Exists(value))
+                {
                     _myPath = value;
+                }
             }
         }
-        public String MySqlExePath {  get {   return _myPath + MYSQL_EXE; } }
+        public String MySqlExePath 
+        {
+            get {
+                return _myPath + MYSQL_EXE;
+            }
+        }
+
         public String MySqlDumpPath { get { return _myPath + MYSQL_DUMP; } }
+
         public string ServerUrl { get { return _servUrl; } set { _servUrl = value; } }
+
         public String Path7Z
         {
             get 
@@ -86,8 +96,11 @@ namespace rabdump
                     _p7 = value; 
             }
         }
+
         public List<DataSource> DataSource { get { return _rnc.DataSources; } }
+
         public List<ArchiveJob> Jobs { get { return _rnc.ArchiveJobs; } }
+
         public bool StartAtStart { get { return _sas; } set { _sas = value; } }
 
         /// <summary>
